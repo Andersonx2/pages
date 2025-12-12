@@ -1,0 +1,105 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    font-family: "Source Seri Pro";
+    font-size: 65%;
+}
+
+body {
+    font-size: 1.6rem;
+    color: #A54328;
+}
+
+p, li, strong {
+    font-size: 1.4rem;
+    line-height: 1.6rem;
+}
+
+h1,h2{ 
+    line-height: 3.6px;
+    font-size: 2.8rem;
+ }
+
+ul, ol { 
+    padding-left: 2.4rem;
+}
+
+ul{
+margin-bottom: 2.4rem;
+}
+
+
+
+main {
+    max-width: 32rem;
+    margin-inline: auto; /*  centralizou o conteudo ao meio */
+    padding: 5.6rem 4rem;
+    box-sizing: content-box;
+
+    display: flex;
+    flex-direction: column;
+    gap: 3.2rem;
+}
+
+img {
+    height: 177px;
+    margin-bottom: 41px;
+    width: 100%;
+    margin-top:63px ;
+}
+
+.bg-preparo li {
+    list-style: none;
+}
+
+button {
+    margin-top: 1.9rem;
+    border: 0px;
+    margin: 11px;
+    background-color: #A54328;
+    border-radius: 6px;
+    padding: 0.8rem 1.2rem;
+    color: #ffff;   
+}
+
+
+button:hover {
+    background-color: #f3eeec;
+}
+
+@media (min-width: 1120px) {
+
+    main{
+        flex-direction: row;
+        max-width: fit-content;
+        gap: 16rem;
+        padding: 9rem 6rem;
+    }
+    
+    .recipe{
+        max-width: 43rem;
+    }
+
+    .ingredients{
+        max-width: 52rem;
+    }
+    h1,h2{
+    font-size: 4rem;
+    line-height: 5rem;
+
+    }
+    p, li, strong{ 
+        font-size: 2rem;
+        line-height: 2.5rem;
+    }
+    bottom { 
+        padding: 1rem 2rem;
+        font-size: 1.4rem;
+        line-height: 2.4rem;
+    }
+
+}
