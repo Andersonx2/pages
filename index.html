@@ -11,7 +11,8 @@
     />
   </head>
 
-  <body class="bg-slate-950 text-base  text-slate-50 antialiased scroll-smooth" id="homepage">
+  <body  class="bg-slate-950 text-slate-50 antialiased scroll-smooth text-[250%] leading-relaxed"
+  id="homepage">
     <!-- Topo / Navbar -->
     <header class="sticky top-0 z-30 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
       <div class="mx-auto flex max-w-6xl items-center justify-between px-1 py-1">
@@ -403,93 +404,193 @@
           </p>
         </div>
 
-        <form class="mt-8 space-y-5 rounded-3xl border border-slate-800 bg-slate-900/70 p-6 text-sm text-slate-200">
-          <div class="grid gap-4 md:grid-cols-2">
-            <div>
-              <label class="mb-1 block text-xs text-slate-300" for="nome">Seu nome</label>
-              <input id="nome" type="text" required class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none ring-0 placeholder:text-slate-500 focus:border-sky-400 focus:ring-1 focus:ring-sky-500" placeholder="Ex.: Ana, João..." />
-            </div>
-            <div>
-              <label class="mb-1 block text-xs text-slate-300" for="empresa">Empresa</label>
-              <input id="empresa" type="text" required class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500" placeholder="Nome da empresa" />
-            </div>
-          </div>
-
-          <div class="grid gap-4 md:grid-cols-3">
-            <div>
-              <label class="mb-1 block text-xs text-slate-300" for="cargo">Seu cargo</label>
-              <input id="cargo" type="text" class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500" placeholder="Sócio, diretor, gerente..." />
-            </div>
-            <div>
-              <label class="mb-1 block text-xs text-slate-300" for="cidade">Cidade/Estado</label>
-              <input id="cidade" type="text" class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500" placeholder="Ex.: Caxias do Sul/RS" />
-            </div>
-            <div>
-              <label class="mb-1 block text-xs text-slate-300" for="segmento">Segmento</label>
-              <input id="segmento" type="text" class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500" placeholder="Transporte, varejo, serviços..." />
-            </div>
-          </div>
-
-          <div class="grid gap-4 md:grid-cols-2">
-            <div>
-              <label class="mb-1 block text-xs text-slate-300" for="email">E-mail</label>
-              <input id="email" type="email" required class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500" placeholder="voce@empresa.com" />
-            </div>
-            <div>
-              <label class="mb-1 block text-xs text-slate-300" for="telefone">WhatsApp para contato</label>
-              <input id="telefone" type="tel" required class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500" placeholder="(00) 00000-0000" />
-            </div>
-          </div>
-
-          <div class="grid gap-4 md:grid-cols-3">
-            <div>
-              <label class="mb-1 block text-xs text-slate-300" for="time_vendas">Tamanho da equipe</label>
-              <select id="time_vendas" class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500">
-                <option value="">Selecione</option>
-                <option>Até 3 pessoas</option>
-                <option>4 a 8 pessoas</option>
-                <option>9 a 15 pessoas</option>
-                <option>Mais de 15 pessoas</option>
-              </select>
-            </div>
-            <div>
-              <label class="mb-1 block text-xs text-slate-300" for="faturamento">Faturamento mensal</label>
-              <select id="faturamento" class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500">
-                <option value="">Selecione</option>
-                <option>Até R$ 200 mil</option>
-                <option>R$ 200 mil a R$ 500 mil</option>
-                <option>R$ 500 mil a R$ 1 milhão</option>
-                <option>Acima de R$ 1 milhão</option>
-              </select>
-            </div>
-            <div>
-              <label class="mb-1 block text-xs text-slate-300" for="prioridade">Prioridade atual</label>
-              <select id="prioridade" class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500">
-                <option value="">Selecione</option>
-                <option>Aumentar vendas</option>
-                <option>Aumentar margem</option>
-                <option>Organizar o comercial</option>
-                <option>Treinar equipe / liderança</option>
-              </select>
-            </div>
-          </div>
-
+        <form
+        id="diagnosticoForm"
+        class="mt-8 space-y-5 rounded-3xl border border-slate-800 bg-slate-900/70 p-6 text-sm text-slate-200"
+      >
+        <div class="grid gap-4 md:grid-cols-2">
           <div>
-            <label class="mb-1 block text-xs text-slate-300" for="desafio">
-              Descreva o maior desafio comercial hoje
+            <label class="mb-1 block text-xs text-slate-300" for="nome">
+              Seu nome
             </label>
-            <textarea id="desafio" rows="4" class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500" placeholder="Ex.: Muitos orçamentos sem resposta, equipe desorganizada, margem apertando, etc."></textarea>
+            <input
+              id="nome"
+              name="nome"
+              type="text"
+              required
+              class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none placeholder:text-slate-500 focus:border-sky-400 focus:ring-1 focus:ring-sky-500"
+              placeholder="Ex.: Ana, João..."
+            />
           </div>
+      
+          <div>
+            <label class="mb-1 block text-sm text-slate-300" for="empresa">
+              Empresa
+            </label>
+            <input
+              id="empresa"
+              name="empresa"
+              type="text"
+              required
+              class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500"
+              placeholder="Nome da empresa"
+            />
+          </div>
+        </div>
+      
+        <div class="grid gap-4 md:grid-cols-3">
+          <div>
+            <label class="mb-1 block text-sm text-slate-300" for="cargo">
+              Seu cargo
+            </label>
+            <input
+              id="cargo"
+              name="cargo"
+              type="text"
+              class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500"
+              placeholder="Sócio, diretor, gerente..."
+            />
+          </div>
+      
+          <div>
+            <label class="mb-1 block text-sm text-slate-300" for="cidade">
+              Cidade/Estado
+            </label>
+            <input
+              id="cidade"
+              name="cidade"
+              type="text"
+              class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500"
+              placeholder="Ex.: Caxias do Sul/RS"
+            />
+          </div>
+      
+          <div>
+            <label class="mb-1 block text-sm text-slate-300" for="segmento">
+              Segmento
+            </label>
+            <input
+              id="segmento"
+              name="segmento"
+              type="text"
+              class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500"
+              placeholder="Transporte, varejo, serviços..."
+            />
+          </div>
+        </div>
+      
+        <div class="grid gap-4 md:grid-cols-2">
+          <div>
+            <label class="mb-1 block text-sm text-slate-300" for="email">
+              E-mail
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500"
+              placeholder="voce@empresa.com"
+            />
+          </div>
+      
+          <div>
+            <label class="mb-1 block text-sm text-slate-300" for="telefone">
+              WhatsApp para contato
+            </label>
+            <input
+              id="telefone"
+              name="telefone"
+              type="tel"
+              required
+              class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500"
+              placeholder="(00) 00000-0000"
+            />
+          </div>
+        </div>
+      
+        <div class="grid gap-4 md:grid-cols-3">
+          <div>
+            <label class="mb-1 block text-sm text-slate-300" for="time_vendas">
+              Tamanho da equipe
+            </label>
+            <select
+              id="time_vendas"
+              name="time_vendas"
+              class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500"
+            >
+              <option value="">Selecione</option>
+              <option>Até 3 pessoas</option>
+              <option>4 a 8 pessoas</option>
+              <option>9 a 15 pessoas</option>
+              <option>Mais de 15 pessoas</option>
+            </select>
+          </div>
+      
+          <div>
+            <label class="mb-1 block text-sm text-slate-300" for="faturamento">
+              Faturamento mensal
+            </label>
+            <select
+              id="faturamento"
+              name="faturamento"
+              class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500"
+            >
+              <option value="">Selecione</option>
+              <option>Até R$ 200 mil</option>
+              <option>R$ 200 mil a R$ 500 mil</option>
+              <option>R$ 500 mil a R$ 1 milhão</option>
+              <option>Acima de R$ 1 milhão</option>
+            </select>
+          </div>
+      
+          <div>
+            <label class="mb-1 block text-sm text-slate-300" for="prioridade">
+              Prioridade atual
+            </label>
+            <select
+              id="prioridade"
+              name="prioridade"
+              class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500"
+            >
+              <option value="">Selecione</option>
+              <option>Aumentar vendas</option>
+              <option>Aumentar margem</option>
+              <option>Organizar o comercial</option>
+              <option>Treinar equipe / liderança</option>
+            </select>
+          </div>
+        </div>
+      
+        <div>
+          <label class="mb-1 block text-sm text-slate-300" for="desafio">
+            Descreva o maior desafio comercial hoje
+          </label>
+          <textarea
+            id="desafio"
+            name="desafio"
+            rows="4"
+            class="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-500"
+            placeholder="Ex.: Muitos orçamentos sem resposta, equipe desorganizada, margem apertando, etc."
+          ></textarea>
+        </div>
+      
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <button
+            type="submit"
+            class="inline-flex items-center justify-center rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/30 hover:bg-emerald-400"
+          >
+            Enviar meu diagnóstico
+          </button>
+      
+          <p class="text-xs text-slate-400">
+            Após o envio, entro em contato por WhatsApp ou e-mail em até 2 dias úteis.
+          </p>
+        </div>
+      </form>
+      
 
-          <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <button type="submit" class="inline-flex items-center justify-center rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/30 hover:bg-emerald-400">
-              Enviar meu diagnóstico
-            </button>
-            <p class="text-xs text-slate-400">
-              Após o envio, entro em contato por WhatsApp ou e-mail em até 2 dias úteis.
-            </p>
-          </div>
-        </form>
+
       </div>
     </section>
 
@@ -504,5 +605,40 @@
     <script>
       document.getElementById("ano").textContent = new Date().getFullYear();
     </script>
+
+
+<script>
+  const form = document.getElementById("diagnosticoForm");
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+
+    const payload = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch("https://hook.us2.make.com/stsmulv8ny7mok4q81k221uq5on37qza", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao enviar formulário");
+      }
+
+      alert("Diagnóstico enviado com sucesso! Em breve entraremos em contato.");
+      form.reset();
+
+    } catch (error) {
+      alert("Erro ao enviar. Tente novamente ou entre em contato.");
+      console.error(error);
+    }
+  });
+</script>
+
   </body>
 </html>
