@@ -11,14 +11,14 @@
     />
   </head>
 
-  <body class="bg-slate-950 text-slate-50 antialiased">
+  <body class="bg-slate-950 text-base  text-slate-50 antialiased scroll-smooth" id="homepage">
     <!-- Topo / Navbar -->
     <header class="sticky top-0 z-30 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
       <div class="mx-auto flex max-w-6xl items-center justify-between px-1 py-1">
         <div class="flex items-center gap-2">
           <div class="flex h-20 w-40 items-center justify-center rounded-xl mb-">
-            <a href="#body">
-            <img src="/online.03.png" alt="Logo da empresa"  href="#body" class="h-40 w-auto mb-1" />   
+            <a href="#homepage">
+            <img src="/online.03.png" alt="Logo da empresa"  href="#body" class="h-40 w-auto md:h-40 mb-1" />
             </a>
           </div>
         </div>
@@ -28,7 +28,7 @@
           <a href="#metodo" class="hover:text-sky-400">Nosso Método</a>
           <a href="#sobre" class="hover:text-sky-400">Quem Sou</a>
           <a href="#cases" class="hover:text-sky-400">Casos Reais</a>
-          <a href="#formulario" class="rounded-full bg-sky-500 px-4 py-1.5 text-sm font-semibold text-slate-950 hover:bg-sky-400">
+          <a href="#formulario" class="inline-flex items-center justify-center rounded-full bg-sky-500 px-7 py-4 text-base font-semibold text-slate-950">
             Diagnóstico Gratuito
           </a>
         </nav>
@@ -53,7 +53,7 @@
             Eu sou <span class="font-semibold">Germano Cioato</span> e ajudo empresários como você a transformar um setor de vendas improvisado em um comercial previsível, lucrativo e autogerenciável.
           </p>
 
-          <ul class="mt-5 space-y-2 text-sm text-slate-300">
+          <ul class="mt-5 space-y-2 text-base text-slate-300">
             <li class="flex items-start gap-2">
               <span class="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
               <span>Diagnóstico comercial completo e direto em até 60 minutos.</span>
@@ -69,78 +69,40 @@
           </ul>
 
           <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a href="#formulario" class="inline-flex items-center justify-center rounded-full bg-sky-500 px-6 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-sky-500/30 hover:bg-sky-400">
+            <a href="#formulario" class="inline-flex items-center justify-center rounded-full bg-sky-500 px-7 py-4 text-base font-semibold text-slate-950">
               Quero meu diagnóstico agora
             </a>
       
           </div>
-          <p class="text-xs text-slate-400 sm:mt-2">
+          <p class="text-sm text-slate-400 sm:mt-3">
             Diagnóstico objetivo, direto nos números e nas causas dos seus desafios.
           </p>
         </div>
-
-        <div class="mt-1 flex-1 md:mt-">
-          <div class="mx-10 max-w-md rounded-3xl border border-slate-800 bg-slate-900/60 p-5 shadow-xl shadow-black/40">
-            <div class="mb-1" >
-
-              <section id="video-vsl" class="h-full w-full py-4">  
-                <div class="mx-auto max-w-5xl ">
-                  <div class="aspect-w-16 aspect-h-9">
-                    <iframe loading="lazy" width="560" height="315"
-                      src="https://www.youtube.com/embed/vbZquVH5bcs"
-                      title="VSL — Diagnóstico Comercial"
-                      frameborder="0"
-                      allow="autoplay; encrypted-media"
-                      allowfullscreen
-                      class="w-full rounded-xl shadow-lg"
-                    ></iframe>
-                  </div>
-                </div>
-              </section>
-
-
-              
-
-              <!-- <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-800 text-3xl">
-                📊
+        <div class="mt-6 flex-1">
+          <div class="mx-4 md:mx-10 max-w-md rounded-3xl border border-slate-800 bg-slate-900/60 p-5 shadow-xl shadow-black/40">
+            <section id="video-vsl" class="w-full py-4">
+              <div class="relative w-full h-0 pb-[56.25%]">
+                <iframe 
+                  loading="lazy"
+                  src="https://www.youtube.com/embed/vbZquVH5bcs"
+                  title="VSL — Diagnóstico Comercial"
+                  frameborder="0"
+                  allow="autoplay; encrypted-media"
+                  allowfullscreen
+                  class="absolute top-0 left-0 w-full h-full rounded-xl shadow-lg"
+                ></iframe>
               </div>
-              <div>
-                <p class="text-xs font-semibold uppercase tracking-wide text-sky-300">
-                  Snapshot Comercial
-                </p>
-                <p class="text-sm text-slate-200">
-                  Veja onde sua empresa está deixando dinheiro na mesa.
-                </p>
-              </div>
-            </div> -->
-
-            <!-- <dl class="mt-6 grid grid-cols-2 gap-4 text-xs text-slate-300">
-              <div>
-                <dt class="text-slate-400">Experiência</dt>
-                <dd class="text-base font-semibold text-slate-50">+15 anos</dd>
-              </div>
-              <div>
-                <dt class="text-slate-400">Foco</dt>
-                <dd class="text-base font-semibold text-slate-50">Margem & Resultados</dd>
-              </div>
-              <div>
-                <dt class="text-slate-400">Entrega</dt>
-                <dd class="text-base font-semibold text-slate-50">Consultoria & Treinamento</dd>
-              </div>
-              <div>
-                <dt class="text-slate-400">Formato</dt>
-                <dd class="text-base font-semibold text-slate-50">Online / Presencial</dd>
-              </div>
-            </dl> -->
-
-            <!-- <p class="mt-5 text-xs leading-relaxed text-slate-400">
+            </section>
+            <p class="mt-4 text-sm text-slate-400">
               Ao final do diagnóstico, você terá clareza sobre metas, prioridades e próximos passos, mesmo que decida não seguir com consultoria contínua.
+              
             </p>
-          </div> -->
+          </div>
         </div>
+
       </div>
     </section>
-
+      
 
     <!-- Problemas que resolvo -->
     <section id="problemas" class="border-b border-slate-800 bg-slate-950">
@@ -157,21 +119,21 @@
         <div class="mt-8 grid gap-5 md:grid-cols-3">
           <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
             <h3 class="text-sm font-semibold text-slate-100">Vendas imprevisíveis</h3>
-            <p class="mt-2 text-xs text-slate-300">
+            <p class="mt-2 text-sm text-slate-300">
               Meses de pico e meses fracos, sem metas claras, funil estruturado ou qualquer previsibilidade.
             </p>
           </div>
 
           <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
             <h3 class="text-sm font-semibold text-slate-100">Margem desaparecendo</h3>
-            <p class="mt-2 text-xs text-slate-300">
+            <p class="mt-2 text-sm text-slate-300">
               Descontos excessivos, contratos mal definidos e pós-venda reativo. O faturamento existe, mas o lucro não aparece.
             </p>
           </div>
 
           <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
             <h3 class="text-sm font-semibold text-slate-100">Equipe sem direção</h3>
-            <p class="mt-2 text-xs text-slate-300">
+            <p class="mt-2 text-sm text-slate-300">
               Cada vendedor age de um jeito, sem rotina, sem indicadores e sem liderança forte. Você acaba virando gerente de tudo.
             </p>
           </div>
@@ -339,7 +301,7 @@
               <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-5">
                 <p class="text-xs font-semibold uppercase tracking-wide text-sky-300">Módulo 01</p>
                 <h3 class="mt-2 text-sm font-semibold">Diagnóstico Comercial Profundo</h3>
-                <p class="mt-2 text-xs text-slate-300">
+                <p class="mt-2 text-sm text-slate-300">
                   Análise de funil, margem, carteira e operação para identificar o gargalo real, seja prospecção, fechamento, retenção ou pricing.
                 </p>
               </div>
@@ -347,7 +309,7 @@
               <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-5">
                 <p class="text-xs font-semibold uppercase tracking-wide text-sky-300">Módulo 02</p>
                 <h3 class="mt-2 text-sm font-semibold">Planejamento Comercial & Metas</h3>
-                <p class="mt-2 text-xs text-slate-300">
+                <p class="mt-2 text-sm text-slate-300">
                   Metas realistas, funil desenhado, indicadores definidos e rotina semanal de acompanhamento. Nada de planos teóricos que ficam no papel.
                 </p>
               </div>
@@ -355,7 +317,7 @@
               <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-5">
                 <p class="text-xs font-semibold uppercase tracking-wide text-sky-300">Módulo 03</p>
                 <h3 class="mt-2 text-sm font-semibold">Treinamento de Vendas & Pós‑vendas</h3>
-                <p class="mt-2 text-xs text-slate-300">
+                <p class="mt-2 text-sm text-slate-300">
                   Treinamentos práticos para abordagem, proposta de valor, follow-up, contratos recorrentes e fidelização, sempre orientados a resultados.
                 </p>
               </div>
@@ -363,7 +325,7 @@
               <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-5">
                 <p class="text-xs font-semibold uppercase tracking-wide text-sky-300">Módulo 04</p>
                 <h3 class="mt-2 text-sm font-semibold">Liderança & Autogestão Comercial</h3>
-                <p class="mt-2 text-xs text-slate-300">
+                <p class="mt-2 text-sm text-slate-300">
                   Desenvolvimento de líderes e donos para cobrar, treinar e orientar a equipe, garantindo que o sistema continue funcionando de forma consistente.
                 </p>
               </div>
@@ -425,10 +387,14 @@
     </section>
 
     <!-- Formulário -->
-    <section id="formulario" class="bg-slate-950">
-      <div class="mx-auto max-w-4xl px-4 py-14">
+    <section
+  id="formulario"
+  class="bg-slate-950 min-h-screen flex items-center justify-center px-4"
+>
+
+      <div class="mx-auto max-w-4xl px-py-20 md:py-16 ml-5 mr-5">
         <div class="max-w-2xl">
-          <h2 class="text-xl font-semibold md:text-2xl">Solicite seu Diagnóstico Comercial</h2>
+          <h2 class="text-xl font-semibold md:text-2xl mt-10 ">Solicite seu Diagnóstico Comercial</h2>
           <p class="mt-3 text-sm text-slate-300 md:text-base">
             Preencha os dados abaixo para que eu entenda seu contexto e retorne com um plano de ação claro, direto ao ponto e sem enrolação.
           </p>
@@ -528,7 +494,7 @@
     </section>
 
     <!-- Rodapé -->
-    <footer class="border-t border-slate-800 bg-slate-950">
+    <footer class="border-t border-slate-800 bg-slate-950 text-xs text-slate-500">
       <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-6 text-xs text-slate-500 md:flex-row">
         <p>© <span id="ano"></span> Cioato Consultoria Comercial. Todos os direitos reservados.</p>
         <p>Baseado em diagnóstico real, método testado e resultados concretos. Nenhuma promessa milagrosa.</p>
