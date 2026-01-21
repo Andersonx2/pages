@@ -1,247 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WIDE CARGO HADASSA | Lico & Teca Denim</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { brand: { black: '#000000', gray: '#f5f5f5', accent: '#ec4899' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Remove a seta padrão do details/summary para estilizarmos customizada */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+    </style>
+</head>
+<body class="bg-white font-sans text-gray-800 antialiased">
 
-<script src="https://cdn.tailwindcss.com"></script>
-
-<!-- Seção de Triagem Premium – Dr. Alexandre Walter -->
-<section class="w-full bg-slate-900/95 py-16">
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Cabeçalho -->
-    <div class="text-center mb-10">
-      <p class="text-sm font-semibold tracking-[0.25em] uppercase text-amber-300">
-        Agendamento Prioritário
-      </p>
-      <h2 class="mt-3 text-3xl sm:text-4xl font-semibold text-slate-50">
-        Triagem inicial com o Dr. Alexandre Walter
-      </h2>
-      <p class="mt-4 text-slate-200 max-w-2xl mx-auto text-sm sm:text-base">
-        Neurocirurgião funcional em São Paulo, com foco em tratamentos avançados para
-        <span class="font-medium">Parkinson, Epilepsia, Dor Crônica, Tremor Essencial e Tumores de Hipófise</span>.
-        Preencha os dados abaixo e nossa equipe entrará em contato para definir o melhor horário de consulta
-        <span class="font-medium">presencial ou online</span>.
-      </p>
+    <div class="bg-black text-white text-[10px] md:text-xs font-bold text-center py-2 tracking-widest uppercase px-4">
+        Pedido Mínimo R$ 399,00 • 5% OFF na primeira compra (Cupom: LTD5OFF)
     </div>
 
-    <!-- Card do formulário -->
-    <div
-      class="bg-white/95 rounded-2xl shadow-2xl shadow-slate-900/40 border border-slate-100 max-w-3xl mx-auto">
-      <div class="px-6 sm:px-10 pt-8 sm:pt-10 pb-8 sm:pb-10">
-        <form
-          class="space-y-7"
-          action="#"
-          method="POST"
-        >
-          <!-- Linha 1: Nome + WhatsApp -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label for="nome" class="block text-sm font-medium text-slate-700">
-                Nome completo <span class="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                id="nome"
-                name="nome"
-                required
-                class="mt-2 block w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm focus:border-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-500/70"
-                placeholder="Digite seu nome completo"
-              />
+    <header class="border-b border-gray-100 sticky top-0 bg-white z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <button class="md:hidden"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
+            <a href="#" class="text-2xl font-black tracking-tighter text-black uppercase">LICO <span class="text-gray-400">&</span> TECA</a>
+            <div class="flex items-center space-x-4">
+                <button class="relative">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                    <span class="absolute -top-1 -right-1 bg-black text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">2</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 md:px-6 py-8 pb-20">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            
+            <div class="lg:col-span-7 grid grid-cols-2 gap-2 md:gap-4">
+                <img src="https://via.placeholder.com/600x800?text=Frente" class="w-full h-auto object-cover bg-gray-100 aspect-[3/4]">
+                <img src="https://via.placeholder.com/600x800?text=Costas" class="w-full h-auto object-cover bg-gray-100 aspect-[3/4]">
+                <img src="https://via.placeholder.com/600x800?text=Detalhe" class="w-full h-auto object-cover bg-gray-100 aspect-[3/4]">
+                <img src="https://via.placeholder.com/600x800?text=Zoom+Bolso" class="w-full h-auto object-cover bg-gray-100 aspect-[3/4]">
             </div>
 
-            <div>
-              <label for="whatsapp" class="block text-sm font-medium text-slate-700">
-                WhatsApp com DDD <span class="text-red-500">*</span>
-              </label>
-              <input
-                type="tel"
-                id="whatsapp"
-                name="whatsapp"
-                required
-                class="mt-2 block w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm focus:border-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-500/70"
-                placeholder="(11) 99999-9999"
-              />
+            <div class="lg:col-span-5 relative">
+                <div class="sticky top-24">
+                    
+                    <div class="mb-6">
+                        <h1 class="text-3xl md:text-4xl font-black uppercase tracking-tight leading-none mb-2">Wide Cargo Hadassa</h1>
+                        <p class="text-gray-400 text-xs font-bold tracking-widest uppercase mb-4">Ref: JEANS-042 | Coleção Sky</p>
+                        
+                        <div class="flex items-baseline gap-3 border-b border-gray-100 pb-6">
+                            <span class="text-3xl font-bold text-black">R$ 70,00</span>
+                            <span class="text-sm text-green-600 font-semibold bg-green-50 px-2 py-1 rounded">5% OFF no Pix</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <span class="text-xs font-bold uppercase tracking-widest text-gray-900 mb-3 block">Escolha o Tamanho</span>
+                        <div class="flex flex-wrap gap-2">
+                            <button class="w-12 h-12 border border-gray-200 hover:border-black focus:bg-black focus:text-white transition font-bold text-sm text-gray-500">10</button>
+                            <button class="w-12 h-12 border border-black bg-black text-white font-bold text-sm">12</button>
+                            <button class="w-12 h-12 border border-gray-200 hover:border-black focus:bg-black focus:text-white transition font-bold text-sm text-gray-500">14</button>
+                            <button class="w-12 h-12 border border-gray-200 hover:border-black focus:bg-black focus:text-white transition font-bold text-sm text-gray-500">16</button>
+                            <div class="w-px h-12 bg-gray-300 mx-2"></div>
+                            <button class="h-12 px-4 border border-gray-200 hover:border-black flex flex-col items-center justify-center transition">
+                                <span class="text-xs font-bold">GRADE</span>
+                                <span class="text-[9px] text-gray-400">Atacado</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button class="w-full bg-black text-white font-bold uppercase tracking-widest py-4 hover:bg-gray-800 transition transform active:scale-95 shadow-lg mb-6">
+                        Adicionar ao Carrinho
+                    </button>
+
+                    <div class="border border-gray-200 rounded-lg mb-8 overflow-hidden">
+                        <details class="group">
+                            <summary class="flex justify-between items-center font-bold cursor-pointer list-none bg-gray-50 p-4 text-sm uppercase tracking-wide">
+                                <span>📏 Tabela de Medidas (cm)</span>
+                                <span class="transition group-open:rotate-180">
+                                    <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                                </span>
+                            </summary>
+                            <div class="text-gray-600 transition-all duration-300 ease-in-out p-4 bg-white">
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm text-center">
+                                        <thead>
+                                            <tr class="text-xs font-bold text-gray-400 uppercase border-b border-gray-100">
+                                                <th class="pb-2">Tam</th>
+                                                <th class="pb-2">Cintura</th>
+                                                <th class="pb-2">Quadril</th>
+                                                <th class="pb-2">Comprimento</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-gray-700">
+                                            <tr class="border-b border-gray-50 hover:bg-gray-50"><td class="py-2 font-bold">10</td><td>60-62</td><td>78-80</td><td>88</td></tr>
+                                            <tr class="border-b border-gray-50 hover:bg-gray-50 bg-gray-50"><td class="py-2 font-bold">12</td><td>64-66</td><td>82-84</td><td>92</td></tr>
+                                            <tr class="border-b border-gray-50 hover:bg-gray-50"><td class="py-2 font-bold">14</td><td>68-70</td><td>86-88</td><td>96</td></tr>
+                                            <tr class="border-b border-gray-50 hover:bg-gray-50"><td class="py-2 font-bold">16</td><td>72-74</td><td>90-92</td><td>100</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p class="text-[10px] text-gray-400 mt-3">* Medidas aproximadas. Pode haver variação de até 2cm.</p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <div class="space-y-4 mb-8">
+                        <h3 class="font-bold uppercase text-sm border-b pb-2">Descrição</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            A Calça Wide Cargo Hadassa é confeccionada em 100% algodão, garantindo durabilidade e conforto térmico. 
+                            O lavado Sky traz modernidade, ideal para compor looks despojados. Possui ajuste interno no cós para melhor caimento.
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-3 text-xs text-gray-500 bg-gray-50 p-3 rounded">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+                        <span>O cálculo do frete será realizado no <strong>Carrinho de Compras</strong> com base no volume total do pedido.</span>
+                    </div>
+
+                </div>
             </div>
-          </div>
+        </div>
 
-          <!-- Cidade / Estado -->
-          <div>
-            <label for="cidade" class="block text-sm font-medium text-slate-700">
-              Cidade / Estado
-            </label>
-            <input
-              type="text"
-              id="cidade"
-              name="cidade"
-              class="mt-2 block w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm focus:border-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-500/70"
-              placeholder="Ex.: São Paulo / SP"
-            />
-          </div>
-
-          <!-- Sintoma principal -->
-          <div>
-            <label for="sintoma" class="block text-sm font-medium text-slate-700">
-              Qual é o principal sintoma que você deseja avaliar? <span class="text-red-500">*</span>
-            </label>
-            <textarea
-              id="sintoma"
-              name="sintoma"
-              required
-              rows="3"
-              class="mt-2 block w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm focus:border-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-500/70"
-              placeholder="Ex.: tremor nas mãos, crises epilépticas, dor crônica em coluna há 3 anos..."
-            ></textarea>
-          </div>
-
-          <!-- Tempo de sintomas -->
-          <div>
-            <p class="block text-sm font-medium text-slate-700 mb-2">
-              Há quanto tempo você apresenta esse sintoma?
-            </p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-700">
-              <label class="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 cursor-pointer hover:border-sky-500/70 hover:bg-sky-50/60">
-                <input type="radio" name="tempo_sintoma" value="menos_3_meses" class="h-4 w-4 text-sky-600 border-slate-300 focus:ring-sky-500" />
-                <span>Menos de 3 meses</span>
-              </label>
-              <label class="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 cursor-pointer hover:border-sky-500/70 hover:bg-sky-50/60">
-                <input type="radio" name="tempo_sintoma" value="3m_1a" class="h-4 w-4 text-sky-600 border-slate-300 focus:ring-sky-500" />
-                <span>De 3 meses a 1 ano</span>
-              </label>
-              <label class="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 cursor-pointer hover:border-sky-500/70 hover:bg-sky-50/60">
-                <input type="radio" name="tempo_sintoma" value="1a_5a" class="h-4 w-4 text-sky-600 border-slate-300 focus:ring-sky-500" />
-                <span>Mais de 1 ano</span>
-              </label>
-              <label class="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 cursor-pointer hover:border-sky-500/70 hover:bg-sky-50/60">
-                <input type="radio" name="tempo_sintoma" value="mais_5a" class="h-4 w-4 text-sky-600 border-slate-300 focus:ring-sky-500" />
-                <span>Mais de 5 anos</span>
-              </label>
-            </div>
-          </div>
-
-          <!-- Diagnóstico prévio -->
-          <div>
-            <p class="block text-sm font-medium text-slate-700 mb-2">
-              Já possui diagnóstico médico prévio?
-            </p>
-            <div class="flex flex-wrap gap-3 text-sm text-slate-700">
-              <label class="inline-flex items-center gap-2 cursor-pointer">
-                <input type="radio" name="diagnostico_previo" value="sim" class="h-4 w-4 text-sky-600 border-slate-300 focus:ring-sky-500" />
-                <span>Sim</span>
-              </label>
-              <label class="inline-flex items-center gap-2 cursor-pointer">
-                <input type="radio" name="diagnostico_previo" value="nao" class="h-4 w-4 text-sky-600 border-slate-300 focus:ring-sky-500" />
-                <span>Não</span>
-              </label>
-              <label class="inline-flex items-center gap-2 cursor-pointer">
-                <input type="radio" name="diagnostico_previo" value="investigacao" class="h-4 w-4 text-sky-600 border-slate-300 focus:ring-sky-500" />
-                <span>Em investigação</span>
-              </label>
+        <div class="mt-20 border-t border-gray-200 pt-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-8">
+                <div>
+                    <h2 class="text-2xl font-black uppercase tracking-tight">Complete o Look</h2>
+                    <p class="text-sm text-gray-500 mt-1">Sugestões para atingir o pedido mínimo de R$ 399,00</p>
+                </div>
+                <a href="#" class="text-sm font-bold underline hover:text-gray-600 mt-4 md:mt-0">Ver todas as novidades</a>
             </div>
 
-            <div class="mt-3">
-              <label for="diagnostico_detalhe" class="block text-xs font-medium text-slate-500">
-                Se já tiver diagnóstico, qual foi informado?
-              </label>
-              <input
-                type="text"
-                id="diagnostico_detalhe"
-                name="diagnostico_detalhe"
-                class="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-500/70"
-                placeholder="Ex.: Doença de Parkinson, epilepsia refratária, neuralgia do trigêmeo..."
-              />
-            </div>
-          </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="group cursor-pointer">
+                    <div class="relative overflow-hidden mb-3">
+                        <img src="https://via.placeholder.com/400x500?text=Cropped" class="w-full h-auto object-cover transition duration-500 group-hover:scale-105">
+                        <button class="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow hover:bg-black hover:text-white transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        </button>
+                    </div>
+                    <h3 class="text-xs font-bold uppercase">Cropped Ribana Basic</h3>
+                    <p class="text-sm text-gray-500">R$ 35,00</p>
+                </div>
 
-          <!-- Tratamentos anteriores -->
-          <div>
-            <p class="block text-sm font-medium text-slate-700 mb-2">
-              Já realizou algum tratamento anterior?
-            </p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-700">
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" name="tratamento_anterior[]" value="medicacao" class="h-4 w-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500" />
-                <span>Uso de medicação</span>
-              </label>
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" name="tratamento_anterior[]" value="fisioterapia" class="h-4 w-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500" />
-                <span>Fisioterapia / acompanhamento clínico</span>
-              </label>
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" name="tratamento_anterior[]" value="cirurgia_previa" class="h-4 w-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500" />
-                <span>Cirurgia prévia</span>
-              </label>
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" name="tratamento_anterior[]" value="neuromodulacao" class="h-4 w-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500" />
-                <span>Neuromodulação prévia</span>
-              </label>
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" name="tratamento_anterior[]" value="nenhum" class="h-4 w-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500" />
-                <span>Ainda não fiz nenhum tratamento</span>
-              </label>
-            </div>
-          </div>
+                <div class="group cursor-pointer">
+                    <div class="relative overflow-hidden mb-3">
+                        <img src="https://via.placeholder.com/400x500?text=Colete" class="w-full h-auto object-cover transition duration-500 group-hover:scale-105">
+                        <button class="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow hover:bg-black hover:text-white transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        </button>
+                    </div>
+                    <h3 class="text-xs font-bold uppercase">Colete Jeans Premium</h3>
+                    <p class="text-sm text-gray-500">R$ 89,90</p>
+                </div>
 
-          <!-- Valor da consulta -->
-          <div>
-            <p class="block text-sm font-medium text-slate-700 mb-2">
-              Sobre a consulta particular
-              <span class="text-red-500">*</span>
-            </p>
-            <div class="space-y-2 text-sm text-slate-700">
-              <label class="flex items-center gap-2 cursor-pointer rounded-lg border border-slate-200 px-3 py-2 hover:border-sky-500/70 hover:bg-sky-50/60">
-                <input
-                  type="radio"
-                  name="valor_consulta"
-                  value="ciente_e_deseja_agendar"
-                  required
-                  class="h-4 w-4 text-sky-600 border-slate-300 focus:ring-sky-500"
-                />
-                <span>Estou ciente que é uma consulta particular.</span>
-              </label>
-              
-              <label class="flex items-center gap-2 cursor-pointer rounded-lg border border-slate-200 px-3 py-2 hover:border-sky-500/70 hover:bg-sky-50/60">
-                <input
-                  type="radio"
-                  name="valor_consulta"
-                  value="duvidas_antes_agendar"
-                  class="h-4 w-4 text-sky-600 border-slate-300 focus:ring-sky-500"
-                />
-                <span>Tenho dúvidas antes de confirmar o agendamento.</span>
-              </label>
-            </div>
-          </div>
+                <div class="group cursor-pointer">
+                    <div class="relative overflow-hidden mb-3">
+                        <img src="https://via.placeholder.com/400x500?text=T-Shirt" class="w-full h-auto object-cover transition duration-500 group-hover:scale-105">
+                        <button class="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow hover:bg-black hover:text-white transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        </button>
+                    </div>
+                    <h3 class="text-xs font-bold uppercase">T-Shirt Estampada Love</h3>
+                    <p class="text-sm text-gray-500">R$ 45,00</p>
+                </div>
 
-          <!-- Melhor horário -->
-          <div>
-            <p class="block text-sm font-medium text-slate-700 mb-2">
-              Melhor horário para contato da equipe
-            </p>
-            <div class="flex flex-wrap gap-3 text-sm text-slate-700">
-              <label class="inline-flex items-center gap-2 cursor-pointer">
-                <input type="radio" name="horario_contato" value="manha" class="h-4 w-4 text-sky-600 border-slate-300 focus:ring-sky-500" />
-                <span>Manhã</span>
-              </label>
-              <label class="inline-flex items-center gap-2 cursor-pointer">
-                <input type="radio" name="horario_contato" value="tarde" class="h-4 w-4 text-sky-600 border-slate-300 focus:ring-sky-500" />
-                <span>Tarde</span>
-              </label>
-              <label class="inline-flex items-center gap-2 cursor-pointer">
-                <input type="radio" name="horario_contato" value="noite" class="h-4 w-4 text-sky-600 border-slate-300 focus:ring-sky-500" />
-                <span>Noite</span>
-              </label>
+                <div class="group cursor-pointer">
+                    <div class="relative overflow-hidden mb-3">
+                        <img src="https://via.placeholder.com/400x500?text=Jaqueta" class="w-full h-auto object-cover transition duration-500 group-hover:scale-105">
+                        <button class="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow hover:bg-black hover:text-white transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        </button>
+                    </div>
+                    <h3 class="text-xs font-bold uppercase">Jaqueta Oversized</h3>
+                    <p class="text-sm text-gray-500">R$ 110,00</p>
+                </div>
             </div>
-          </div>
+        </div>
 
-          <!-- Botão -->
-          <div class="pt-2">
-            <button
-              type="submit"
-              class="inline-flex w-full items-center justify-center rounded-xl bg-sky-800 px-5 py-3 text-sm font-semibold text-slate-50 shadow-md shadow-sky-900/40 hover:bg-sky-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sky-500 focus-visible:ring-offset-slate-900 transition"
-            >
-              Enviar triagem e solicitar agendamento
-            </button>
-            <p class="mt-2 text-xs text-slate-500 text-center">
-              Após o envio, nossa equipe entrará em contato pelo WhatsApp informado para concluir o agendamento da consulta.
-            </p>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
+    </main>
+
+    <footer class="bg-gray-50 border-t py-12 text-center text-xs text-gray-400">
+        <p>&copy; 2026 LICO & TECA. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+</html>

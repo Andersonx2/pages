@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Relatório Executivo CRO – Dezembro</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800">
+
+<!-- HEADER -->
+<header class="bg-slate-900 text-white">
+  <div class="max-w-7xl mx-auto px-6 py-10">
+    <h1 class="text-3xl font-bold">Relatório Executivo de Performance</h1>
+    <p class="text-slate-300 mt-2">
+      Análise de sessões, mídia e conversão • Dezembro
+    </p>
+  </div>
+</header>
+
+<!-- KPIs GERAIS -->
+<section class="max-w-7xl mx-auto px-6 py-12">
+  <h2 class="text-xl font-semibold mb-6">Visão Geral do Negócio</h2>
+
+  <div class="grid md:grid-cols-5 gap-6">
+    <div class="bg-white p-6 rounded-xl shadow">
+      <p class="text-sm text-slate-500">Sessões</p>
+      <p class="text-2xl font-bold">4.737</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow">
+      <p class="text-sm text-slate-500">Conversão</p>
+      <p class="text-2xl font-bold text-red-600">0,30%</p>
+      <p class="text-xs text-red-500 mt-1">Abaixo do benchmark</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow">
+      <p class="text-sm text-slate-500">Receita</p>
+      <p class="text-2xl font-bold">R$ 16.864</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow">
+      <p class="text-sm text-slate-500">CPA (Meta + Google)</p>
+      <p class="text-2xl font-bold text-red-600">R$ 548</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow">
+      <p class="text-sm text-slate-500">Mobile</p>
+      <p class="text-2xl font-bold">71%</p>
+      <p class="text-xs text-slate-500">93% das compras</p>
+    </div>
+  </div>
+</section>
+
+<!-- SESSÕES & QUALIDADE -->
+<section class="bg-white py-12">
+  <div class="max-w-7xl mx-auto px-6">
+    <h2 class="text-xl font-semibold mb-4">Sessões & Qualidade do Tráfego</h2>
+
+    <canvas id="sessionsChart"></canvas>
+
+    <div class="mt-6 bg-blue-50 border-l-4 border-blue-500 p-5 rounded">
+      <p class="font-semibold">Insight executivo</p>
+      <p class="text-sm mt-1">
+        O volume de sessões é suficiente, porém a maioria dos usuários
+        não avança para PDPs. O problema é direcionamento e persuasão,
+        não alcance.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- MÍDIA -->
+<section class="max-w-7xl mx-auto px-6 py-12">
+  <h2 class="text-xl font-semibold mb-4">Mídia Paga – Eficiência vs Conversão</h2>
+
+  <div class="grid md:grid-cols-2 gap-8">
+    <canvas id="mediaCost"></canvas>
+    <canvas id="mediaConv"></canvas>
+  </div>
+
+  <p class="text-sm text-slate-600 mt-6">
+    CTR e CPC indicam boa eficiência de anúncios. O CPA elevado é consequência direta
+    da baixa conversão do site.
+  </p>
+</section>
+
+<!-- FUNIL -->
+<section class="bg-white py-12">
+  <div class="max-w-7xl mx-auto px-6">
+    <h2 class="text-xl font-semibold mb-4">Funil Real de Comportamento do Usuário</h2>
+
+    <canvas id="funnelChart"></canvas>
+
+    <div id="funnelInsight"
+         class="mt-6 bg-red-50 border-l-4 border-red-500 p-5 rounded text-sm">
+    </div>
+  </div>
+</section>
+
+<!-- INSIGHTS FINAIS -->
+<section class="max-w-7xl mx-auto px-6 py-12">
+  <h2 class="text-xl font-semibold mb-4">Conclusões Executivas</h2>
+
+  <ul class="list-disc ml-6 text-sm space-y-2">
+    <li>Escalar mídia sem CRO aumentará o CPA e reduzirá margem</li>
+    <li>Frete e PDP são os principais bloqueios de conversão</li>
+    <li>Checkout está saudável e não é prioridade de correção</li>
+    <li>Melhorar conversão tem impacto maior que otimizar anúncios</li>
+  </ul>
+</section>
+
+<footer class="bg-slate-900 text-slate-400 text-sm py-6">
+  <div class="max-w-7xl mx-auto px-6">
+    Relatório executivo • GA4 + Meta Ads + Google Ads
+  </div>
+</footer>
+
+<!-- JS -->
+<script>
+  // Sessões
+  new Chart(document.getElementById('sessionsChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Sessões', 'PDP', 'Carrinho', 'Checkout', 'Compras'],
+      datasets: [{
+        data: [4737, 1150, 147, 30, 14],
+        backgroundColor: '#38bdf8'
+      }]
+    }
+  });
+
+  // Mídia
+  new Chart(document.getElementById('mediaCost'), {
+    type: 'bar',
+    data: {
+      labels: ['Meta Ads', 'Google Ads'],
+      datasets: [{
+        label: 'Investimento (R$)',
+        data: [1543, 1750],
+        backgroundColor: ['#2563eb', '#dc2626']
+      }]
+    }
+  });
+
+  new Chart(document.getElementById('mediaConv'), {
+    type: 'bar',
+    data: {
+      labels: ['Meta Ads', 'Google Ads'],
+      datasets: [{
+        label: 'Conversões',
+        data: [5, 1],
+        backgroundColor: '#22c55e'
+      }]
+    }
+  });
+
+  // Funil
+  const funnelData = [4737, 1150, 147, 30, 14];
+  const funnelLabels = ['Sessões', 'Produto', 'Carrinho', 'Checkout', 'Compra'];
+
+  new Chart(document.getElementById('funnelChart'), {
+    type: 'bar',
+    data: {
+      labels: funnelLabels,
+      datasets: [{
+        data: funnelData,
+        backgroundColor: '#0ea5e9'
+      }]
+    },
+    options: { indexAxis: 'y' }
+  });
+
+  // Insight dinâmico
+  document.getElementById('funnelInsight').innerText =
+    'Mais de 85% dos usuários se perdem antes do carrinho. ' +
+    'O principal impacto financeiro está na PDP e no frete, ' +
+    'não no checkout ou pagamento.';
+</script>
+
+</body>
+</html>

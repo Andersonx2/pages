@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho | Lico & Teca Denim</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { brand: { black: '#000000', accent: '#ec4899' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Animação suave para a barra de progresso */
+        .progress-bar { transition: width 1s ease-in-out; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans h-screen overflow-hidden">
+
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity"></div>
+
+    <div class="fixed inset-y-0 right-0 max-w-md w-full bg-white shadow-2xl z-50 flex flex-col transform transition-transform duration-300 ease-in-out">
+        
+        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-white">
+            <h2 class="text-xl font-black uppercase tracking-tight">Seu Carrinho (2)</h2>
+            <button class="p-2 hover:bg-gray-100 rounded-full transition text-gray-500 hover:text-black">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+
+        <div class="px-6 py-4 bg-gray-50 border-b border-gray-100">
+            <div class="flex justify-between text-xs font-bold uppercase mb-2">
+                <span class="text-gray-500">Total Atual: R$ 140,00</span>
+                <span class="text-brand-accent">Meta: R$ 399,00</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                <div class="bg-black h-2.5 rounded-full progress-bar relative" style="width: 35%"></div>
+            </div>
+            <p class="text-xs text-gray-500 mt-2 text-center">
+                Faltam <span class="font-bold text-black">R$ 259,00</span> para finalizar o pedido.
+            </p>
+        </div>
+
+        <div class="flex-1 overflow-y-auto px-6 py-4 space-y-6">
+            
+            <div class="flex gap-4">
+                <div class="w-20 h-24 bg-gray-100 rounded-sm overflow-hidden flex-shrink-0 border border-gray-200">
+                    <img src="https://via.placeholder.com/150x200?text=Jeans" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-bold text-sm uppercase text-gray-900 leading-tight">Wide Cargo Hadassa</h3>
+                            <button class="text-gray-400 hover:text-red-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Tamanho: <span class="text-black font-semibold">12</span> | Lavado: Sky</p>
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <div class="flex items-center border border-gray-300 rounded-sm h-7">
+                            <button class="w-7 h-full flex items-center justify-center text-gray-600 hover:bg-gray-100 text-xs">-</button>
+                            <span class="w-8 text-center text-xs font-semibold">1</span>
+                            <button class="w-7 h-full flex items-center justify-center text-gray-600 hover:bg-gray-100 text-xs">+</button>
+                        </div>
+                        <span class="font-bold text-sm">R$ 70,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-4">
+                <div class="w-20 h-24 bg-gray-100 rounded-sm overflow-hidden flex-shrink-0 border border-gray-200">
+                    <img src="https://via.placeholder.com/150x200?text=Short" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-bold text-sm uppercase text-gray-900 leading-tight">Short Mom Helena</h3>
+                            <button class="text-gray-400 hover:text-red-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Tamanho: <span class="bg-black text-white px-1 rounded text-[10px] font-bold">GRADE</span></p>
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <div class="flex items-center border border-gray-300 rounded-sm h-7">
+                            <button class="w-7 h-full flex items-center justify-center text-gray-600 hover:bg-gray-100 text-xs">-</button>
+                            <span class="w-8 text-center text-xs font-semibold">1</span>
+                            <button class="w-7 h-full flex items-center justify-center text-gray-600 hover:bg-gray-100 text-xs">+</button>
+                        </div>
+                        <span class="font-bold text-sm">R$ 70,00</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="border-t border-gray-100 bg-white p-6 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+            
+            <div class="space-y-2 mb-4">
+                <div class="flex justify-between text-sm text-gray-600">
+                    <span>Subtotal</span>
+                    <span>R$ 140,00</span>
+                </div>
+                <div class="flex justify-between text-sm text-green-600 font-medium">
+                    <span>Desconto (Pix 5%)</span>
+                    <span>- R$ 7,00</span>
+                </div>
+                <div class="flex justify-between text-base font-black text-black pt-2 border-t border-gray-100">
+                    <span>TOTAL</span>
+                    <span>R$ 133,00</span>
+                </div>
+                <p class="text-[10px] text-right text-gray-400">Taxa de entrega calculada na próxima etapa</p>
+            </div>
+
+            <button disabled class="w-full bg-gray-300 text-gray-500 font-bold uppercase tracking-widest py-4 cursor-not-allowed mb-3">
+                Pedido Mínimo R$ 399
+            </button>
+            
+            <button class="w-full text-xs font-bold uppercase text-black underline hover:text-gray-600">
+                Continuar Comprando
+            </button>
+        </div>
+    </div>
+
+</body>
+</html>
