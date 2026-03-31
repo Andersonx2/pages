@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Section - Projetos e Orçamento</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .transition-flex {
+            transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+    </style>
+</head>
+<body class="bg-[#111] font-sans overflow-x-hidden">
+
+    <div class="flex h-screen w-[120%] -ml-[10%] overflow-hidden">
+        
+        <div class="relative h-full flex-1 overflow-hidden border-r-4 border-white -mr-[2px] -skew-x-[15deg] transition-flex hover:flex-[1.5] bg-neutral-900 group z-20">
+            
+            <div class="absolute inset-0 w-[120%] -ml-[10%] skew-x-[15deg] flex flex-col items-center justify-center">
+                
+                <div class="w-full max-w-sm px-6 py-8 text-white flex flex-col items-center text-center">
+                    
+                    <h2 class="text-3xl font-extrabold uppercase tracking-wider text-yellow-500 mb-2">Orçamento</h2>
+                    <p class="text-gray-400 text-sm mb-6 max-w-[250px]">Transforme seu veículo em um sonho sobre rodas.</p>
+                    
+                    <form action="#" class="w-full space-y-4">
+                        <div class="text-left"> <label class="block text-xs uppercase tracking-wide text-gray-500 mb-1 ml-1">Nome</label>
+                            <input type="text" placeholder="Seu nome" class="w-full bg-white/10 border border-white/20 p-3 text-white placeholder-gray-500 focus:border-yellow-500 focus:bg-white/15 outline-none transition-colors rounded-sm">
+                        </div>
+                        <div class="text-left">
+                            <label class="block text-xs uppercase tracking-wide text-gray-500 mb-1 ml-1">Contato</label>
+                            <input type="text" placeholder="(DD) 99999-9999" class="w-full bg-white/10 border border-white/20 p-3 text-white placeholder-gray-500 focus:border-yellow-500 focus:bg-white/15 outline-none transition-colors rounded-sm">
+                        </div>
+                        <div class="text-left">
+                            <label class="block text-xs uppercase tracking-wide text-gray-500 mb-1 ml-1">Projeto</label>
+                            <select class="w-full bg-white/10 border border-white/20 p-3 text-white focus:border-yellow-500 focus:bg-white/15 outline-none transition-colors rounded-sm appearance-none cursor-pointer">
+                                <option class="bg-neutral-800">Motorhome</option>
+                                <option class="bg-neutral-800">Ônibus</option>
+                                <option class="bg-neutral-800">Empresarial</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="w-full mt-4 bg-yellow-500 hover:bg-yellow-400 text-neutral-900 font-bold py-3 uppercase tracking-widest transition-transform transform active:scale-95 shadow-lg shadow-yellow-500/20">
+                            Enviar Solicitação
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="relative h-full flex-1 overflow-hidden border-r-4 border-white -mr-[2px] -skew-x-[15deg] transition-flex hover:flex-[3] cursor-pointer group">
+            <div class="absolute inset-0 w-[120%] -ml-[10%] skew-x-[15deg]">
+                <div class="absolute inset-0 bg-cover bg-center transition-all duration-700 brightness-50 group-hover:brightness-100 group-hover:scale-110"
+                     style="background-image: url('/img-home/executiva.JPEG');">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
+                <div class="absolute bottom-10 left-1/2 -translate-x-1/2 text-center w-full z-10 opacity-70 group-hover:opacity-100 group-hover:bottom-20 transition-all duration-500 delay-100 pointer-events-none">
+                    <h2 class="text-white text-4xl font-black uppercase tracking-[0.2em] drop-shadow-lg inline-block border-b-4 border-yellow-500 pb-2 bg-black/40 px-4">
+                        Motorhome
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative h-full flex-1 overflow-hidden border-r-4 border-white -mr-[2px] -skew-x-[15deg] transition-flex hover:flex-[3] cursor-pointer group">
+            <div class="absolute inset-0 w-[120%] -ml-[10%] skew-x-[15deg]">
+                <div class="absolute inset-0 bg-cover bg-center transition-all duration-700 brightness-50 group-hover:brightness-100 group-hover:scale-110"
+                     style="background-image: url('/img-home/motorhome.JPEG');">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
+                <div class="absolute bottom-10 left-1/2 -translate-x-1/2 text-center w-full z-10 opacity-70 group-hover:opacity-100 group-hover:bottom-20 transition-all duration-500 delay-100 pointer-events-none">
+                    <h2 class="text-white text-4xl font-black uppercase tracking-[0.2em] drop-shadow-lg inline-block border-b-4 border-yellow-500 pb-2 bg-black/40 px-4">
+                        Ônibus
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative h-full flex-1 overflow-hidden -skew-x-[15deg] transition-flex hover:flex-[3] cursor-pointer group">
+            <div class="absolute inset-0 w-[120%] -ml-[10%] skew-x-[15deg]">
+                <div class="absolute inset-0 bg-cover bg-center transition-all duration-700 brightness-50 group-hover:brightness-100 group-hover:scale-110 bg-gray-800"
+                     style="background-image: url('/img');">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
+                <div class="absolute bottom-10 left-1/2 -translate-x-1/2 text-center w-full z-10 opacity-70 group-hover:opacity-100 group-hover:bottom-20 transition-all duration-500 delay-100 pointer-events-none">
+                    <h2 class="text-white text-4xl font-black uppercase tracking-[0.2em] drop-shadow-lg inline-block border-b-4 border-yellow-500 pb-2 bg-black/40 px-4">
+                        Empresarial
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

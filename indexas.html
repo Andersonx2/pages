@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Villa Serenity | O Cenário do Seu Grande Dia</title>
+    
+    <!-- Tailwind CSS (CDN para performance imediata no preview) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fontes Google: Playfair Display (Luxo) e Lato (Leitura) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Configurações Personalizadas do Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            100: '#F9F1D8',
+                            400: '#D4AF37',
+                            500: '#C5A028',
+                            900: '#8A7018',
+                        },
+                        sage: {
+                            50: '#F4F7F5',
+                            100: '#E3EBE6',
+                            500: '#8DA399',
+                            800: '#4A5D55',
+                            900: '#2F3E38',
+                        },
+                        dark: '#1A1A1A'
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Lato"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Efeitos suaves */
+        .fade-in-up {
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+
+        /* Estilo para imagem de fundo com overlay */
+        .hero-bg {
+            background-image: url('https://images.unsplash.com/photo-1519225421980-715cb0202128?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax effect */
+        }
+    </style>
+</head>
+<body class="font-sans text-dark antialiased bg-sage-50 smooth-scroll">
+
+    <!-- Navbar Fixa com Transparência -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md shadow-sm py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="#" class="text-2xl font-serif font-bold text-sage-900 tracking-wider">
+                VILLA <span class="text-gold-500">SERENITY</span>
+            </a>
+            
+            <!-- Menu Desktop -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#espacos" class="text-sage-900 hover:text-gold-500 transition text-sm uppercase tracking-widest">Espaços</a>
+                <a href="#experiencia" class="text-sage-900 hover:text-gold-500 transition text-sm uppercase tracking-widest">Experiência</a>
+                <a href="#depoimentos" class="text-sage-900 hover:text-gold-500 transition text-sm uppercase tracking-widest">Histórias Reais</a>
+                <a href="#contato" class="bg-sage-900 text-white px-6 py-2 rounded-full hover:bg-gold-500 transition duration-300 text-sm uppercase tracking-widest shadow-lg transform hover:-translate-y-1">
+                    Solicitar Orçamento
+                </a>
+            </div>
+
+            <!-- Menu Mobile Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-sage-900 focus:outline-none">
+                <i data-lucide="menu" class="w-8 h-8"></i>
+            </button>
+        </div>
+        
+        <!-- Menu Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-sage-100 absolute w-full">
+            <div class="flex flex-col p-6 space-y-4 text-center">
+                <a href="#espacos" class="text-sage-900 hover:text-gold-500">Espaços</a>
+                <a href="#experiencia" class="text-sage-900 hover:text-gold-500">Experiência</a>
+                <a href="#depoimentos" class="text-sage-900 hover:text-gold-500">Histórias Reais</a>
+                <a href="#contato" class="bg-sage-900 text-white px-6 py-3 rounded-full">Solicitar Orçamento</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section (Dobra Mágica) -->
+    <header class="relative h-screen flex items-center justify-center hero-bg">
+        <div class="absolute inset-0 bg-black/40 z-10"></div> <!-- Overlay escuro -->
+        
+        <div class="relative z-20 text-center px-4 max-w-4xl mx-auto fade-in-up">
+            <p class="text-gold-100 uppercase tracking-[0.3em] mb-4 text-sm md:text-base font-bold">Agenda 2026/2027 Aberta</p>
+            <h1 class="text-5xl md:text-7xl font-serif text-white mb-6 leading-tight">
+                Onde o "Sim"<br> se torna Eterno.
+            </h1>
+            <p class="text-white/90 text-lg md:text-xl font-light mb-10 max-w-2xl mx-auto">
+                Uma arquitetura neoclássica cercada pela natureza. O cenário perfeito para casamentos exclusivos e memórias inesquecíveis.
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="#contato" class="bg-gold-500 text-white px-8 py-4 rounded-full text-sm uppercase tracking-widest hover:bg-white hover:text-gold-900 transition duration-300 font-bold shadow-2xl">
+                    Verificar Disponibilidade
+                </a>
+                <a href="#video-tour" class="border border-white text-white px-8 py-4 rounded-full text-sm uppercase tracking-widest hover:bg-white hover:text-sage-900 transition duration-300 flex items-center justify-center gap-2">
+                    <i data-lucide="play-circle" class="w-5 h-5"></i> Tour Virtual
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+            <i data-lucide="chevron-down" class="text-white w-8 h-8 opacity-70"></i>
+        </div>
+    </header>
+
+    <!-- Social Proof Bar -->
+    <section class="bg-white py-8 border-b border-sage-100">
+        <div class="container mx-auto px-6">
+            <p class="text-center text-gray-400 text-xs uppercase tracking-widest mb-6">Destaque em</p>
+            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+                <!-- Logos fictícios -->
+                <span class="text-2xl font-serif font-bold text-sage-800">VOGUE <span class="text-xs font-sans">NOIVAS</span></span>
+                <span class="text-2xl font-serif font-bold text-sage-800">CONSTANCE ZAHN</span>
+                <span class="text-2xl font-serif font-bold text-sage-800">INESQUECÍVEL <span class="text-xs font-sans">CASAMENTO</span></span>
+                <span class="text-2xl font-serif font-bold text-sage-800">LÁPIS DE NOIVA</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Diferenciais (Why Us) -->
+    <section id="experiencia" class="py-20 bg-sage-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-5xl font-serif text-sage-900 mb-4">Experiência All-Inclusive</h2>
+                <div class="w-24 h-1 bg-gold-500 mx-auto mb-6"></div>
+                <p class="text-gray-600">Não alugamos apenas um espaço. Entregamos a tranquilidade de uma infraestrutura completa pensada nos mínimos detalhes.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Card 1 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-xl transition duration-300 text-center group">
+                    <div class="w-16 h-16 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-gold-500 transition duration-300">
+                        <i data-lucide="utensils" class="w-8 h-8 text-sage-800 group-hover:text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-serif font-bold mb-3 text-sage-900">Gastronomia Premiada</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Menus assinados por chefs renomados, com opções personalizadas do coquetel ao jantar empratado.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-xl transition duration-300 text-center group">
+                    <div class="w-16 h-16 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-gold-500 transition duration-300">
+                        <i data-lucide="flower-2" class="w-8 h-8 text-sage-800 group-hover:text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-serif font-bold mb-3 text-sage-900">Jardins Fotográficos</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Paisagismo europeu com iluminação cênica integrada, perfeito para cerimônias ao ar livre.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-xl transition duration-300 text-center group">
+                    <div class="w-16 h-16 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-gold-500 transition duration-300">
+                        <i data-lucide="shield-check" class="w-8 h-8 text-sage-800 group-hover:text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-serif font-bold mb-3 text-sage-900">Segurança & Conforto</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Gerador próprio full-time, suíte da noiva exclusiva e estacionamento com valet incluso.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galeria Mosaico (Visual Selling) -->
+    <section id="espacos" class="py-0">
+        <div class="grid grid-cols-1 md:grid-cols-4 h-auto md:h-[600px]">
+            <div class="md:col-span-2 relative group overflow-hidden h-96 md:h-full">
+                <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" alt="Cerimônia" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                    <span class="text-white font-serif text-3xl tracking-widest">O Jardim</span>
+                </div>
+            </div>
+            <div class="relative group overflow-hidden h-64 md:h-full">
+                <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Detalhes" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                    <span class="text-white font-serif text-2xl tracking-widest">Os Detalhes</span>
+                </div>
+            </div>
+            <div class="relative group overflow-hidden h-64 md:h-full">
+                <img src="https://images.unsplash.com/photo-1507504031981-8230c3e34a53?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Salão de Festa" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                    <span class="text-white font-serif text-2xl tracking-widest">O Salão</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Depoimentos (Prova Social) -->
+    <section id="depoimentos" class="py-20 bg-sage-900 text-white">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/2">
+                    <div class="flex items-center space-x-2 text-gold-400 mb-6">
+                        <i data-lucide="star" class="fill-current w-5 h-5"></i>
+                        <i data-lucide="star" class="fill-current w-5 h-5"></i>
+                        <i data-lucide="star" class="fill-current w-5 h-5"></i>
+                        <i data-lucide="star" class="fill-current w-5 h-5"></i>
+                        <i data-lucide="star" class="fill-current w-5 h-5"></i>
+                        <span class="text-sage-200 text-sm ml-2">(4.9/5 em 230 avaliações)</span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-serif mb-8 leading-tight">
+                        "Foi mais mágico do que nos meus melhores sonhos."
+                    </h2>
+                    <p class="text-sage-100 text-lg font-light italic mb-6">
+                        "A equipe da Villa Serenity cuidou de tudo. Do momento que entramos no jardim até a última música da festa, nos sentimos a realeza. A gastronomia foi o ponto alto, todos os convidados elogiaram."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1623091410901-00e2d268901f?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Noiva" class="w-16 h-16 rounded-full border-2 border-gold-500 object-cover">
+                        <div>
+                            <p class="font-bold text-gold-100">Mariana & Pedro</p>
+                            <p class="text-xs text-sage-300 uppercase tracking-widest">Casaram em Novembro de 2024</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 relative">
+                    <!-- Vídeo ou Imagem de destaque do depoimento -->
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10">
+                        <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="w-full object-cover transform hover:scale-105 transition duration-700">
+                        <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur text-sage-900 px-4 py-2 rounded text-xs font-bold uppercase tracking-widest">
+                            Real Wedding
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Conversão Final (Formulário) -->
+    <section id="contato" class="py-24 bg-white relative">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-4xl mx-auto bg-white shadow-2xl rounded-2xl overflow-hidden flex flex-col md:flex-row">
+                
+                <!-- Lado Esquerdo: Imagem e Info -->
+                <div class="md:w-2/5 bg-sage-800 text-white p-10 flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                    <div>
+                        <h3 class="text-2xl font-serif mb-2">Vamos conversar?</h3>
+                        <p class="text-sage-200 text-sm mb-8">Nossa equipe de concierges entrará em contato em até 2 horas.</p>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="phone" class="text-gold-400 w-5 h-5"></i>
+                                <span class="text-sm">(11) 99999-9999</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="map-pin" class="text-gold-400 w-5 h-5"></i>
+                                <span class="text-sm">Serra da Cantareira, SP</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="instagram" class="text-gold-400 w-5 h-5"></i>
+                                <span class="text-sm">@villaserenity</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-10">
+                        <p class="text-xs text-sage-300 uppercase tracking-widest mb-1">Datas Premium</p>
+                        <p class="font-bold text-gold-100">Sábados de 2026: Últimas 3 datas</p>
+                    </div>
+                </div>
+
+                <!-- Lado Direito: Formulário -->
+                <div class="md:w-3/5 p-10">
+                    <form onsubmit="event.preventDefault(); alert('Solicitação enviada! Nossa equipe entrará em contato em breve.');">
+                        <h3 class="text-2xl font-serif text-sage-900 mb-6">Solicite um Orçamento</h3>
+                        
+                        <div class="grid grid-cols-1 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold text-sage-500 uppercase tracking-wider mb-2">Seu Nome</label>
+                                <input type="text" class="w-full border-b-2 border-sage-100 py-2 focus:border-gold-500 focus:outline-none transition-colors bg-transparent" placeholder="Como podemos te chamar?" required>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs font-bold text-sage-500 uppercase tracking-wider mb-2">Data Prevista</label>
+                                    <input type="date" class="w-full border-b-2 border-sage-100 py-2 focus:border-gold-500 focus:outline-none transition-colors bg-transparent">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-sage-500 uppercase tracking-wider mb-2">Nº Convidados</label>
+                                    <select class="w-full border-b-2 border-sage-100 py-2 focus:border-gold-500 focus:outline-none transition-colors bg-transparent">
+                                        <option>80 - 150</option>
+                                        <option>150 - 250</option>
+                                        <option>250 - 400</option>
+                                        <option>+400</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-sage-500 uppercase tracking-wider mb-2">Seu WhatsApp</label>
+                                <input type="tel" class="w-full border-b-2 border-sage-100 py-2 focus:border-gold-500 focus:outline-none transition-colors bg-transparent" placeholder="(DDD) 99999-9999" required>
+                            </div>
+                            
+                            <div class="pt-4">
+                                <button type="submit" class="w-full bg-gold-500 text-white font-bold py-4 rounded-lg uppercase tracking-widest hover:bg-gold-900 transition duration-300 shadow-lg flex items-center justify-center gap-2">
+                                    <span>Receber Proposta VIP</span>
+                                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                                </button>
+                                <p class="text-center text-xs text-gray-400 mt-4"><i data-lucide="lock" class="w-3 h-3 inline mr-1"></i> Seus dados estão seguros conosco.</p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-sage-900 text-sage-300 py-12 border-t border-sage-800">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-2xl font-serif text-white mb-6">VILLA SERENITY</h2>
+            <div class="flex justify-center space-x-6 mb-8">
+                <a href="#" class="hover:text-gold-500 transition"><i data-lucide="instagram"></i></a>
+                <a href="#" class="hover:text-gold-500 transition"><i data-lucide="facebook"></i></a>
+                <a href="#" class="hover:text-gold-500 transition"><i data-lucide="youtube"></i></a>
+            </div>
+            <p class="text-sm opacity-60">&copy; 2026 Villa Serenity Eventos. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Inicializa ícones
+        lucide.createIcons();
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md');
+                navbar.classList.replace('py-4', 'py-2');
+            } else {
+                navbar.classList.remove('shadow-md');
+                navbar.classList.replace('py-2', 'py-4');
+            }
+        });
+    </script>
+</body>
+</html>
