@@ -3,7 +3,7 @@ import time
 from contextlib import contextmanager
 
 # Configurações
-TARGET_PROFILE = "perfil_alvo_aqui"  # Substitua pelo perfil que deseja baixar
+TARGET_PROFILE = "mairavida.adv"  # Substitua pelo perfil que deseja baixar
 MY_USER = "jess.ikita69"       # Seu usuário (opcional para perfis públicos, mas recomendado para evitar rate limit)
 MY_PASS = "anderson260595"         # Sua senha (cuidado com a segurança)
 
