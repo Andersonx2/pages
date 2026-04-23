@@ -104,6 +104,26 @@ header h1{font-size:17px;font-weight:600;flex:1}
 .p-assin-name{font-size:10pt;font-weight:700;text-align:center}
 .p-assin-role{font-size:9pt;color:#666;text-align:center}
 
+/* Tag obrigatório escolar */
+.tag-escolar{font-size:10px;background:#fff3cd;color:#856404;border:1px solid #ffc107;border-radius:4px;padding:1px 6px;font-weight:700;margin-left:6px;white-space:nowrap}
+
+/* Radio options (películas) */
+.radio-opt{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13px;cursor:pointer;border-bottom:1px solid #f0f0f0}
+.radio-opt:last-child{border-bottom:none}
+.radio-opt input[type=radio]{accent-color:#1a3a5c;width:15px;height:15px;flex-shrink:0;cursor:pointer}
+
+/* Itens instalação junto da poltrona */
+.seat-install{background:#f8f9fb;border-radius:8px;padding:10px 14px;margin-top:10px;border:1px solid #e8eaf0}
+.seat-install .si-title{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
+.seat-install-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f0f0f0;font-size:13px;flex-wrap:wrap}
+.seat-install-row:last-child{border-bottom:none}
+.seat-install-row input[type=checkbox]{width:15px;height:15px;accent-color:#1a3a5c;cursor:pointer;flex-shrink:0}
+.seat-install-row label{flex:1;cursor:pointer}
+.seat-install-row .ep{font-weight:600;color:#1a3a5c;white-space:nowrap}
+.seat-install-qty{display:flex;align-items:center;gap:6px;margin-top:4px;width:100%;padding-left:23px}
+.seat-install-qty label{font-size:11px;color:#666;white-space:nowrap}
+.seat-install-qty input[type=number]{width:70px;padding:4px 8px;border:1.5px solid #dde1ea;border-radius:6px;font-size:13px;font-weight:600;text-align:center;outline:none}
+
 /* Sub-painel de cor para opcionais LED */
 .opt-sub{background:#f8f9fb;border-left:3px solid #1a3a5c;border-radius:0 8px 8px 0;padding:10px 14px;margin:4px 0 6px 22px;display:none}
 .opt-sub.visible{display:block}
@@ -254,6 +274,7 @@ header h1{font-size:17px;font-weight:600;flex:1}
       <input type="number" id="seat-qty" min="1" max="60" value="24" oninput="calcSeats()"/>
     </div>
     <div class="qty-result" id="seat-result">Selecione o tipo de poltrona acima.</div>
+    <div id="seat-install-wrap"></div>
   </div>
 </div>
 
@@ -436,8 +457,12 @@ const SEAT_GRUPO = {
   van_esc:"van_esc", fixa:"fixa", leito:"leito",
 };
 
-// ── OPCIONAIS (inalterados) ───────────────────────────────────────────────
+// ── OPCIONAIS ────────────────────────────────────────────────────────────
 const OPT = [
+  {cat:"Obrigatório Escolar", items:[
+    {id:"adesiv_esc", label:"Adesivagem Escolar", preco:1210, tagEscolar:true},
+    {id:"delim_esc",  label:"Delimitadora de Teto", preco:450, tagEscolar:true},
+  ]},
   {cat:"Iluminação LED", items:[
     {id:"led_deg",  label:"Iluminação em LED no Degrau da Porta de Acesso.", preco:300, cores:["Branco","Azul","Vermelho"]},
     {id:"led_plat", label:"Iluminação em LED na Plataforma de Acesso.", preco:300, cores:["Branco","Azul","Vermelho"]},
@@ -446,10 +471,10 @@ const OPT = [
     {id:"led_rgb",  label:"Kit iluminação RGB Bluetooth — degrau, plataforma e sob poltrona carona.", preco:1780},
   ]},
   {cat:"Som e Multimídia", items:[
-    {id:"jbl69",     label:'Alto-falantes JBL 6x9 (Par) instalado no bagageiro.', preco:850},
-    {id:"jbl6",      label:'Alto-falantes JBL 6" (Par). Portas.', preco:520},
-    {id:"radio",     label:"Rádio Bluetooth JBL.", preco:610},
-    {id:"camera",    label:"Câmera de Ré e Frontal com monitor.", preco:1840},
+    {id:"jbl69",  label:'Alto-falantes JBL 6x9 (Par) instalado no bagageiro.', preco:850},
+    {id:"jbl6",   label:'Alto-falantes JBL 6" (Par). Portas.', preco:520},
+    {id:"radio",  label:"Rádio Bluetooth JBL.", preco:610},
+    {id:"camera", label:"Câmera de Ré e Frontal com monitor.", preco:1840},
   ]},
   {cat:"Conforto e Acabamento", items:[
     {id:"cortina",  label:"Cortinas Comuns", preco:1320,
@@ -458,7 +483,12 @@ const OPT = [
     {id:"cortplis", label:"Cortinas Plissadas.", preco:2550},
     {id:"ar",       label:"Kit Ar Condicionado.", preco:8980},
     {id:"frigob",   label:"Frigobar 29L + Console Revestido.", preco:3100},
-    {id:"pelicula", label:"Películas.", preco:1080},
+    {id:"pelicula", label:"Películas", preco:1080,
+     variantesPel:[
+       {label:"Películas no Salão", preco:1080},
+       {label:"5% Salão e 50% Cabine", preco:1080},
+       {label:"5% Salão e 70% Cabine", preco:1080},
+     ]},
   ]},
   {cat:"Elétrica", items:[
     {id:"usb1",   label:"Carregador USB (unitário).", preco:150},
@@ -470,14 +500,20 @@ const OPT = [
     {id:"vidro1v", label:"Kit Vidros Colados 1º Vão.", preco:3160},
   ]},
   {cat:"Extras", items:[
-    {id:"adesiv",   label:"Adesivagem ESCOLAR.", preco:350},
-    {id:"delim",    label:"Delimitadoras de Teto.", preco:220},
-    {id:"tacog",    label:"Tacógrafo fornecido pelo cliente. (Vans será levada pela V12 para instalação e aferição)", preco:400},
-    {id:"saiacorr", label:"Saia na porta de correr para não entrar sujeira.", preco:180},
-    {id:"fechpolt", label:"Fechamento embaixo das Poltronas do Motorista e Auxiliar.", preco:280},
-    {id:"portapac", label:"Porta Pacote com Iluminação em LED - LE.", preco:2700},
-    {id:"portacuia", label:"Porta Cuia Revestido em Carpete e Courvim", preco:1080},
+    {id:"tacog",      label:"Tacógrafo fornecido pelo cliente. (Vans será levada pela V12 para instalação e aferição)", preco:400},
+    {id:"saiacorr",   label:"Saia na porta de correr para não entrar sujeira.", preco:180},
+    {id:"fechpolt",   label:"Fechamento embaixo das Poltronas do Motorista e Auxiliar.", preco:280},
+    {id:"maleiro_le", label:"Porta Pacote (Maleiro) — Lado Esquerdo.", preco:2700},
+    {id:"maleiro_ld", label:"Porta Pacote (Maleiro) — Lado Direito.", preco:2700},
+    {id:"sofacama",   label:"Sofá Cama (4 Lugares) com Cabeceira, Cinto de Segurança, revestido.", preco:0},
+    {id:"portacuia",  label:"Porta Cuia Revestido em Carpete e Courvim.", preco:1080},
   ]},
+];
+
+// Itens de instalação junto da poltrona
+const SEAT_ADDONS = [
+  {id:"usbpolt",  label:"Instalação de KIT USB em Poltrona do cliente", preco:605, unitario:true},
+  {id:"poltcli",  label:"Kit Instalação de Poltronas fornecidas pelo cliente", preco:1295, comLugares:true},
 ];
 
 // ── STATE ─────────────────────────────────────────────────────────────────
@@ -489,6 +525,8 @@ let S = {
   opts:{},
   cores:{},
   cortinas:{},
+  seatAddons:{},   // {id: {checked, qty, lugares}}
+  pelVariante:0,   // índice da variante de película selecionada
   pisoCorVinilico:"Ref. 0023",
   pag:{label:"PIX / Dinheiro", desc:0.10, cond:"50% de entrada + saldo via PIX"},
 };
@@ -497,9 +535,72 @@ let S = {
 (function init(){
   renderItens();
   renderPoltronas();
+  renderSeatInstall();
   renderOpcionais();
   calcAll();
 })();
+
+function renderSeatInstall(){
+  const wrap = document.getElementById("seat-install-wrap");
+  if(!wrap) return;
+  const rows = SEAT_ADDONS.map(it => {
+    const precoStr = it.unitario ? `${fmt(it.preco)}/un` : fmt(it.preco);
+    const qtyRow = it.unitario ? `
+      <div class="seat-install-qty" id="siq_${it.id}" style="display:none">
+        <label>Quantidade:</label>
+        <input type="number" min="1" max="60" value="1"
+               oninput="setSeatAddonQty('${it.id}',this.value)"/>
+      </div>` : "";
+    const lugaresRow = it.comLugares ? `
+      <div class="seat-install-qty" id="siq_${it.id}" style="display:none">
+        <label>Quantidade de lugares:</label>
+        <input type="number" min="1" max="60" value="24"
+               oninput="setSeatAddonLugares('${it.id}',this.value)"/>
+      </div>` : "";
+    return `
+      <div class="seat-install-row">
+        <input type="checkbox" id="si_${it.id}" onchange="toggleSeatAddon('${it.id}',${it.preco},this)"/>
+        <label for="si_${it.id}">${it.label}</label>
+        <span class="ep">${precoStr}</span>
+      </div>${qtyRow}${lugaresRow}`;
+  }).join("");
+  wrap.innerHTML = `
+    <div class="seat-install">
+      <div class="si-title">Serviços de Instalação</div>
+      ${rows}
+    </div>`;
+}
+
+function toggleSeatAddon(id, preco, el){
+  if(el.checked){
+    const it = SEAT_ADDONS.find(x=>x.id===id);
+    S.seatAddons[id] = {checked:true, qty:1, lugares:24, preco};
+  } else {
+    delete S.seatAddons[id];
+  }
+  const qWrap = document.getElementById("siq_" + id);
+  if(qWrap) qWrap.style.display = el.checked ? "flex" : "none";
+  calcAll();
+}
+
+function setSeatAddonQty(id, val){
+  if(!S.seatAddons[id]) return;
+  S.seatAddons[id].qty = Math.max(1, parseInt(val)||1);
+  calcAll();
+}
+
+function setSeatAddonLugares(id, val){
+  if(!S.seatAddons[id]) return;
+  S.seatAddons[id].lugares = Math.max(1, parseInt(val)||1);
+  calcAll();
+}
+
+function selectPelVariante(id, idx, preco){
+  S.pelVariante = idx;
+  const it = OPT.flatMap(c=>c.items).find(x=>x.id===id);
+  if(it) S.opts[id] = it.variantesPel[idx].preco;
+  calcAll();
+}
 
 function renderItens(){
   const c = document.getElementById("lista-itens");
@@ -689,12 +790,25 @@ function renderOpcionais(){
                      oninput="selectCortinaModelo('${it.id}',this)"/>
             </div>
           </div>`;
+      } else if(it.variantesPel){
+        subCor = `
+          <div class="opt-sub" id="sub_${it.id}">
+            <div class="sub-label">TIPO DE PELÍCULA</div>
+            ${it.variantesPel.map((v,i)=>`
+              <label class="radio-opt">
+                <input type="radio" name="pel_${it.id}" value="${i}" ${i===0?"checked":""}
+                       onchange="selectPelVariante('${it.id}',${i},${v.preco})"/> ${v.label}
+              </label>`).join("")}
+          </div>`;
       }
+      const tagEscolar = it.tagEscolar
+        ? `<span class="tag-escolar">obrigatório Escolar</span>` : "";
+      const precoLabel = it.variantesPel ? fmt(it.variantesPel[0].preco) : fmt(it.preco);
       c.insertAdjacentHTML("beforeend", `
         <div class="item-row">
           <input type="checkbox" id="op_${it.id}" onchange="toggleOpt('${it.id}',${it.preco},this)"/>
-          <label for="op_${it.id}">${it.label}</label>
-          <span class="item-price">${fmt(it.preco)}</span>
+          <label for="op_${it.id}">${it.label}${tagEscolar}</label>
+          <span class="item-price">${precoLabel}</span>
         </div>${subCor}`);
     });
   });
@@ -803,6 +917,10 @@ function calcAll(){
   const optVal = Object.values(S.opts).reduce((a,b) => a+b, 0);
   sub += optVal;
 
+  // Instalações junto da poltrona
+  const seatAddVal = Object.values(S.seatAddons).reduce((a,sa) => a + sa.preco * (sa.qty||1), 0);
+  sub += seatAddVal;
+
   // Taxa
   const taxaVal = sub * taxa;
   sub += taxaVal;
@@ -901,6 +1019,16 @@ function gerarProposta(){
     itens += li(num++, `${p.label}${S.qty ? " — " + S.qty + " lugares" : ""}${adsSub}`);
   }
 
+  // Instalações junto da poltrona
+  SEAT_ADDONS.forEach(it => {
+    const sa = S.seatAddons[it.id];
+    if(!sa) return;
+    let saLabel = it.label;
+    if(it.unitario && sa.qty > 1) saLabel += ` — ${sa.qty} unidades`;
+    if(it.comLugares) saLabel += ` — ${sa.lugares || 24} lugares`;
+    itens += li(num++, saLabel);
+  });
+
   // Opcionais
   OPT.forEach(cat => {
     cat.items.forEach(it => {
@@ -912,6 +1040,10 @@ function gerarProposta(){
           const cor = c.cor || "Padrão";
           const modelo = cor === "Customizada" && c.modelo ? ` — Modelo: ${c.modelo}` : "";
           optLabel = `Cortinas Comuns — ${saida}, cor ${cor}${modelo}.`;
+        }
+        if(it.variantesPel){
+          const v = it.variantesPel[S.pelVariante] || it.variantesPel[0];
+          optLabel = v.label;
         }
         itens += li(num++, optLabel);
       }
