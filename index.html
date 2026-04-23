@@ -8,13 +8,11 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#1a1a1a;min-height:100vh}
 
-/* HEADER */
 header{background:#1a3a5c;color:#fff;padding:12px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px #0004}
 header img{width:36px;height:36px;border-radius:50%;object-fit:cover;background:#fff}
 header h1{font-size:17px;font-weight:600;flex:1}
 .total-badge{background:#e07b39;color:#fff;font-weight:700;font-size:15px;padding:6px 16px;border-radius:20px;white-space:nowrap}
 
-/* LAYOUT */
 .container{max-width:760px;margin:0 auto;padding:16px}
 .card{background:#fff;border-radius:12px;box-shadow:0 1px 4px #0001;margin-bottom:12px;overflow:hidden}
 .card-header{padding:13px 18px;background:#f8f9fb;border-bottom:1px solid #e8eaf0;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
@@ -26,53 +24,54 @@ header h1{font-size:17px;font-weight:600;flex:1}
 .card-body.open{display:block}
 
 /* CLIENTE */
-.campo-cliente{background:#fff;border-radius:12px;box-shadow:0 1px 4px #0001;margin-bottom:12px;padding:12px 18px;display:flex;align-items:center;gap:10px}
-.campo-cliente label{font-size:13px;font-weight:600;color:#1a3a5c;white-space:nowrap}
-.campo-cliente input{flex:1;border:1.5px solid #dde1ea;border-radius:8px;padding:7px 12px;font-size:13px;outline:none}
-.campo-cliente input:focus{border-color:#2b6cb0}
+.cliente-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.campo{display:flex;flex-direction:column;gap:4px}
+.campo label{font-size:12px;font-weight:600;color:#1a3a5c}
+.campo input,.campo select{border:1.5px solid #dde1ea;border-radius:8px;padding:8px 12px;font-size:13px;outline:none;background:#fff;width:100%}
+.campo input:focus,.campo select:focus{border-color:#2b6cb0}
+.campo.full{grid-column:1/-1}
 
 /* VEÍCULOS */
-.vehicles{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.vehicles{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-bottom:12px}
 .veh-btn{border:2px solid #e0e4ec;border-radius:10px;padding:11px 8px;text-align:center;cursor:pointer;transition:.15s;background:#fff}
 .veh-btn:hover{border-color:#2b6cb0;background:#f0f6ff}
 .veh-btn.active{border-color:#1a3a5c;background:#1a3a5c;color:#fff}
 .veh-btn .icon{font-size:22px;margin-bottom:4px}
 .veh-btn .name{font-size:12px;font-weight:600}
 .veh-btn .sub{font-size:10px;opacity:.65}
+.veh-config{margin-top:2px}
+.veh-config label{font-size:12px;font-weight:600;color:#1a3a5c;margin-bottom:5px;display:block}
+.veh-config select{border:1.5px solid #dde1ea;border-radius:8px;padding:8px 12px;font-size:13px;outline:none;background:#fff;width:100%;max-width:320px}
+.veh-config select:focus{border-color:#2b6cb0}
 
 /* ITENS */
 .item-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0}
 .item-row:last-child{border-bottom:none}
-.item-row input[type=checkbox]{width:16px;height:16px;margin-top:2px;accent-color:#1a3a5c;cursor:pointer;flex-shrink:0}
+.item-row input[type=checkbox]{width:16px;height:16px;margin-top:3px;accent-color:#1a3a5c;cursor:pointer;flex-shrink:0}
 .item-row label{flex:1;font-size:13px;cursor:pointer;line-height:1.4}
 .item-row label small{display:block;color:#888;font-size:11px;margin-top:1px}
-.item-price{font-size:13px;font-weight:600;color:#1a3a5c;white-space:nowrap;padding-top:1px}
-.mandatory-tag{font-size:10px;background:#e6f4ea;color:#1a6b3a;border-radius:4px;padding:1px 5px;font-weight:600;margin-left:4px;vertical-align:middle}
+.item-price{font-size:13px;font-weight:600;color:#1a3a5c;white-space:nowrap;padding-top:2px}
 .section-label{font-size:11px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 5px}
 
-/* DROPDOWN DE CORES/VARIANTES */
-.variant-wrap{margin:4px 0 8px 26px;padding:8px 10px;background:#f7f9fc;border-radius:8px;border-left:3px solid #2b6cb0;display:none}
-.variant-wrap.show{display:block}
-.variant-wrap .vlabel{font-size:11px;font-weight:600;color:#1a3a5c;margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px}
-.variant-wrap select{width:100%;padding:7px 10px;border:1.5px solid #dde1ea;border-radius:6px;font-size:12px;background:#fff;color:#1a1a1a;outline:none;cursor:pointer}
-.variant-wrap select:focus{border-color:#2b6cb0}
-.variant-wrap .vrow{margin-bottom:6px}
-.variant-wrap .vrow:last-child{margin-bottom:0}
-
-/* OBRIGATÓRIO COM DROPDOWN (ex: piso) */
-.obrig-variant{margin:4px 0 8px 26px;padding:8px 10px;background:#fff8ed;border-radius:8px;border-left:3px solid #e07b39}
-.obrig-variant .vlabel{font-size:11px;font-weight:600;color:#b8591f;margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px}
-.obrig-variant select{width:100%;padding:7px 10px;border:1.5px solid #dde1ea;border-radius:6px;font-size:12px;background:#fff;color:#1a1a1a;outline:none;cursor:pointer}
-
 /* POLTRONAS */
-.seat-types{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:14px}
+.seat-types{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:14px}
 .seat-btn{border:2px solid #e0e4ec;border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:.15s;background:#fff}
 .seat-btn:hover{border-color:#2b6cb0}
 .seat-btn.active{border-color:#1a3a5c;background:#eef3fa}
 .seat-btn .sname{font-size:12px;font-weight:600;color:#1a3a5c}
 .seat-btn .splanta{font-size:10px;color:#888;margin:2px 0}
 .seat-btn .sprice{font-size:11px;color:#e07b39;font-weight:700}
-.qty-row{display:flex;align-items:center;gap:12px;margin-top:4px;flex-wrap:wrap}
+
+/* Adicionais de poltrona */
+.seat-extras{background:#f8f9fb;border-radius:8px;padding:10px 14px;margin-top:10px;border:1px solid #e8eaf0}
+.seat-extras .se-title{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
+.seat-extra-row{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid #f0f0f0;font-size:12px}
+.seat-extra-row:last-child{border-bottom:none}
+.seat-extra-row input[type=checkbox]{width:14px;height:14px;accent-color:#1a3a5c;cursor:pointer;flex-shrink:0}
+.seat-extra-row label{flex:1;cursor:pointer}
+.seat-extra-row .ep{font-weight:600;color:#1a3a5c;white-space:nowrap}
+
+.qty-row{display:flex;align-items:center;gap:12px;margin-top:10px}
 .qty-row label{font-size:13px;color:#444;white-space:nowrap}
 .qty-row input[type=number]{width:72px;padding:7px 10px;border:1.5px solid #dde1ea;border-radius:8px;font-size:14px;font-weight:600;text-align:center;outline:none}
 .qty-result{background:#f0f6ff;border-radius:8px;padding:10px 14px;font-size:13px;color:#1a3a5c;margin-top:10px;border:1px solid #c8daf4}
@@ -86,18 +85,23 @@ header h1{font-size:17px;font-weight:600;flex:1}
 .pay-btn .pdesc{font-size:10px;opacity:.65;margin-top:2px}
 .pay-btn.active .pdesc{opacity:.8}
 
+/* Sub-painel de cor para opcionais LED */
+.opt-sub{background:#f8f9fb;border-left:3px solid #1a3a5c;border-radius:0 8px 8px 0;padding:10px 14px;margin:4px 0 6px 22px;display:none}
+.opt-sub.visible{display:block}
+.opt-sub .sub-label{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+.opt-sub select{width:100%;padding:7px 10px;border:1.5px solid #dde1ea;border-radius:8px;font-size:13px;outline:none;cursor:pointer;background:#fff;color:#222}
+.opt-sub select:focus{border-color:#1a3a5c}
+
 /* RESUMO */
 .summary-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f2f2f2;font-size:13px}
 .summary-row:last-child{border-bottom:none}
 .summary-row.total{font-weight:700;font-size:16px;color:#1a3a5c;border-top:2px solid #1a3a5c;margin-top:6px;padding-top:10px;border-bottom:none}
 .summary-row.discount{color:#1a6b3a;font-size:12px}
-.btn-gerar{width:100%;background:#e07b39;color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;transition:.15s;letter-spacing:.3px}
+.btn-gerar{width:100%;background:#e07b39;color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;transition:.15s}
 .btn-gerar:hover{background:#c8692a}
 .btn-gerar:active{transform:scale(.98)}
 
-/* ============================================================
-   MODAL / PROPOSTA — replica exatamente o PDF da V12
-   ============================================================ */
+/* MODAL / PROPOSTA */
 .modal-bg{display:none;position:fixed;inset:0;background:#0008;z-index:200;overflow-y:auto;padding:20px}
 .modal-bg.open{display:block}
 .modal-wrap{max-width:700px;margin:0 auto}
@@ -112,18 +116,15 @@ header h1{font-size:17px;font-weight:600;flex:1}
 .p-titulo{text-align:center;font-size:20pt;font-weight:bold;letter-spacing:.5px;margin-bottom:14px}
 .p-intro{text-align:center;font-size:11pt;line-height:1.7;margin-bottom:24px}
 .p-intro b{font-size:13pt}
-.p-cliente-box{border:1px solid #1a3a5c;padding:10px 14px;margin-bottom:22px;background:#f7f9fc;font-size:11pt}
-.p-cliente-box strong{color:#1a3a5c}
 .p-section-title{font-size:11.5pt;font-weight:bold;margin-bottom:8px}
 .p-sub{font-size:10.5pt;margin-bottom:10px}
 .p-list{list-style:none;padding:0;margin:0}
 .p-list > li{display:flex;gap:6px;padding:3px 0;font-size:10.5pt;align-items:flex-start}
 .p-list > li .n{min-width:24px;font-weight:bold;flex-shrink:0}
-.p-list > li .txt{flex:1;font-weight:bold}
-.p-sublist{list-style:none;margin:4px 0 2px 8px;padding:0;font-weight:normal}
-.p-sublist li{font-size:10pt;padding:1px 0;font-weight:normal}
-.p-sublist li::before{content:"o  ";font-weight:normal;margin-right:2px}
-.p-color-tag{display:inline-block;background:#e8f0f9;color:#1a3a5c;padding:1px 7px;border-radius:3px;font-size:9.5pt;font-weight:normal;margin-left:4px}
+.p-list > li .txt{flex:1}
+.p-sublist{list-style:none;margin:4px 0 2px 8px;padding:0}
+.p-sublist li{font-size:10pt;padding:1px 0}
+.p-sublist li::before{content:"o  ";font-weight:normal}
 .p-footer{text-align:center;font-size:9pt;line-height:1.8;border-top:1px solid #bbb;padding-top:14px;margin-top:32px;color:#222}
 .p-footer strong{display:block;font-size:9.5pt;font-weight:bold;margin-bottom:2px}
 .p-valor{font-size:13pt;font-weight:bold;margin:10px 0 6px}
@@ -137,107 +138,132 @@ header h1{font-size:17px;font-weight:600;flex:1}
   header,.modal-actions,.container{display:none!important}
   .modal-bg{display:block!important;position:static!important;padding:0!important;background:none!important}
   .modal-wrap{max-width:100%}
-  .proposta-page{box-shadow:none;border-radius:0;padding:40px 50px;page-break-after:always}
+  .proposta-page{box-shadow:none;border-radius:0;padding:40px 50px;page-break-after:always;margin-bottom:0}
   .proposta-page:last-child{page-break-after:avoid}
 }
 </style>
 </head>
 <body>
+
 <header>
-  <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDIwMDEwOTA0Ly9FTiIKICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+CjxzdmcgdmVyc2lvbj0iMS4wIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiB3aWR0aD0iMzcyLjAwMDAwMHB0IiBoZWlnaHQ9IjM0NS4wMDAwMDBwdCIgdmlld0JveD0iMCAwIDM3Mi4wMDAwMDAgMzQ1LjAwMDAwMCIKIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiPgo8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjAwMDAwMCwzNDUuMDAwMDAwKSBzY2FsZSgwLjEwMDAwMCwtMC4xMDAwMDApIgpmaWxsPSIjMDAwMDAwIiBzdHJva2U9Im5vbmUiPgo8L2c+Cjwvc3ZnPgo=" alt="Logo"/>
+  <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDIwMDEwOTA0Ly9FTiIKICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+CjxzdmcgdmVyc2lvbj0iMS4wIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiB3aWR0aD0iMzcyLjAwMDAwMHB0IiBoZWlnaHQ9IjM0NS4wMDAwMDBwdCIgdmlld0JveD0iMCAwIDM3Mi4wMDAwMDAgMzQ1LjAwMDAwMCIKIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiPgoKPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC4wMDAwMDAsMzQ1LjAwMDAwMCkgc2NhbGUoMC4xMDAwMDAsLTAuMTAwMDAwKSIKZmlsbD0iIzAwMDAwMCIgc3Ryb2tlPSJub25lIj4KPHBhdGggZD0iTTE5NzIgMzA1MCBjMCAtMTkgMiAtMjcgNSAtMTcgMiA5IDIgMjUgMCAzNSAtMyA5IC01IDEgLTUgLTE4eiIvPgo8cGF0aCBkPSJNMTg4MCAzMDQ4IGMwIC05IDUgLTIwIDEwIC0yMyAxMyAtOCAxMyA1IDAgMjUgLTggMTMgLTEwIDEzIC0xMCAtMnoiLz4KPHBhdGggZD0iTTE5ODIgMjk4NSBjMCAtMTYgMiAtMjIgNSAtMTIgMiA5IDIgMjMgMCAzMCAtMyA2IC01IC0xIC01IC0xOHoiLz4KPHBhdGggZD0iTTIwMjEgMjk3NCBjMCAtMTEgMyAtMTQgNiAtNiAzIDcgMiAxNiAtMSAxOSAtMyA0IC02IC0yIC01IC0xM3oiLz4KPHBhdGggZD0iTTE4ODAgMjk1MiBjMCAtMzMgLTQgLTU0IC01NSAtMjk3IC0zMiAtMTUxIC00NSAtMjMxIC02MCAtMzY4IGwtNgotNTcgLTgwIDEgYy04NiAxIC04OSA0IC02MyA1NCA0OCA5MiAxODUgNDU3IDE5OCA1MjUgMyAxOSAtNyAtMyAtMjMgLTUwIC0xNgotNDcgLTY3IC0xNzUgLTExNCAtMjg1IC00NiAtMTEwIC04NyAtMjEwIC05MSAtMjIyIC05IC0yOCAtMzYgLTMwIC0zNiAtMyAwCjExIDE0IDYzIDMxIDExNiAxNyA1MyAyOCA5OCAyNiAxMDEgLTMgMiAtOCAtNCAtMTAgLTE0IC0zIC0xMCAtMjAgLTY0IC0zNwotMTIwIGwtMzIgLTEwMyAtNjkgMCBjLTQ5IDAgLTY5IC00IC02OSAtMTMgMCAtNyAtMTYgLTIxIC0zNiAtMzIgLTU0IC0yOQotMTU1IC0xNTggLTIwMyAtMjU3IC0yMiAtNDggLTQxIC05MyAtNDEgLTEwMCAwIC03IDIzIDM0IDUxIDkyIDQyIDg1IDY2IDExOQoxMjggMTgyIDQyIDQzIDgyIDc4IDg5IDc4IDEwIDAgMTIgLTMwIDEwIC0xMjIgbC0zIC0xMjIgLTE2MCAtODMgYy04OCAtNDUKLTE4NSAtOTEgLTIxNSAtMTAxIC0zMCAtMTEgLTEwMiAtMzYgLTE2MCAtNTYgLTYyIC0yMiAtMTU4IC00NSAtMjM1IC01NyAtMTYzCi0yNiAtMTY3IC0yNyAtMTM1IC00NCA2MyAtMzMgMzY3IC03NSA1NDUgLTc1IDY4IDAgMTU5IC01IDIwMiAtMTAgNDMgLTYgOTcKLTEzIDEyMSAtMTYgbDQyIC01IDAgLTQ1IGMwIC0yNCAtMiAtNDQgLTUgLTQ0IC0zIDAgLTE4IDcgLTMzIDE2IGwtMjcgMTYgMjUKLTIxIGMxNCAtMTEgMjkgLTIxIDMzIC0yMSA0IDAgNyAtNDcgNiAtMTA0IC0xIC01NyAyIC0xMDkgNSAtMTE1IDQgLTYgMjIgLTExCjQwIC0xMSAzMyAwIDM0IC0xIDY2IC05MiAxOCAtNTEgNDUgLTEyMCA2MCAtMTUzIDQ5IC0xMDcgNjMgLTEzOSA5NyAtMjI1IDE5Ci00NyAzMSAtNzEgMjggLTU1IC00IDE3IC0yMiA2OCAtNDEgMTE1IC03OCAxODcgLTE1NCAzODkgLTE1NCA0MDcgMCAxIDMxIDMKNjkgMyBsNjggMCA3IC04NCBjMyAtNDYgMTMgLTExOSAyMSAtMTYzIDE0IC03NyAxMTYgLTQzNSAxMjIgLTQyOSAyIDIgLTEwIDU3Ci0yNyAxMjMgLTM0IDEzNiAtOTAgNDU0IC05MCA1MTQgbDAgMzkgNTUgMCA1NSAwIDAgLTkyIGMwIC0yMDkgMzQgLTU0MCA2NgotNjUyIDEzIC00NiAxNCAtNDcgOSAtMTEgLTEzIDk2IC00NSA0OTYgLTQ0IDU1NSAxIDkyIDE1IDQ4IDIzIC03NCA0IC01NCAxOAotMTY0IDMyIC0yNDQgMjQgLTE0NCAzMiAtMzA4IDE1IC0yOTggLTUgMyAtMTEgLTUgLTEzIC0xOSAtMyAtMTMgLTEgLTIyIDMKLTE5IDUgMyAxMCAtMSAxMCAtOCAyIC0yNSAxNyA0NyAxOCA5MCAxIDQzIDE3IDU4IDIzIDIyIDIgLTE1IDkgLTggMjYgMjcgMjAKNDMgMjAgNDUgMiAyMyBsLTIwIC0yNSAwIDI3IGMwIDE0IDkgNzkgMjAgMTQzIDExIDY0IDIzIDE3NSAyNyAyNDUgbDYgMTI5IDUyCjQ1IDUzIDQ1IC01IC02NyBjLTggLTEyNSAtMzQgLTI4NCAtNTkgLTM2NCAtMTQgLTQ0IC0yMyAtODIgLTIxIC04NSAzIC0yIDIxCjQ1IDQyIDEwNiAzNyAxMTMgNzUgMjk0IDc1IDM2MyAwIDIxIDUgMzggMTAgMzggMTQgMCAxMiAtNDkgLTUgLTE1NSAtOCAtNDkKLTE0IC0xMDEgLTE0IC0xMTUgMiAtMjggMjIgODEgMzggMjA0IDYgNDQgMTcgODMgMjMgODggMTAgNiAxMCA4IDEgOCAtOCAwCi0xMyAxNCAtMTMgMzUgbDAgMzUgMTA1IDAgYzc0IDAgMTE1IDQgMTM1IDE1IDU3IDMwIDEzNCAxNTAgMTc0IDI3MyAxMCAyOSAyNAo1OCAzMSA2NiAyMyAyMyAyNzEgNzcgNDY5IDEwMiAxODIgMjMgMjMyIDM2IDE5MCA1MCAtMTAgMyAtMzUgMTIgLTU0IDE5IC0xOQo3IC03OCAyMiAtMTMwIDM0IC0xMTMgMjYgLTIxOSA1NSAtMzE1IDg2IC03MyAyNCAtMjYwIDU1IC0zMzMgNTUgbC00MiAwIDAKMTg1IDAgMTg1IC05MCAwIGMtMTAxIDAgLTk1IC01IC0xMDkgODUgLTUgMzMgLTE2IDg5IC0yNCAxMjUgLTggMzYgLTE4IDkwCi0yMiAxMjAgLTQgMzAgLTExIDYyIC0xNyA3MCAtNiAxMCAtNyA2IC00IC0xNSAzIC0xNiAxMyAtNzUgMjEgLTEzMCA4IC01NSAxOQotMTI3IDI1IC0xNjAgMTMgLTgxIDEzIC05NSAtNSAtOTUgLTEwIDAgLTE1IDEwIC0xNSAyOCAwIDk3IC00MyAzNTQgLTc5IDQ2NQotMjEgNjcgLTQ2IDE0NyAtNTQgMTc3IC04IDMwIC0xNiA0NiAtMTYgMzUgLTEgLTEyIDE5IC05MSA0MyAtMTc2IDQzIC0xNTQgNzUKLTMyMyA2MyAtMzM1IC00IC00IC04IC0xIC0xMSA3IC0yOSAxMDQgLTUwIDE2OCAtNTMgMTY1IC0yIC0yIDcgLTQzIDIxIC05MgoyMCAtNjYgMjYgLTExMSAyNiAtMTgxIGwwIC05MyAtMzQgMCBjLTQxIDAgLTQxIC0xIC01NiAxNzUgLTcgNzIgLTIyIDE4OSAtMzYKMjYwIC01MCAyNzUgLTc0IDM2NyAtNzQgMjg3eiBtNzUgLTQ3MiBjMzggLTI0NiAzOSAtMjUwIDI4IC0yNTAgLTYgMCAtMTQgMzUKLTE3IDc4IC05IDk2IC0yNCAxODQgLTQxIDIzNyAtNyAyMiAtMTUgNzYgLTE4IDEyMCBsLTUgODAgMTMgLTUwIGM4IC0yNyAyNQotMTI0IDQwIC0yMTV6IG0tNTkgMTM4IGMxNyAtMTAyIDI5IC0zMjYgMjAgLTM2MSAtNiAtMjQgLTExIC0yNyAtNTIgLTI3IGwtNDcKMCA2IDQ4IGM0IDI2IDkgNzYgMTIgMTEyIDEwIDEwMyAtMTEgNTIgLTI2IC02MiAtNyAtNTQgLTE3IC05OCAtMjIgLTk4IC0xMyAwCi0zIDg0IDMzIDI2MCAzNCAxNjcgNDkgMjI0IDU3IDIxNiAzIC0zIDEyIC00MyAxOSAtODh6IG0yMjMgLTM0NSBjMSAtMjQgLTMKLTQzIC05IC00MyAtNiAwIC0xMCAzMyAtOSA4MyAxIDcwIDIgNzYgMTAgNDIgNCAtMjIgOCAtNTkgOCAtODJ6IG0tMTcwIC01IGMxCi0yMSAtMyAtMzggLTkgLTM4IC02IDAgLTEwIDI3IC05IDYzIDEgNDYgMyA1NiA5IDM3IDQgLTE0IDggLTQyIDkgLTYyeiBtLTI4Ci0xNTggYzE5IC0xNyA4NCAtNzQgMTQ2IC0xMjggbDExMiAtOTcgMSAtMTYyIDAgLTE2MyAtMzcgLTMyIGMtMjAgLTE4IC01NQotNDkgLTc3IC02OSAtMjMgLTIwIC03NyAtNjcgLTEyMSAtMTAzIGwtODAgLTY3IC0zIDQzIGMtMyAzNyAxIDQ2IDI2IDY4IDE3CjE0IDc1IDY1IDEzMSAxMTQgbDEwMSA4OCAwIDExMiBjLTEgMTA3IC0xIDExMCAtMTUgNzcgLTkgLTE5IC0xOCAtNTIgLTIyIC03MwotNCAtMjkgLTE3IC01MCAtNDYgLTc2IC0yMyAtMjEgLTcwIC02NCAtMTA2IC05NyBsLTY2IC02MCAtMyA0OSBjLTMgMzkgMSA1MwoyMCA3NCAyMyAyNSAxNTIgMTI4IDE4MyAxNDcgMTQgOCAwIDI1IC04OSAxMDggbC0xMDUgOTggMCA4OSBjMCA1MCA0IDkwIDggOTAKNSAwIDI0IC0xNCA0MiAtMzB6IG0tMTUxIC0xODAgbDAgLTcwIC0zMCAwIGMtMjcgMCAtNjggMzEgLTcwIDUzIC0xIDcgODcgODcKOTYgODcgMiAwIDQgLTMxIDQgLTcweiBtLTU2IC0xMDAgYzM2IC0zNSA2NiAtNzAgNjYgLTc3IDAgLTkgLTE5IC0xMyAtNjUgLTEzCi0zNiAwIC02NSAtNCAtNjUgLTggMCAtNSAzMiAtMzAgNzAgLTU3IDM5IC0yNyA3MCAtNTAgNzAgLTUyIDAgLTggLTEzMyAtMTU4Ci0xNDcgLTE2NiAtMTEgLTcgLTEzIDM0IC0xMiAyMzUgMCAxNDIgNCAyMzUgOSAyMjMgNCAtMTEgMzggLTQ5IDc0IC04NXoKbS0zMjYgMjkgbC0zIC00MSAtMTY1IC01MCBjLTkxIC0yOCAtMjA5IC02OCAtMjY0IC04OSAtNTQgLTIyIC0xMTIgLTM5IC0xMzAKLTM4IC0yOSAwIC0yNyAyIDE5IDE4IDI4IDEwIDc1IDMwIDEwNSA0MyAzMCAxNCA4OSAzNyAxMzAgNTIgNDEgMTUgMTI1IDUzCjE4NSA4NSA2MSAzMiAxMTQgNTkgMTE4IDYwIDUgMCA3IC0xNyA1IC00MHogbTYxMiAtMTIxIGMwIC05IC0yMyAtMTQgLTk0IC0yMgpsLTQ4IC02IDYgMzEgYzMgMTcgNiA1MSA2IDc2IGwwIDQ0IDY1IC01NyBjMzYgLTMyIDY1IC02MSA2NSAtNjZ6IG01MzAgODIKYzg0IC0xMSAxMzEgLTIyIDQyNSAtMTAwIDk5IC0yNiAxMzEgLTM3IDk1IC0zMyAtMzAgMyAtOTUgMTYgLTE0NSAyOSAtNDkgMTMKLTEzMSAzNSAtMTgxIDQ4IC04NyAyMyAtMzEwIDU0IC0zMTkgNDQgLTMgLTMgNDEgLTExIDk3IC0xOCAxMzAgLTE2IDMwNyAtNTYKMzI0IC03MyAxOSAtMTkgLTE5MCAwIC0zMTEgMjcgLTMzIDggLTc3IDE3IC05NyAyMCAtMzMgNiAtMzcgMTAgLTM2IDM2IDEgMzUKMTEgMzYgMTQ4IDIweiBtLTExNDIgLTMxIGMtMiAtMTYgLTE3IC0yNiAtNTggLTQwIC01MSAtMTcgLTMwIC0xOSAzNCAtMyAyNCA2CjI2IDQgMjYgLTI0IDAgLTM3IC0yIC0zOCAtMTQ1IC01MiAtNjAgLTYgLTE0MSAtMTUgLTE4MCAtMjAgLTM4IC01IC05MCAtOQotMTE1IC05IGwtNDUgMSAzNSAxMCBjMTkgNSA0OSAxNiA2NSAyNCAxNyA4IDU5IDIzIDk1IDM0IDQ5IDE0IDI2NCA4OCAyODggOTkKMiAwIDIgLTkgMCAtMjB6IG0xMTM0IC01OSBjNTAgLTEyIDE1MyAtMjMgMjYyIC0yOSAxMDggLTYgMTg0IC0xNSAxOTAgLTIyIDEwCi0xMCAtMTQ0IC0xMCAtNTgxIDEgLTggMCAtMTMgMTQgLTEzIDM1IDAgMzIgMiAzNSAyOSAzNSAxNiAwIDY3IC05IDExMyAtMjB6Cm02MTUgLTU2IGMtMyAtMyAtMTIgLTQgLTE5IC0xIC04IDMgLTUgNiA2IDYgMTEgMSAxNyAtMiAxMyAtNXogbS0xNzQ3IC02MyBjMAotNTYgLTEgLTU5IC0yMiAtNTQgLTIzIDUgLTIyIDQgMiAtMTUgMTQgLTEyIDIzIC0yMyAyMCAtMjUgLTMgLTIgLTMxIC0yIC02MwoxIC00NCAzIC01NyA4IC01MyAxOCAzIDggLTEgMTQgLTEwIDE0IC04IDAgLTEyIC00IC05IC0xMCA5IC0xNCAtMTMgLTEzIC0xMTkKNyBsLTkxIDE3IDkwIDEzIGM1MCA3IDEwOSAxMiAxMzMgMTAgMzYgLTIgNDAgMCAyNSAxMCAtMjAgMTYgLTU1IDE2IC0xNDggMgotNDMgLTYgLTEzMiAtNyAtMjMwIC0zIC0xNzIgNyAtMTg3IDIyIC0yNSAyMyAxMTMgMSAzNzYgMjcgNDkzIDUwIDQgMCA3IC0yNgo3IC01OHogbTExNzAgNDggbDQ1IDAgLTg1IC00MCBjLTEwNyAtNTEgLTE0MCAtNTkgLTE0MCAtMzIgMCAxMiAxMyAyNiAzMyAzNgpsMzIgMTYgLTMyIC02IGMtMjkgLTUgLTMzIC0zIC0zMyAxNyAwIDIyIDIgMjMgNjggMTcgMzcgLTQgODcgLTcgMTEyIC04egptMjA1IC0xOSBjNTcgLTcgNTggLTcgMTUgLTkgLTYyIC0yIC0xODYgLTI4IC0yMzcgLTUxIC01NiAtMjUgLTE1NCAtNTIgLTE2MQotNDUgLTEwIDkgMTEgMjEgNjggMzkgMzAgMTAgNzkgMzEgMTEwIDQ2IDU4IDMxIDkzIDM0IDIwNSAyMHogbTE0OCAzIGMtNyAtMgotMTkgLTIgLTI1IDAgLTcgMyAtMiA1IDEyIDUgMTQgMCAxOSAtMiAxMyAtNXogbS0yMTMwIC0xMCBjLTcgLTIgLTE5IC0yIC0yNQowIC03IDMgLTIgNSAxMiA1IDE0IDAgMTkgLTIgMTMgLTV6IG0yMjIwIDAgYy03IC0yIC0xOSAtMiAtMjUgMCAtNyAzIC0yIDUgMTIKNSAxNCAwIDE5IC0yIDEzIC01eiBtLTIyNzAgLTEwIGMtNyAtMiAtMTkgLTIgLTI1IDAgLTcgMyAtMiA1IDEyIDUgMTQgMCAxOQotMiAxMyAtNXogbTIyMjYgMyBjLTIgLTIgLTY1IC0xNiAtMTM5IC0zMSAtNzQgLTE0IC0xOTUgLTQyIC0yNjggLTYxIC03NCAtMTkKLTE0MSAtMzMgLTE1MCAtMzEgLTE0IDMgLTE1IDUgLTIgOSA0NiAxNyAyMTIgNjcgMjU1IDc3IDEwMCAyMyAzMTcgNDkgMzA0IDM3egptLTIwNTkgLTU2IGMxOSAtNSA2NiAtMTIgMTAzIC0xNiAzNyAtNCA2OSAtMTAgNzIgLTE0IDggLTE0IC0zNDAgMjEgLTQwMSA0MAotMzcgMTIgMTc2IDIgMjI2IC0xMHogbTg2NyAtMTA3IGMtMyAtMiAtMjEgLTMgLTQxIC0xIGwtMzUgMyAzNyA0NSAzNyA0NCAzCi00MyBjMiAtMjQgMSAtNDUgLTEgLTQ4eiBtNzczIC0xNSBjLTM3IC0xMDIgLTEwMCAtMjE3IC0xMzEgLTIzOSBsLTI5IC0yMCAwCjE1MCAwIDE1MSAzOCAwIGMyMCAwIDYwIDYgODcgMTQgMjggNyA1MiAxMiA1NCAxMCAyIC0yIC03IC0zMiAtMTkgLTY2eiBtLTczMwotMzU1IGMtMiAtMTYgLTQgLTUgLTQgMjIgMCAyOCAyIDQwIDQgMjggMiAtMTMgMiAtMzUgMCAtNTB6IG0xMTMgLTMgYzAgLTQzCi00IC03MCAtMTEgLTcwIC0zOCAwIC03OSA1NiAtNzkgMTEwIDAgMjkgMiAzMCA0NSAzMCBsNDUgMCAwIC03MHogbTQwIDAgYzAKLTQwIC00IC03MCAtMTAgLTcwIC0xMSAwIC0xMyA2MSAtNCAxMDkgMTAgNDggMTQgMzcgMTQgLTM5eiBtMTIwIDUyIGMwIC0yNwotNzEgLTEyMiAtOTIgLTEyMiAtOSAwIC0xMSAxMDEgLTIgMTI0IDQgMTEgMTkgMTYgNTAgMTYgMzYgMCA0NCAtMyA0NCAtMTh6Cm02MCAtMTEgYzAgLTI4IC0xNSAtNDkgLTI3IC0zOCAtOCA4IDcgNjcgMTggNjcgNSAwIDkgLTEzIDkgLTI5eiBtLTIyMCAtMTU5CmMwIC0zNiAtMjEgLTExNiAtMzUgLTEzMCAtMTAgLTExIC0xNSAtNSAtMjMgMzUgLTYgMjYgLTEzIDczIC0xNiAxMDUgbC02IDU2CjQwIC0yMSBjMjkgLTE2IDQwIC0yOCA0MCAtNDV6IG0yNSAtMjIwIGMtNCAtNDYgLTkgLTgxIC0xMiAtNzkgLTIgMyAtMSA1OCA0CjEyNCA0IDY1IDkgMTAwIDExIDc4IDIgLTIyIDEgLTc3IC0zIC0xMjN6IG0tMjYgMzMgYy00IC00NCAtOCAtMTI3IC05IC0xODUKbC0yIC0xMDUgLTE0IDU2IGMtNyAzMCAtMTcgODkgLTIyIDEzMCAtOSA3MSAtOCA3NyAyMCAxMzMgMTYgMzIgMzEgNTYgMzIgNTUKMiAtMiAtMSAtNDAgLTUgLTg0eiBtLTYyIDIzIGMtMyAtOCAtNiAtNSAtNiA2IC0xIDExIDIgMTcgNSAxMyAzIC0zIDQgLTEyIDEKLTE5eiIvPgo8cGF0aCBkPSJNMjA4MCAxODY1IGMxOSAtMTkgMzYgLTM1IDM5IC0zNSAzIDAgLTEwIDE2IC0yOSAzNSAtMTkgMTkgLTM2IDM1Ci0zOSAzNSAtMyAwIDEwIC0xNiAyOSAtMzV6Ii8+CjxwYXRoIGQ9Ik0yMDMxIDI5MjQgYzAgLTExIDMgLTE0IDYgLTYgMyA3IDIgMTYgLTEgMTkgLTMgNCAtNiAtMiAtNSAtMTN6Ii8+CjxwYXRoIGQ9Ik0yMDQxIDI4NzQgYzAgLTExIDMgLTE0IDYgLTYgMyA3IDIgMTYgLTEgMTkgLTMgNCAtNiAtMiAtNSAtMTN6Ii8+CjxwYXRoIGQ9Ik0xODIxIDI4NjQgYzAgLTExIDMgLTE0IDYgLTYgMyA3IDIgMTYgLTEgMTkgLTMgNCAtNiAtMiAtNSAtMTN6Ii8+CjxwYXRoIGQ9Ik0yMDUxIDI4MjQgYzAgLTExIDMgLTE0IDYgLTYgMyA3IDIgMTYgLTEgMTkgLTMgNCAtNiAtMiAtNSAtMTN6Ii8+CjxwYXRoIGQ9Ik0xNzA3IDI3MjQgYy0yMCAtNDEgLTM3IC03OCAtMzcgLTgyIDEgLTQgMTkgMjggNDEgNzIgMjIgNDMgMzkgODAKMzcgODIgLTIgMiAtMjEgLTMwIC00MSAtNzJ6Ii8+CjxwYXRoIGQ9Ik0yMDYxIDI3OTAgYzAgLTggNCAtMjQgOSAtMzUgNSAtMTMgOSAtMTQgOSAtNSAwIDggLTQgMjQgLTkgMzUgLTUKMTMgLTkgMTQgLTkgNXoiLz4KPHBhdGggZD0iTTIwODEgMjcyMCBjMCAtOCA0IC0yMiA5IC0zMCAxMiAtMTggMTIgLTIgMCAyNSAtNiAxMyAtOSAxNSAtOSA1eiIvPgo8cGF0aCBkPSJNMTY0MSAyNTc0IGMtMTIgLTMxIC0yMCAtNTggLTE4IC02MSAyIC0yIDE0IDIyIDI1IDU0IDEyIDMxIDIwIDU5CjE4IDYxIC0yIDIgLTE0IC0yMiAtMjUgLTU0eiIvPgo8cGF0aCBkPSJNMTI2NyAyMjk1IGMtNzggLTY0IC0xNjAgLTE3MCAtMjEwIC0yNzEgLTM5IC03OCAtNzcgLTE4MyAtNzcgLTIxMQoxIC0xMCAxMSAxNCAyNCA1MiA1NyAxNzQgMTI4IDI4NiAyNTIgNDA0IDQ3IDQ1IDg0IDgxIDgyIDgxIC0yIDAgLTM0IC0yNSAtNzEKLTU1eiIvPgo8cGF0aCBkPSJNMjQ1NSAyMzEwIGMxMCAtMTEgMjAgLTIwIDIzIC0yMCAzIDAgLTMgOSAtMTMgMjAgLTEwIDExIC0yMCAyMCAtMjMKMjAgLTMgMCAzIC05IDEzIC0yMHoiLz4KPHBhdGggZD0iTTI1NDcgMjIwNSBjNjYgLTg4IDE0NCAtMjI3IDE3NCAtMzA4IDE1IC00MCAxOCAtNDQgMTMgLTE3IC0xNyA5NwotMTIzIDI4NyAtMjA0IDM2NSAtMzkgMzcgLTM4IDM1IDE3IC00MHoiLz4KPHBhdGggZD0iTTI0NjAgMjEyNiBjMCAtMiA4IC0xMCAxOCAtMTcgMTUgLTEzIDE2IC0xMiAzIDQgLTEzIDE2IC0yMSAyMSAtMjEKMTN6Ii8+CjxwYXRoIGQ9Ik0yNTEwIDIwNjAgYzEyIC0xNiAyNCAtMzAgMjYgLTMwIDMgMCAtNCAxNCAtMTYgMzAgLTEyIDE3IC0yNCAzMAotMjYgMzAgLTMgMCA0IC0xMyAxNiAtMzB6Ii8+CjxwYXRoIGQ9Ik0yOTE1IDE0MzMgYy05IC00OSAtMzAgLTEyNCAtNDYgLTE2NyAtMTYgLTQ0IC0yNyAtODIgLTI0IC04NCA5IC0xMAo1NCAxMDUgODAgMjAzIDE0IDU1IDI4IDEwOCAzMSAxMTggMyAxMSAwIDE3IC05IDE3IC0xMCAwIC0xOSAtMjYgLTMyIC04N3oiLz4KPHBhdGggZD0iTTk3MCAxNDk2IGMwIC0xNiA1MyAtMTY1IDY2IC0xODYgMTcgLTI3IDE3IC0yNyAtMjIgODIgLTEzIDM3IC0yNAo3NCAtMjQgODIgMCA4IC00IDE4IC0xMCAyMSAtNSAzIC0xMCA0IC0xMCAxeiIvPgo8cGF0aCBkPSJNMTA5MyAxNDUxIGM4IC0zNyA0OCAtMTMzIDU0IC0xMjggMiAzIC01IDI4IC0xNyA1NiAtMTEgMjggLTIwIDYwCi0yMCA3MSAwIDEwIC01IDIyIC0xMiAyNiAtOCA1IC05IC0yIC01IC0yNXoiLz4KPHBhdGggZD0iTTI2NDEgMTM4MiBjLTE4IC00MyAtNDQgLTk2IC01OCAtMTE3IC0xNCAtMjEgLTIxIC0zNSAtMTQgLTMxIDI0IDE2CjEyMCAyMTEgMTA4IDIyMyAtMyAyIC0xOSAtMzIgLTM2IC03NXoiLz4KPHBhdGggZD0iTTI3MzYgMTM0NSBjLTkgLTI2IC03IC0zMiA1IC0xMiA2IDEwIDkgMjEgNiAyMyAtMiAzIC03IC0yIC0xMSAtMTF6Ii8+CjxwYXRoIGQ9Ik04NjYgMTI3MCBjMyAtMTQgMTEgLTMyIDE2IC00MCA2IC0xMCA3IC03IDIgMTAgLTMgMTQgLTExIDMyIC0xNiA0MAotNiAxMCAtNyA3IC0yIC0xMHoiLz4KPHBhdGggZD0iTTI1MzkgMTIwMyBjLTEzIC0xNiAtMTIgLTE3IDQgLTQgMTYgMTMgMjEgMjEgMTMgMjEgLTIgMCAtMTAgLTggLTE3Ci0xN3oiLz4KPHBhdGggZD0iTTExMDAgMTE4NiBjMCAtMiA4IC0xMCAxOCAtMTcgMTUgLTEzIDE2IC0xMiAzIDQgLTEzIDE2IC0yMSAyMSAtMjEKMTN6Ii8+CjxwYXRoIGQ9Ik0xMTQ1IDExMzAgYzEwIC0xMSAyMCAtMjAgMjMgLTIwIDMgMCAtMyA5IC0xMyAyMCAtMTAgMTEgLTIwIDIwIC0yMwoyMCAtMyAwIDMgLTkgMTMgLTIweiIvPgo8cGF0aCBkPSJNMjc2MSAxMTA3IGMtMzAgLTExIC01MCAtMjIgLTQ0IC0yNCAxOCAtNiAxMDcgMjMgMTExIDM1IDUgMTUgLTEgMTQKLTY3IC0xMXoiLz4KPHBhdGggZD0iTTEyMDAgMTA2NSBjMTkgLTE5IDM2IC0zNSAzOSAtMzUgMyAwIC0xMCAxNiAtMjkgMzUgLTE5IDE5IC0zNiAzNQotMzkgMzUgLTMgMCAxMCAtMTYgMjkgLTM1eiIvPgo8cGF0aCBkPSJNMTM0MCA5NTIgYzI5IC0yNCAxMDAgLTY2IDEwMCAtNTkgMCAzIC0xNSAxNCAtMzMgMjUgLTE5IDExIC00NyAyNwotNjMgMzcgbC0yOSAxNyAyNSAtMjB6Ii8+CjxwYXRoIGQ9Ik0yNTUwIDkyMCBjLTI1IC0yMSAtNDAgLTM5IC0zNCAtNDAgNiAwIDMxIDE4IDU1IDQwIDI0IDIxIDQwIDM5IDM0CjQwIC01IDAgLTMwIC0xOCAtNTUgLTQweiIvPgo8cGF0aCBkPSJNMTE0NCA5MzUgYy00IC05IC0yIC0yMSA0IC0yNyAxNiAtMTYgNDcgLTUgNDcgMTcgMCAyNiAtNDIgMzQgLTUxCjEweiIvPgo8cGF0aCBkPSJNMjMyMyA3OTMgYy03IC0zIC0xMyAtMTYgLTEzIC0zMCAwIC0yMCA0IC0yNCAyMyAtMjEgMTMgMiAyMyAxMSAyNQoyNCAzIDIyIC0xMyAzNCAtMzUgMjd6Ii8+CjxwYXRoIGQ9Ik0yMDkyIDcyMCBjMCAtMTQgMiAtMTkgNSAtMTIgMiA2IDIgMTggMCAyNSAtMyA2IC01IDEgLTUgLTEzeiIvPgo8cGF0aCBkPSJNMTk3MSA1MTMgYy0xMCAtMjYgLTEwIC0yNyA0IC05IDggMTEgMTUgMjMgMTUgMjggMCAxNSAtNyA4IC0xOSAtMTl6Ii8+CjxwYXRoIGQ9Ik0xNzgxIDQ0NCBjMCAtMTEgMyAtMTQgNiAtNiAzIDcgMiAxNiAtMSAxOSAtMyA0IC02IC0yIC01IC0xM3oiLz4KPHBhdGggZD0iTTE5NDAgMzM2IGMwIC04IDQgLTE3IDkgLTIwIDUgLTQgNyAzIDQgMTQgLTYgMjMgLTEzIDI2IC0xMyA2eiIvPgo8cGF0aCBkPSJNMTk4MCAzMjQgYzAgLTExIC00IC0yNCAtMTAgLTMwIC01IC01IC01IC0xNSAtMSAtMjMgNiAtOSAxMSAtMSAxNQoyNCA0IDIwIDUgNDAgMiA0MyAtMyAzIC02IC00IC02IC0xNHoiLz4KPC9nPgo8L3N2Zz4K" alt="Logo"/>
   <h1>V12 Customização — Orçamento</h1>
   <div class="total-badge" id="header-total">R$ 0</div>
 </header>
 
 <div class="container">
 
-  <div class="campo-cliente">
-    <label>👤 Cliente:</label>
-    <input type="text" id="nome-cliente" placeholder="Nome do cliente..."/>
+<div class="card">
+  <div class="card-header open" onclick="toggle(this)">
+    <h2>👤 1. Dados do Cliente</h2><span class="chevron">▼</span>
   </div>
-
-  <!-- 1. VEÍCULO -->
-  <div class="card">
-    <div class="card-header open" onclick="toggle(this)">
-      <h2>🚐 1. Veículo</h2><span class="chevron">▼</span>
-    </div>
-    <div class="card-body open">
-      <div class="vehicles">
-        <div class="veh-btn active" onclick="selectVeh('master',this)"><div class="icon">🚐</div><div class="name">Renault Master</div><div class="sub">L3H2</div></div>
-        <div class="veh-btn" onclick="selectVeh('sprinter',this)"><div class="icon">🚌</div><div class="name">Sprinter</div><div class="sub">Mercedes</div></div>
-        <div class="veh-btn" onclick="selectVeh('scudo',this)"><div class="icon">🚐</div><div class="name">Scudo</div><div class="sub">Fiat</div></div>
-        <div class="veh-btn" onclick="selectVeh('ducato',this)"><div class="icon">🚐</div><div class="name">Ducato</div><div class="sub">Fiat</div></div>
-        <div class="veh-btn" onclick="selectVeh('transit',this)"><div class="icon">🚐</div><div class="name">Transit</div><div class="sub">Ford</div></div>
+  <div class="card-body open">
+    <div class="cliente-grid">
+      <div class="campo full">
+        <label>Nome do Cliente</label>
+        <input type="text" id="cli-nome" placeholder="Nome completo do cliente..."/>
+      </div>
+      <div class="campo">
+        <label>WhatsApp</label>
+        <input type="text" id="cli-wpp" placeholder="(00) 00000-0000"/>
+      </div>
+      <div class="campo">
+        <label>Cidade</label>
+        <input type="text" id="cli-cidade" placeholder="Cidade do cliente..."/>
+      </div>
+      <div class="campo full">
+        <label>Representante</label>
+        <select id="cli-rep">
+          <option value="Felipe Funk">Felipe Funk</option>
+          <option value="Alcione Roth">Alcione Roth</option>
+          <option value="Cristian Nozari">Cristian Nozari</option>
+        </select>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- 2. OBRIGATÓRIOS -->
-  <div class="card">
-    <div class="card-header open" onclick="toggle(this)">
-      <h2>✅ 2. Itens Obrigatórios</h2>
-      <span class="badge" id="badge-obrig">7</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="card-body open" id="lista-obrig"></div>
+<div class="card">
+  <div class="card-header open" onclick="toggle(this)">
+    <h2>🚐 2. Veículo</h2><span class="chevron">▼</span>
   </div>
-
-  <!-- 3. POLTRONAS -->
-  <div class="card">
-    <div class="card-header open" onclick="toggle(this)">
-      <h2>💺 3. Poltronas</h2>
-      <span class="badge" id="badge-seat">—</span>
-      <span class="chevron">▼</span>
+  <div class="card-body open">
+    <div class="vehicles">
+      <div class="veh-btn active" onclick="selectVeh('master',this)"><div class="icon">🚐</div><div class="name">Renault Master</div></div>
+      <div class="veh-btn" onclick="selectVeh('sprinter',this)"><div class="icon">🚌</div><div class="name">Sprinter</div><div class="sub">Mercedes</div></div>
+      <div class="veh-btn" onclick="selectVeh('scudo',this)"><div class="icon">🚐</div><div class="name">Scudo</div><div class="sub">Fiat</div></div>
+      <div class="veh-btn" onclick="selectVeh('ducato',this)"><div class="icon">🚐</div><div class="name">Ducato</div><div class="sub">Fiat</div></div>
+      <div class="veh-btn" onclick="selectVeh('transit',this)"><div class="icon">🚐</div><div class="name">Transit</div><div class="sub">Ford</div></div>
     </div>
-    <div class="card-body open">
-      <div class="seat-types" id="seat-types"></div>
-      <div class="qty-row">
-        <label>Quantidade de lugares:</label>
-        <input type="number" id="seat-qty" min="1" max="60" value="16" oninput="calcSeats()"/>
-      </div>
-      <div class="qty-result" id="seat-result">Selecione o tipo de poltrona acima.</div>
+    <div class="veh-config" id="veh-config">
+      <label>Configuração</label>
+      <select id="veh-config-sel" onchange="calcAll()">
+        <option>L3H2</option><option>L2H2</option><option>L1H1</option>
+      </select>
     </div>
   </div>
+</div>
 
-  <!-- 4. OPCIONAIS -->
-  <div class="card">
-    <div class="card-header open" onclick="toggle(this)">
-      <h2>⚡ 4. Opcionais</h2>
-      <span class="badge" id="badge-opt">0</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="card-body open" id="lista-opt"></div>
+<div class="card">
+  <div class="card-header open" onclick="toggle(this)">
+    <h2>🔧 3. Serviços e Itens</h2>
+    <span class="badge" id="badge-itens">0</span>
+    <span class="chevron">▼</span>
   </div>
+  <div class="card-body open" id="lista-itens"></div>
+</div>
 
-  <!-- 5. PAGAMENTO -->
-  <div class="card">
-    <div class="card-header open" onclick="toggle(this)">
-      <h2>💳 5. Condição de Pagamento</h2><span class="chevron">▼</span>
+<div class="card">
+  <div class="card-header open" onclick="toggle(this)">
+    <h2>💺 4. Poltronas</h2>
+    <span class="badge" id="badge-seat">—</span>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="card-body open">
+    <div class="seat-types" id="seat-types"></div>
+    <div id="seat-extras-wrap"></div>
+    <div class="qty-row">
+      <label>Quantidade de lugares:</label>
+      <input type="number" id="seat-qty" min="1" max="60" value="24" oninput="calcSeats()"/>
     </div>
-    <div class="card-body open">
-      <div class="pay-opts">
-        <div class="pay-btn active" onclick="selectPay('PIX / Dinheiro SEM NF',0.10,'50% de entrada + saldo via PIX (sem nota fiscal)',this)"><div class="pname">PIX / Dinheiro SEM NF</div><div class="pdesc">10% de desconto</div></div>
-        <div class="pay-btn" onclick="selectPay('PIX / Dinheiro COM NF',0.05,'Pagamento à vista com nota fiscal',this)"><div class="pname">PIX / Dinheiro COM NF</div><div class="pdesc">5% de desconto</div></div>
-        <div class="pay-btn" onclick="selectPay('Entrada + Boleto 4x',0,'Entrada + Boleto máximo 4x',this)"><div class="pname">Boleto (até 4x)</div><div class="pdesc">Sem desconto</div></div>
-        <div class="pay-btn" onclick="selectPay('Cartão de Crédito 10x',0,'Parcelamento no Cartão de Crédito até 10x',this)"><div class="pname">Cartão (até 10x)</div><div class="pdesc">Sem desconto</div></div>
-        <div class="pay-btn" onclick="selectPay('Entrada + Cheque 3x',0,'Entrada + Cheque máximo 3x',this)"><div class="pname">Cheque (até 3x)</div><div class="pdesc">Sem desconto</div></div>
-      </div>
+    <div class="qty-result" id="seat-result">Selecione o tipo de poltrona acima.</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header open" onclick="toggle(this)">
+    <h2>⚡ 5. Opcionais</h2>
+    <span class="badge" id="badge-opt">0</span>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="card-body open" id="lista-opt"></div>
+</div>
+
+<div class="card">
+  <div class="card-header open" onclick="toggle(this)">
+    <h2>💳 6. Condição de Pagamento</h2><span class="chevron">▼</span>
+  </div>
+  <div class="card-body open">
+    <div class="pay-opts">
+      <div class="pay-btn active" onclick="selectPay('PIX / Dinheiro',0.10,'50% de entrada + saldo via PIX',this)"><div class="pname">PIX / Dinheiro</div><div class="pdesc">10% de desconto</div></div>
+      <div class="pay-btn" onclick="selectPay('À Vista',0.05,'Pagamento à vista',this)"><div class="pname">À Vista (outro)</div><div class="pdesc">5% de desconto</div></div>
+      <div class="pay-btn" onclick="selectPay('Cartão / Boleto',0,'50% de entrada + 1 boleto para 30 dias',this)"><div class="pname">Cartão / Boleto</div><div class="pdesc">Sem desconto</div></div>
+      <div class="pay-btn" onclick="selectPay('Cheque',0,'50% de entrada + 1 cheque para 30 dias',this)"><div class="pname">Cheque</div><div class="pdesc">Sem desconto</div></div>
     </div>
   </div>
+</div>
 
-  <!-- RESUMO -->
-  <div class="card">
-    <div class="card-header open" onclick="toggle(this)">
-      <h2>📋 Resumo do Orçamento</h2><span class="chevron">▼</span>
-    </div>
-    <div class="card-body open" id="resumo"></div>
+<div class="card">
+  <div class="card-header open" onclick="toggle(this)">
+    <h2>📋 Resumo do Orçamento</h2><span class="chevron">▼</span>
   </div>
+  <div class="card-body open" id="resumo"></div>
+</div>
 
-  <button class="btn-gerar" onclick="gerarProposta()">📄 Gerar Proposta</button>
+<button class="btn-gerar" onclick="gerarProposta()">📄 Gerar Proposta</button>
 
-</div><!-- /container -->
+</div>
 
-<!-- MODAL PROPOSTA -->
 <div class="modal-bg" id="modal">
   <div class="modal-wrap">
     <div class="modal-actions">
@@ -249,354 +275,365 @@ header h1{font-size:17px;font-weight:600;flex:1}
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════════════════════
-//  V12 CUSTOMIZAÇÃO — Sistema de Orçamento
-//  Dados atualizados: Tabela de Orçamento 05/2026
-// ═══════════════════════════════════════════════════════════════════════
+const LOGO = "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";
 
-const LOGO = "__LOGO_PLACEHOLDER__";
-
-// ── PALETAS DE CORES / VARIANTES (da planilha 2026) ────────────────────
-const CORES_LED = ["Branco", "Azul", "Vermelho"];
-const CORES_PISO = ["Ref. 0023", "Ref. 0021", "Ref. 0025", "Ref. 0020"];
-const CORES_CORTINA = [
-  "317 Verde Luxo",
-  "368 Vermelho Luxo",
-  "172 Azul Arara Luxo",
-  "171 Cinza Grafite",
-  "293383 Azul Marinho Casca G7",
-  "10106079 Cinza Casca G7",
-  "1143 Verde Epoc 11",
-  "1404 Azul Claro Epoc 11",
-  "1402 Prata Epoc 11",
-  "1571 Cinza Chumbo Epoc 11",
-  "1429 Laranja Epoc 11",
-  "Customizada"
-];
-const SAIDA_EMERGENCIA = ["COM saída de emergência", "SEM saída de emergência"];
-const TAMANHOS_PP = ["1 metro", "2 metros", "3 metros"];
-const CORES_PEGAMAO = ["Grafite", "Amarelo"];
-const POSICAO_ALTOFALANTE = ["Plataforma", "Revestimento"];
-
-// ── VEÍCULOS ───────────────────────────────────────────────────────────
+// ── VEÍCULOS E CONFIGS ────────────────────────────────────────────────────
 const VEICULOS = {
-  master:   {nome:"Renault Master", config:"L3H2", taxa:0},
-  sprinter: {nome:"Mercedes Sprinter", config:"", taxa:0.1975},
-  scudo:    {nome:"Fiat Scudo", config:"", taxa:0},
-  ducato:   {nome:"Fiat Ducato", config:"", taxa:0.1975},
-  transit:  {nome:"Ford Transit", config:"", taxa:0.1975},
+  master:   {nome:"Renault Master",    taxa:0,     configs:["L3H2","L2H2","L1H1"]},
+  sprinter: {nome:"Mercedes Sprinter", taxa:0.1975, configs:["417","517","10,5m","15,5m"]},
+  scudo:    {nome:"Fiat Scudo",        taxa:0,     configs:["Furgão","Vitrê"]},
+  ducato:   {nome:"Fiat Ducato",       taxa:0.1975, configs:["Furgão","Vitrê"]},
+  transit:  {nome:"Ford Transit",      taxa:0.1975, configs:["L3H3","L4H3"]},
 };
 
-// ── ITENS OBRIGATÓRIOS (preços 2026) ───────────────────────────────────
-// Observação: o "Kit Piso" foi transformado num item OBRIGATÓRIO com DROPDOWN
-// de variante (3 opções de configuração) + dropdown de cor do tapete.
-const OBRIG = [
-  {id:"iso",  label:"Kit de Isolamento Termoacústico", desc:"Kit de Isolamento Termoacústico completo para redução de ruído e melhor conforto térmico interno.", preco:1180},
-  {id:"abs",  label:"Kit de Revestimento Interno (ABS)", desc:"Kit de Revestimento Interno em ABS, incluindo teto com duto de ar central e revestimentos laterais.", preco:11990},
-  {id:"piso", label:"Kit de Piso (Vinílico)", desc:"Kit de Piso com acabamento completo do piso da cabine do motorista.", preco:9890,
-    variants:[
-      {
-        label:"Configuração do piso",
-        options:[
-          {label:"COM Bagageiro e COM Levante", preco:9890},
-          {label:"SEM Bagageiro e SEM Levante (com Levante de Cabine)", preco:7200},
-          {label:"SEM Levante e SEM Plataforma", preco:5000},
-        ]
-      },
-      {label:"Cor do tapete vinílico", options: CORES_PISO.map(c=>({label:c}))}
+// ── ITENS (todos opcionais agora, conforme solicitado) ────────────────────
+const ITENS = [
+  // — Principais (desmarcáveis)
+  {id:"iso",  label:"Kit de Isolamento Termoacústico",
+   propLabel:"Kit de Isolamento Termoacústico completo para redução de ruído e melhor conforto térmico interno.",
+   preco:990, checked:false},
+  {id:"abs",  label:"Kit Revestimento Interno em ABS",
+   propLabel:"Revestimento Teto e Laterais em ABS Termoformado.",
+   preco:9850, checked:false},
+  {id:"piso", label:"Kit Piso c/ Bagageiro e Levante",
+   propLabel:"Kit de Piso com Bagageiro e Levante, revestido em vinílico cor: 0023 (tapete na cabine do motorista não incluso).",
+   preco:9890, checked:false},
+  {id:"seg",  label:"Kit de Segurança Obrigatório +10L",
+   propLabel:"Kit de Segurança Obrigatório para Veículos Acima de 10 Lugares, composto por:",
+   preco:780, checked:false,
+   sub:["Martelinhos de emergência","Faixas refletiva","Extintor de incêndio 4 kg ABC","Adesivos indicativos de Saída de Emergência"]},
+  {id:"ilum", label:"Kit Iluminação Interna para Revestimento",
+   propLabel:"Kit de Iluminação Interna para Revestimento cor Padrão.",
+   preco:540, checked:false},
+  // — Sempre obrigatórios
+  {id:"hom",  label:"Homologação do Veículo",
+   propLabel:"Homologação do Veículo",
+   preco:2750, checked:true, fixed:true},
+  {id:"mob",  label:"Mão de obra de instalação",
+   propLabel:"Projeto, montagem e acompanhamento técnico.",
+   preco:3270, checked:true, fixed:true},
+];
+
+// ── POLTRONAS E ADICIONAIS ────────────────────────────────────────────────
+const POLTRONAS = [
+  {id:"exec_ss_tec",  label:"Executiva Super Soft 1065 (N10) - Tecido",         planta:"", unit:2263.00},
+  {id:"exec_ss_cou",  label:"Executiva Super Soft 1065 (N10) - Couro Ecológico", planta:"", unit:1998.76},
+  {id:"exec_950_cou", label:"Executiva Soft 950 - Courvin Total",                planta:"", unit:1463.50},
+  {id:"exec_950_gan", label:"Executiva Soft 950 - Courvin + Ganzer",             planta:"", unit:1463.50},
+  {id:"exec_950_dia", label:"Executiva Soft 950 - Courvin + Diamante",           planta:"", unit:1479.76},
+  {id:"exec_950_sue", label:"Executiva Soft 950 - Courvin + Suede",              planta:"", unit:1479.76},
+  {id:"exec_950_tec", label:"Executiva Soft 950 - Tecido + Tecido Colorido",     planta:"", unit:1716.90},
+  {id:"van_esc",      label:"Poltrona Van Escolar",                              planta:"", unit:745.30},
+  {id:"fixa",         label:"Poltrona Fixa",                                     planta:"", unit:975.67},
+  {id:"leito",        label:"Poltrona Leito Total",                              planta:"", unit:4553.11},
+];
+
+// Adicionais por grupo de poltrona
+const ADICIONAIS_GRUPOS = {
+  exec_ss: { // Super Soft 1065
+    label:"Adicionais — Super Soft 1065",
+    items:[
+      {id:"ss_braco",    label:"Braço Móvel",                        preco:250.69},
+      {id:"ss_dsc_eco",  label:"Descança Pernas - Couro Ecológico", preco:487.83},
+      {id:"ss_dsc_pne",  label:"Descança Pernas Pneumático",        preco:1029.87},
+      {id:"ss_corre",    label:"Corrediça",                         preco:935.01},
+      {id:"ss_usb",      label:"Kit USB",                           preco:192.42},
+      {id:"ss_acab",     label:"Kit Acabamento Adicional",          preco:176.16},
+      {id:"ss_gira",     label:"Base Giratória",                    preco:745.30},
+      {id:"ss_pega",     label:"Pega Mão Lateral",                  preco:62.33},
     ]
   },
-  {id:"seg",  label:"Kit de Segurança Obrigatório", desc:"Kit de Segurança Obrigatório para Veículos Acima de 10 Lugares, composto por:", preco:780,
-    sub:["Martelinhos de emergência","Faixas refletivas","Extintor de incêndio 4 kg ABC","Adesivos indicativos de Saída de Emergência"]},
-  {id:"ilum", label:"Kit de Iluminação Interna para Revestimento", desc:"Kit de Iluminação Interna para Revestimento (3 Luminárias).", preco:842},
-  {id:"hom",  label:"Homologação do Veículo (Ônibus)", desc:"Homologação do Veículo (Ônibus) junto ao DETRAN.", preco:2750},
-  {id:"mob",  label:"Mão de obra de instalação (obrigatório)", desc:"Mão de obra de instalação (obrigatório).", preco:3270},
-];
-
-// ── POLTRONAS ──────────────────────────────────────────────────────────
-// Preços unitários = (valor kit) / (quantidade de lugares de referência do kit da planilha)
-// - Reclináveis 16L kit = R$ 26.020 / 16  ≈ R$ 1.626/lugar
-// - Escolar 20L kit = R$ 16.820 / 20 = R$ 841/lugar
-// - Executiva Soft 950: R$ 1.341,54 (COURVIN TOTAL) — arredondado p/ 1.350
-// - Leito Total: R$ 4.154,71 — arredondado p/ 4.160
-const POLTRONAS = [
-  {id:"escolar",  label:"Poltronas Incorpol Escolar",       planta:"Planta 1024",   unit:841,  cinto:102, brac:0},
-  {id:"recl",     label:"Poltronas Reclináveis",            planta:"Planta 1006",   unit:1626, cinto:170, brac:142},
-  {id:"exec",     label:"Poltronas Executiva Soft 950",     planta:"Especial",      unit:1350, cinto:170, brac:142},
-  {id:"execsup",  label:"Poltronas Executiva Super Soft",   planta:"N10 Especial",  unit:2083, cinto:170, brac:237},
-  {id:"leito",    label:"Poltronas Leito Total",            planta:"Especial",      unit:4160, cinto:190, brac:217},
-  {id:"fixa",     label:"Poltronas Fixas",                  planta:"Padrão",        unit:905,  cinto:95,  brac:160},
-];
-
-// ── OPCIONAIS (preços 2026) ────────────────────────────────────────────
-// Campos:
-//  - id, label, preco
-//  - colors (array): gera 1 dropdown com esse nome "Cor"
-//  - variants (array de {label, options[]}): múltiplos dropdowns
-//  - unit (bool): true para itens unitários (mostra campo qty)
-const OPT = [
-  {cat:"Iluminação LED", items:[
-    {id:"led_deg",  label:"Iluminação em LED no Degrau da Porta de Acesso", preco:300, colors: CORES_LED},
-    {id:"led_plat", label:"Iluminação em LED na Plataforma de Acesso",       preco:300, colors: CORES_LED},
-    {id:"led_carona", label:"Iluminação em LED sob Poltrona do Carona",      preco:300, colors: CORES_LED},
-    {id:"led_pp",   label:"Iluminação em LED no Porta Pacote",               preco:300, colors: CORES_LED},
-    {id:"led_bag",  label:"Iluminação em LED no Bagageiro (Branco)",         preco:300},
-    {id:"led_rgb",  label:"Kit Iluminação RGB Bluetooth — Degrau, Plataforma e sob poltrona Carona", preco:1780},
-    {id:"dicroica", label:"Luminárias Dicróicas no Porta Pacote (unitário)", preco:160, unit:true},
-  ]},
-
-  {cat:"Som e Multimídia", items:[
-    {id:"jbl69",     label:"Alto-falantes JBL 6x9 (Par)", preco:850, variants:[{label:"Local de instalação", options: POSICAO_ALTOFALANTE.map(c=>({label:c}))}]},
-    {id:"jbl6",      label:"Alto-falantes JBL 6\" (Par) — Portas", preco:520},
-    {id:"radio_jbl", label:"Rádio Bluetooth JBL", preco:610},
-    {id:"radio_pio", label:"Rádio Pioneer", preco:990},
-    {id:"multi",     label:"Multimídia UPPERTECH c/ Câmera de Ré e GPS (Bluetooth)", preco:1840},
-    {id:"moldura",   label:"Moldura 6.2\"", preco:630},
-    {id:"cam_fr",    label:"Câmera de Ré e Frontal (obrigatório Escolar)", preco:850},
-    {id:"monitor",   label:"Monitor (obrigatório Escolar)", preco:280},
-    {id:"tv_abs",    label:"Smart TV 24\" + Moldura em ABS + Inversor 300W", preco:4150},
-    {id:"tv_mad",    label:"Smart TV 24\" + Moldura em Madeira + Revestimento em Courvin", preco:4250},
-  ]},
-
-  {cat:"Conforto e Acabamento", items:[
-    {id:"cortina",   label:"Cortinas Comuns", preco:1320, variants:[
-      {label:"Saída de emergência", options: SAIDA_EMERGENCIA.map(c=>({label:c}))},
-      {label:"Cor da cortina",      options: CORES_CORTINA.map(c=>({label:c}))}
-    ]},
-    {id:"cortdiv",   label:"Cortina na Divisória", preco:670, variants:[
-      {label:"Cor da cortina", options: CORES_CORTINA.map(c=>({label:c}))}
-    ]},
-    {id:"cortplis",  label:"Cortinas Plissadas", preco:2550, variants:[
-      {label:"Saída de emergência", options: SAIDA_EMERGENCIA.map(c=>({label:c}))},
-      {label:"Cor da cortina",      options: CORES_CORTINA.map(c=>({label:c}))}
-    ]},
-    {id:"ar",        label:"Kit Ar Condicionado", preco:8980},
-    {id:"frigo41",   label:"Frigobar 41L Elber + Fonte Quadrivolt + Console", preco:3530},
-    {id:"frigo31",   label:"Frigobar 31L Elber + Console Revestido", preco:3300},
-    {id:"frigo29",   label:"Frigobar 29L Elber + Console Revestido", preco:3100},
-    {id:"frigo18",   label:"Frigobar 18L Elber + Console Revestido", preco:2900},
-    {id:"pelicula",  label:"Películas no Salão", preco:1080},
-    {id:"pp_le",     label:"Porta Pacote com Iluminação em LED - Lado Esquerdo", preco:2700, variants:[{label:"Tamanho", options: TAMANHOS_PP.map(c=>({label:c}))}]},
-    {id:"pp_ld",     label:"Porta Pacote com Iluminação em LED - Lado Direito",  preco:1500, variants:[{label:"Tamanho", options: TAMANHOS_PP.map(c=>({label:c}))}]},
-    {id:"sofa",      label:"Sofá Cama (4 Lugares) com Cinto de Segurança", preco:4800},
-    {id:"console",   label:"Console com Porta Copo (unitário)", preco:3000, unit:true},
-    {id:"mesa",      label:"Mesa Rebatível (unitário)", preco:1200, unit:true},
-    {id:"armario",   label:"Armário 800mm", preco:2040},
-    {id:"armario2m", label:"Armário Aéreo 2m com Fechadura", preco:4080},
-    {id:"fechpolt",  label:"Fechamento sob Poltrona Motorista e Auxiliar", preco:1080},
-    {id:"portacuia", label:"Porta Cuia", preco:1080, unit:true},
-    {id:"pegamao",   label:"Pega Mão na Coluna da Entrada", preco:260, variants:[{label:"Cor", options: CORES_PEGAMAO.map(c=>({label:c}))}]},
-    {id:"campainha", label:"Campainha do Motorista", preco:370},
-    {id:"trilho",    label:"Trilho Corrediça Poltrona do Carona", preco:1050},
-    {id:"saiacorr",  label:"Saia de acabamento no degrau da Porta Lateral em Courvin", preco:140},
-    {id:"gancho",    label:"Gancho (unitário)", preco:45, unit:true},
-  ]},
-
-  {cat:"Elétrica", items:[
-    {id:"usb1",   label:"Carregador USB (unitário)", preco:150, unit:true},
-    {id:"usb2",   label:"Carregador Duplo USB + USB-C (unitário)", preco:230, unit:true},
-    {id:"tomada", label:"Tomada 220V", preco:140, unit:true},
-    {id:"inv300", label:"Inversor 300W", preco:890},
-    {id:"inv1k",  label:"Inversor 1000W", preco:1340},
-    {id:"inv3k",  label:"Inversor 3000W", preco:1630},
-  ]},
-
-  {cat:"Vidros", items:[
-    {id:"vidros",  label:"Kit Vidros Colados Completo", preco:8215},
-    {id:"vidro1v", label:"Kit Vidros Colados 1º Vão", preco:3160},
-  ]},
-
-  {cat:"Estribos / Externos", items:[
-    {id:"estr_preto",  label:"Estribo Lateral (Preto)", preco:1310},
-    {id:"estr_polido", label:"Estribo Lateral (Polido)", preco:1980},
-  ]},
-
-  {cat:"Extras", items:[
-    {id:"adesiv",   label:"Adesivagem Escolar (obrigatório Escolar)", preco:1210},
-    {id:"delim",    label:"Delimitadora de Teto (obrigatório Escolar)", preco:450},
-    {id:"tacog",    label:"Tacógrafo Aferido c/ Bobina TACOVEL (obrigatório acima de 10L)", preco:4950},
-    {id:"kitusb_polt", label:"Instalação de KIT USB em Poltrona do cliente (unitário)", preco:605, unit:true},
-    {id:"inst_polt", label:"Kit Instalação de Poltronas fornecidas pelo cliente", preco:1295},
-  ]},
-];
-
-// ── STATE ──────────────────────────────────────────────────────────────
-let S = {
-  veiculo: "master",
-  poltrona: null,
-  qty: 16,
-  opts: {},          // { id: {ativo:true, preco:300, qty:1, variants:{...}, color:"Azul"} }
-  piso: {config:"COM Bagageiro e COM Levante", cor:"Ref. 0023", preco:9890},
-  pag: {label:"PIX / Dinheiro SEM NF", desc:0.10, cond:"50% de entrada + saldo via PIX (sem nota fiscal)"},
+  exec_950: { // Soft 950
+    label:"Adicionais — Soft 950",
+    items:[
+      {id:"s950_braco",   label:"Braço Móvel",                              preco:147.70},
+      {id:"s950_cinto3",  label:"Kit Cinto de Segurança 3 pontas retrátil", preco:250.69},
+      {id:"s950_cinto2",  label:"Kit Cinto de Segurança 2 pontas retrátil", preco:182.94},
+    ]
+  },
+  van_esc: {
+    label:"Adicionais — Van Escolar",
+    items:[
+      {id:"ve_cinto2",  label:"Kit Cinto de Segurança 2 pontas estático - Escolar", preco:101.63},
+      {id:"ve_braco",   label:"Braço Móvel",                                        preco:173.45},
+      {id:"ve_pega",    label:"Pega Mão Lateral",                                   preco:62.33},
+    ]
+  },
+  fixa: {
+    label:"Adicionais — Poltrona Fixa",
+    items:[
+      {id:"fix_cinto2e", label:"Kit Cinto de Segurança 2 pontas estático", preco:101.63},
+      {id:"fix_cinto3e", label:"Kit Cinto de Segurança 3 pontas estático", preco:268.31},
+      {id:"fix_braco",   label:"Braço Móvel",                              preco:173.45},
+    ]
+  },
+  leito: {
+    label:"Adicionais — Leito Total",
+    items:[
+      {id:"lei_cinto2r", label:"Kit Cinto de Segurança 2 pontas retrátil leito", preco:205.97},
+      {id:"lei_dsc",     label:"Descansa Pernas - Couro Ecológico",               preco:531.20},
+      {id:"lei_usb",     label:"Kit USB Leito",                                   preco:260.18},
+    ]
+  },
+  capa: {
+    label:"Capa do Motorista",
+    items:[
+      {id:"cap_mot",    label:"Capa do Motorista",                      preco:932.30},
+      {id:"cap_aux",    label:"Capa Motorista Auxiliar Individual e Dupla", preco:1555.65},
+      {id:"cap_enc",    label:"Capa Motorista + Encosto",                 preco:1748.07},
+    ]
+  }
 };
 
-// ── INIT ───────────────────────────────────────────────────────────────
+// Mapeamento poltrona → grupo de adicional
+const SEAT_GRUPO = {
+  exec_ss_tec:"exec_ss", exec_ss_cou:"exec_ss",
+  exec_950_cou:"exec_950", exec_950_gan:"exec_950",
+  exec_950_dia:"exec_950", exec_950_sue:"exec_950", exec_950_tec:"exec_950",
+  van_esc:"van_esc", fixa:"fixa", leito:"leito",
+};
+
+// ── OPCIONAIS (inalterados) ───────────────────────────────────────────────
+const OPT = [
+  {cat:"Iluminação LED", items:[
+    {id:"led_deg",  label:"Iluminação em LED no Degrau da Porta de Acesso.", preco:300, cores:["Branco","Azul","Vermelho"]},
+    {id:"led_plat", label:"Iluminação em LED na Plataforma de Acesso.", preco:300, cores:["Branco","Azul","Vermelho"]},
+    {id:"led_azul", label:"Iluminação em LED sob Poltrona do Carona.", preco:300, cores:["Branco","Azul","Vermelho"]},
+    {id:"led_bag",  label:"Iluminação em LED no Porta Pacote.", preco:300, cores:["Branco","Azul","Vermelho"]},
+    {id:"led_rgb",  label:"Kit iluminação RGB Bluetooth — degrau, plataforma e sob poltrona carona.", preco:1780},
+  ]},
+  {cat:"Som e Multimídia", items:[
+    {id:"jbl69",     label:'Alto-falantes JBL 6x9 (Par) instalado no bagageiro.', preco:850},
+    {id:"jbl6",      label:'Alto-falantes JBL 6" (Par). Portas.', preco:520},
+    {id:"radio",     label:"Rádio Bluetooth JBL.", preco:610},
+    {id:"camera",    label:"Câmera de Ré e Frontal com monitor.", preco:1840},
+  ]},
+  {cat:"Conforto e Acabamento", items:[
+    {id:"cortina",  label:"Cortinas Comuns, com possibilidade de configuração com ou sem saída de emergência.", preco:1320},
+    {id:"cortplis", label:"Cortinas Plissadas.", preco:2550},
+    {id:"ar",       label:"Kit Ar Condicionado.", preco:8980},
+    {id:"frigob",   label:"Frigobar 29L + Console Revestido.", preco:3100},
+    {id:"pelicula", label:"Películas.", preco:1080},
+  ]},
+  {cat:"Elétrica", items:[
+    {id:"usb1",   label:"Carregador USB (unitário).", preco:150},
+    {id:"usb2",   label:"Carregador Duplo USB + USB-C (unitário).", preco:230},
+    {id:"tomada", label:"Tomada 220v.", preco:140},
+  ]},
+  {cat:"Vidros", items:[
+    {id:"vidros",  label:"Kit Vidros Colados Completo.", preco:8215},
+    {id:"vidro1v", label:"Kit Vidros Colados 1º Vão.", preco:3160},
+  ]},
+  {cat:"Extras", items:[
+    {id:"adesiv",   label:"Adesivagem ESCOLAR.", preco:350},
+    {id:"delim",    label:"Delimitadoras de Teto.", preco:220},
+    {id:"tacog",    label:"Tacógrafo fornecido pelo cliente. (Vans será levada pela V12 para instalação e aferição)", preco:400},
+    {id:"saiacorr", label:"Saia na porta de correr para não entrar sujeira.", preco:180},
+    {id:"fechpolt", label:"Fechamento embaixo das Poltronas do Motorista e Auxiliar.", preco:280},
+    {id:"portapac", label:"Porta Pacote com Iluminação em LED - LE.", preco:2700},
+    {id:"portacuia", label:"Porta Cuia Revestido em Carpete e Courvim", preco:1080},
+  ]},
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+let S = {
+  veiculo:"master",
+  poltrona:null,
+  qty:24,
+  adicionais:{},
+  opts:{},
+  cores:{},
+  pag:{label:"PIX / Dinheiro", desc:0.10, cond:"50% de entrada + saldo via PIX"},
+};
+
+// ── INIT ──────────────────────────────────────────────────────────────────
 (function init(){
-  // ----- obrigatórios -----
-  const ol = document.getElementById("lista-obrig");
-  OBRIG.forEach(it => {
-    let html = `<div class="item-row">
-        <input type="checkbox" checked disabled/>
-        <label>${it.label}<small>${fmt(it.preco)}</small></label>
-        <span class="mandatory-tag">obrigatório</span>
-      </div>`;
-
-    // Dropdowns de variantes (ex: Piso → configuração + cor)
-    if(it.variants){
-      html += `<div class="obrig-variant">`;
-      it.variants.forEach((v, vi) => {
-        const opts = v.options.map(o => `<option value="${o.label}" data-preco="${o.preco || ''}">${o.label}${o.preco ? ' — '+fmt(o.preco) : ''}</option>`).join("");
-        html += `<div class="vrow" style="margin-bottom:6px">
-          <div class="vlabel">${v.label}</div>
-          <select onchange="onObrigVariant('${it.id}',${vi},this)">${opts}</select>
-        </div>`;
-      });
-      html += `</div>`;
-    }
-
-    ol.insertAdjacentHTML("beforeend", html);
-  });
-  document.getElementById("badge-obrig").textContent = OBRIG.length;
-
-  // ----- poltronas -----
-  const sl = document.getElementById("seat-types");
-  POLTRONAS.forEach(p => {
-    const u = p.unit + p.cinto + p.brac;
-    sl.insertAdjacentHTML("beforeend",
-      `<div class="seat-btn" id="sb_${p.id}" onclick="selectSeat('${p.id}',this)">
-        <div class="sname">${p.label}</div>
-        <div class="splanta">${p.planta}</div>
-        <div class="sprice">${fmt(u)}/lugar</div>
-      </div>`);
-  });
-
-  // ----- opcionais -----
-  const optl = document.getElementById("lista-opt");
-  OPT.forEach(cat => {
-    optl.insertAdjacentHTML("beforeend", `<div class="section-label">${cat.cat}</div>`);
-    cat.items.forEach(it => {
-      let row = `<div class="item-row">
-          <input type="checkbox" id="op_${it.id}" onchange="toggleOpt('${it.id}',this)"/>
-          <label for="op_${it.id}">${it.label}</label>
-          <span class="item-price">${fmt(it.preco)}${it.unit?'/un':''}</span>
-        </div>`;
-
-      // Campos extras (cor / variante / qtd) — escondidos até marcar
-      let extras = `<div class="variant-wrap" id="vw_${it.id}">`;
-      if(it.unit){
-        extras += `<div class="vrow">
-          <div class="vlabel">Quantidade</div>
-          <input type="number" min="1" max="40" value="1" id="qty_${it.id}"
-                 onchange="onOptQty('${it.id}',this.value)"
-                 style="width:90px;padding:7px 10px;border:1.5px solid #dde1ea;border-radius:6px;font-size:12px;text-align:center"/>
-        </div>`;
-      }
-      if(it.colors){
-        const opts = it.colors.map(c => `<option value="${c}">${c}</option>`).join("");
-        extras += `<div class="vrow">
-          <div class="vlabel">Cor</div>
-          <select onchange="onOptColor('${it.id}',this.value)"><option value="">— selecione —</option>${opts}</select>
-        </div>`;
-      }
-      if(it.variants){
-        it.variants.forEach((v, vi) => {
-          const opts = v.options.map(o => `<option value="${o.label}">${o.label}</option>`).join("");
-          extras += `<div class="vrow">
-            <div class="vlabel">${v.label}</div>
-            <select onchange="onOptVariant('${it.id}',${vi},'${v.label}',this.value)"><option value="">— selecione —</option>${opts}</select>
-          </div>`;
-        });
-      }
-      extras += `</div>`;
-
-      optl.insertAdjacentHTML("beforeend", row + extras);
-    });
-  });
-
+  renderItens();
+  renderPoltronas();
+  renderOpcionais();
   calcAll();
 })();
 
-// ── HANDLERS ───────────────────────────────────────────────────────────
+function renderItens(){
+  const c = document.getElementById("lista-itens");
+  c.innerHTML = "";
+  ITENS.forEach(it => {
+    const fixTag = it.fixed ? '<span style="font-size:10px;background:#e6f4ea;color:#1a6b3a;border-radius:4px;padding:1px 5px;font-weight:600;margin-left:4px">obrigatório</span>' : '';
+    c.insertAdjacentHTML("beforeend", `
+      <div class="item-row">
+        <input type="checkbox" id="it_${it.id}" ${it.checked?"checked":""} ${it.fixed?"disabled":""}
+          onchange="toggleItem('${it.id}',this)"/>
+        <label for="it_${it.id}">${it.label}${fixTag}<small>${fmt(it.preco)}</small></label>
+        <span class="item-price">${fmt(it.preco)}</span>
+      </div>`);
+  });
+  updateBadgeItens();
+}
+
+function toggleItem(id, el){
+  const it = ITENS.find(x => x.id === id);
+  if(it) it.checked = el.checked;
+  // Homologação: se mudar quantidade de lugares, recalcular preço
+  updateHom();
+  updateBadgeItens();
+  calcAll();
+}
+
+function updateBadgeItens(){
+  const n = ITENS.filter(x => x.checked).length;
+  document.getElementById("badge-itens").textContent = n;
+}
+
+// Homologação dinâmica por quantidade e veículo
+function updateHom(){
+  const hom = ITENS.find(x => x.id === "hom");
+  const qty = parseInt(document.getElementById("seat-qty").value) || 0;
+  if(S.veiculo === "scudo"){
+    hom.preco = 3500;
+    hom.propLabel = "Homologação do Veículo para " + qty + " Lugares (Scudo/Jumpy) — R$ 3.500,00";
+  } else if(qty >= 24){
+    hom.preco = 5500;
+    hom.propLabel = "Homologação do Veículo para " + qty + " Lugares (Ônibus) — R$ 5.500,00";
+  } else {
+    hom.preco = 2750;
+    hom.propLabel = "Homologação do Veículo para " + qty + " Lugares — R$ 2.750,00";
+  }
+  // Atualiza display
+  const label = document.querySelector(`label[for="it_hom"]`);
+  if(label) label.childNodes[0].textContent = "Homologação do Veículo";
+  const price = document.querySelector(`#it_hom`)?.closest(".item-row")?.querySelector(".item-price");
+  if(price) price.textContent = fmt(hom.preco);
+  const small = document.querySelector(`label[for="it_hom"] small`);
+  if(small) small.textContent = fmt(hom.preco);
+}
+
+// ── VEÍCULO ───────────────────────────────────────────────────────────────
 function selectVeh(v, el){
   S.veiculo = v;
   document.querySelectorAll(".veh-btn").forEach(b => b.classList.remove("active"));
   el.classList.add("active");
+  // Atualiza configs
+  const cfg = VEICULOS[v].configs;
+  const sel = document.getElementById("veh-config-sel");
+  sel.innerHTML = cfg.map(c => `<option>${c}</option>`).join("");
+  updateHom();
   calcAll();
+}
+
+// ── POLTRONAS ─────────────────────────────────────────────────────────────
+function renderPoltronas(){
+  const c = document.getElementById("seat-types");
+  c.innerHTML = "";
+  POLTRONAS.forEach(p => {
+    c.insertAdjacentHTML("beforeend", `
+      <div class="seat-btn" id="sb_${p.id}" onclick="selectSeat('${p.id}',this)">
+        <div class="sname">${p.label}</div>
+        <div class="sprice">${fmt(p.unit)}/lugar</div>
+      </div>`);
+  });
+  // Capa motorista sempre visível como grupo extra
+  renderAdicionais(null);
 }
 
 function selectSeat(id, el){
   S.poltrona = id;
+  S.adicionais = {}; // reset adicionais ao trocar poltrona
   document.querySelectorAll(".seat-btn").forEach(b => b.classList.remove("active"));
   el.classList.add("active");
+  renderAdicionais(id);
   calcSeats();
+}
+
+function renderAdicionais(seatId){
+  const wrap = document.getElementById("seat-extras-wrap");
+  wrap.innerHTML = "";
+
+  const grupos = [];
+  if(seatId){
+    const grupo = SEAT_GRUPO[seatId];
+    if(grupo && ADICIONAIS_GRUPOS[grupo]) grupos.push(ADICIONAIS_GRUPOS[grupo]);
+  }
+  // Capa motorista sempre aparece
+  grupos.push(ADICIONAIS_GRUPOS.capa);
+
+  grupos.forEach(g => {
+    let rows = g.items.map(it => `
+      <div class="seat-extra-row">
+        <input type="checkbox" id="ad_${it.id}" onchange="toggleAd('${it.id}',${it.preco},this)"/>
+        <label for="ad_${it.id}">${it.label}</label>
+        <span class="ep">${fmt(it.preco)}</span>
+      </div>`).join("");
+
+    wrap.insertAdjacentHTML("beforeend", `
+      <div class="seat-extras">
+        <div class="se-title">${g.label}</div>
+        ${rows}
+      </div>`);
+  });
+}
+
+function toggleAd(id, preco, el){
+  S.adicionais[id] = el.checked ? preco : 0;
+  calcAll();
 }
 
 function calcSeats(){
   S.qty = parseInt(document.getElementById("seat-qty").value) || 0;
+  updateHom();
   if(!S.poltrona){ calcAll(); return; }
   const p = POLTRONAS.find(x => x.id === S.poltrona);
-  const u = p.unit + p.cinto + p.brac;
+  const adVal = Object.values(S.adicionais).reduce((a,b) => a+b, 0);
+  const total = (p.unit * S.qty) + adVal;
   document.getElementById("seat-result").innerHTML =
-    `<strong>${p.label}</strong> &nbsp;—&nbsp; ${S.qty} lugares × ${fmt(u)}/lugar = <strong>${fmt(u * S.qty)}</strong>`;
-  document.getElementById("badge-seat").textContent = S.qty + "L – " + p.label.replace("Poltronas ","");
+    `<strong>${p.label}</strong> — ${S.qty} lugares × ${fmt(p.unit)} = ${fmt(p.unit * S.qty)}` +
+    (adVal > 0 ? ` + adicionais ${fmt(adVal)} = <strong>${fmt(total)}</strong>` : ` = <strong>${fmt(p.unit * S.qty)}</strong>`);
+  document.getElementById("badge-seat").textContent = S.qty + "L";
   calcAll();
 }
 
-function toggleOpt(id, el){
-  // encontrar item
-  let item = null;
-  OPT.forEach(cat => cat.items.forEach(i => { if(i.id === id) item = i; }));
-  if(!item) return;
+// ── OPCIONAIS ─────────────────────────────────────────────────────────────
+function renderOpcionais(){
+  const c = document.getElementById("lista-opt");
+  c.innerHTML = "";
+  OPT.forEach(cat => {
+    c.insertAdjacentHTML("beforeend", `<div class="section-label">${cat.cat}</div>`);
+    cat.items.forEach(it => {
+      const subCor = it.cores ? `
+        <div class="opt-sub" id="sub_${it.id}">
+          <div class="sub-label">COR</div>
+          <select onchange="selectOptCor('${it.id}',this.value)">
+            <option value="">— selecione —</option>
+            ${it.cores.map(c=>`<option value="${c}">${c}</option>`).join("")}
+          </select>
+        </div>` : "";
+      c.insertAdjacentHTML("beforeend", `
+        <div class="item-row">
+          <input type="checkbox" id="op_${it.id}" onchange="toggleOpt('${it.id}',${it.preco},this)"/>
+          <label for="op_${it.id}">${it.label}</label>
+          <span class="item-price">${fmt(it.preco)}</span>
+        </div>${subCor}`);
+    });
+  });
+}
 
-  const vw = document.getElementById("vw_" + id);
-
-  if(el.checked){
-    S.opts[id] = {
-      ativo:true, preco:item.preco, label:item.label,
-      qty: item.unit ? 1 : null, color:null, variants:{}
-    };
-    if(vw && (item.unit || item.colors || item.variants)) vw.classList.add("show");
-  } else {
-    delete S.opts[id];
-    if(vw) vw.classList.remove("show");
+function toggleOpt(id, preco, el){
+  S.opts[id] = el.checked ? preco : 0;
+  if(!el.checked) delete S.cores[id];
+  const sub = document.getElementById("sub_" + id);
+  if(sub){
+    sub.classList.toggle("visible", el.checked);
+    if(!el.checked) sub.querySelector("select").value = "";
   }
-
-  // atualiza badge
-  const n = Object.keys(S.opts).length;
+  const n = Object.values(S.opts).filter(v => v > 0).length;
   document.getElementById("badge-opt").textContent = n;
   calcAll();
 }
 
-function onOptQty(id, val){
-  if(!S.opts[id]) return;
-  S.opts[id].qty = parseInt(val) || 1;
-  calcAll();
+function selectOptCor(id, cor){
+  S.cores[id] = cor;
 }
 
-function onOptColor(id, val){
-  if(!S.opts[id]) return;
-  S.opts[id].color = val;
-}
-
-function onOptVariant(id, vi, label, val){
-  if(!S.opts[id]) return;
-  S.opts[id].variants[label] = val;
-}
-
-function onObrigVariant(id, vi, sel){
-  if(id !== "piso") return;
-  if(vi === 0){
-    // Configuração (muda o preço)
-    const preco = parseInt(sel.options[sel.selectedIndex].dataset.preco) || 0;
-    S.piso.config = sel.value;
-    S.piso.preco = preco;
-  } else if(vi === 1){
-    // Cor
-    S.piso.cor = sel.value;
-  }
-  calcAll();
-}
-
+// ── PAGAMENTO ─────────────────────────────────────────────────────────────
 function selectPay(label, desc, cond, el){
   S.pag = {label, desc, cond};
   document.querySelectorAll(".pay-btn").forEach(b => b.classList.remove("active"));
@@ -604,62 +641,69 @@ function selectPay(label, desc, cond, el){
   calcAll();
 }
 
-// ── CÁLCULO ────────────────────────────────────────────────────────────
+// ── CÁLCULO ───────────────────────────────────────────────────────────────
 function calcAll(){
   const taxa = VEICULOS[S.veiculo].taxa;
+  let sub = 0;
 
-  // Obrigatórios — piso usa preço dinâmico via S.piso
-  let baseObrig = 0;
-  OBRIG.forEach(o => {
-    if(o.id === "piso") baseObrig += S.piso.preco;
-    else baseObrig += o.preco;
-  });
+  // Itens marcados
+  ITENS.forEach(it => { if(it.checked) sub += it.preco; });
 
-  let sub = baseObrig;
+  // Poltronas
   let seatVal = 0;
+  let adVal = 0;
   if(S.poltrona){
     const p = POLTRONAS.find(x => x.id === S.poltrona);
-    seatVal = (p.unit + p.cinto + p.brac) * S.qty;
-    sub += seatVal;
+    seatVal = p.unit * S.qty;
+    adVal = Object.values(S.adicionais).reduce((a,b) => a+b, 0);
+    sub += seatVal + adVal;
   }
 
-  let optVal = 0;
-  Object.values(S.opts).forEach(o => {
-    optVal += o.preco * (o.qty || 1);
-  });
+  // Opcionais
+  const optVal = Object.values(S.opts).reduce((a,b) => a+b, 0);
   sub += optVal;
 
+  // Taxa
   const taxaVal = sub * taxa;
   sub += taxaVal;
+
+  // Desconto
   const descVal = sub * S.pag.desc;
   const total = sub - descVal;
 
   document.getElementById("header-total").textContent = fmt(total);
 
-  // ----- resumo -----
+  // Resumo
   const r = document.getElementById("resumo");
   let h = "";
-  h += srow("Itens obrigatórios", fmt(baseObrig));
-  if(seatVal > 0) h += srow(`Poltronas (${S.qty} lugares)`, fmt(seatVal));
-  if(optVal > 0)  h += srow("Opcionais", fmt(optVal));
-  if(taxaVal > 0) h += srow(`Taxas adicionais (${(taxa*100).toFixed(1)}%)`, fmt(taxaVal));
-  if(descVal > 0) h += `<div class="summary-row discount"><span>Desconto ${(S.pag.desc*100).toFixed(0)}% — ${S.pag.label}</span><span>− ${fmt(descVal)}</span></div>`;
+  const itensVal = ITENS.filter(x => x.checked).reduce((a,b) => a+b.preco, 0);
+  if(itensVal > 0) h += srow("Serviços e itens", fmt(itensVal));
+  if(seatVal > 0)  h += srow(`Poltronas (${S.qty} lugares)`, fmt(seatVal));
+  if(adVal > 0)    h += srow("Adicionais de poltrona", fmt(adVal));
+  if(optVal > 0)   h += srow("Opcionais", fmt(optVal));
+  if(taxaVal > 0)  h += srow(`Taxas adicionais (${(taxa*100).toFixed(1)}%)`, fmt(taxaVal));
+  if(descVal > 0)  h += `<div class="summary-row discount"><span>Desconto ${(S.pag.desc*100).toFixed(0)}% — ${S.pag.label}</span><span>− ${fmt(descVal)}</span></div>`;
   h += `<div class="summary-row total"><span>TOTAL</span><span>${fmt(total)}</span></div>`;
   r.innerHTML = h;
 
-  return {total, descVal, seatVal, optVal, taxaVal, baseObrig};
+  return {total, descVal, seatVal, adVal, optVal, taxaVal, itensVal};
 }
 
-function srow(l, v){ return `<div class="summary-row"><span>${l}</span><span>${v}</span></div>`; }
-function fmt(v){ return "R$ " + Math.round(v).toLocaleString("pt-BR"); }
+function srow(l,v){return`<div class="summary-row"><span>${l}</span><span>${v}</span></div>`;}
+function fmt(v){return"R$ "+(Math.round(v*100)/100).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
 
-// ── GERAR PROPOSTA ─────────────────────────────────────────────────────
+// ── GERAR PROPOSTA ────────────────────────────────────────────────────────
 function gerarProposta(){
-  const {total} = calcAll();
+  const {total, descVal} = calcAll();
   const v = VEICULOS[S.veiculo];
-  const cliente = document.getElementById("nome-cliente").value.trim() || "___________________";
-  const vNome = v.config ? v.nome + " " + v.config : v.nome;
-  const hoje = new Date().toLocaleDateString("pt-BR", {day:"numeric", month:"long", year:"numeric"});
+  const config = document.getElementById("veh-config-sel").value;
+  const vNome = v.nome + " " + config;
+
+  const cliente   = document.getElementById("cli-nome").value.trim() || "___________________";
+  const wpp       = document.getElementById("cli-wpp").value.trim();
+  const cidade    = document.getElementById("cli-cidade").value.trim();
+  const rep       = document.getElementById("cli-rep").value;
+  const hoje = new Date().toLocaleDateString("pt-BR",{day:"numeric",month:"long",year:"numeric"});
 
   const footer = `
     <div class="p-footer">
@@ -669,110 +713,78 @@ function gerarProposta(){
       Fone: (54) 99999 5399 &nbsp;|&nbsp; www.v12.ind.br
     </div>`;
 
-  // ── lista numerada de serviços ────────────────────────────────────────
+  // Lista numerada
   let num = 1;
   let itens = "";
 
-  // Obrigatórios — ordem do PDF, sem mão de obra (texto de intro)
-  // Ordem: iso, abs, piso, [poltrona], seg, ilum, hom
-  const OBRIG_LISTA = OBRIG.filter(it => it.id !== "mob");
-
-  // Atualiza texto da homologação com quantidade de lugares
-  const idxHom = OBRIG_LISTA.findIndex(x => x.id === "hom");
-  if(idxHom >= 0) OBRIG_LISTA[idxHom] = {...OBRIG_LISTA[idxHom], label: `Homologação do Veículo para ${S.qty} Lugares (Ônibus)`};
-
-  OBRIG_LISTA.forEach((it, idx) => {
-    // Poltrona entra depois do piso (idx 2), antes de seg (idx 3)
-    if(idx === 3 && S.poltrona){
+  // Poltrona entra na posição 4 (após piso)
+  let poltronaInserida = false;
+  ITENS.forEach((it, idx) => {
+    if(!it.checked) return;
+    // insere poltrona depois do piso (id=piso) ou antes da segurança
+    if(!poltronaInserida && it.id === "seg" && S.poltrona){
       const p = POLTRONAS.find(x => x.id === S.poltrona);
-      itens += li(num++, `Instalação de ${p.label} (${p.planta}) — ${S.qty} lugares`);
+      const adsAtivos = getAllAdicionais().filter(a => S.adicionais[a.id] > 0);
+      let adsSub = adsAtivos.length > 0
+        ? `<ul class="p-sublist">${adsAtivos.map(a=>`<li>${a.label} — ${fmt(a.preco)}</li>`).join("")}</ul>` : "";
+      itens += li(num++, `${p.label}${S.qty ? " — " + S.qty + " lugares" : ""}${adsSub}`);
+      poltronaInserida = true;
     }
-
-    if(it.id === "piso"){
-      // Piso com variantes selecionadas
-      const subHTML = `<ul class="p-sublist">
-        <li>Configuração: ${S.piso.config}</li>
-        <li>Tapete vinílico: ${S.piso.cor}</li>
-      </ul>`;
-      itens += li(num++, it.label, subHTML);
-    } else if(it.sub){
-      const subHTML = `<ul class="p-sublist">${it.sub.map(s => `<li>${s}</li>`).join("")}</ul>`;
-      itens += li(num++, it.label, subHTML);
-    } else {
-      itens += li(num++, it.label);
-    }
+    const subHTML = it.sub
+      ? `<ul class="p-sublist">${it.sub.map(s=>`<li>${s}</li>`).join("")}</ul>` : "";
+    itens += li(num++, it.propLabel, subHTML);
   });
 
-  // Caso poltrona nunca tenha sido inserida (lista curta)
-  if(S.poltrona && OBRIG_LISTA.length < 3){
+  // Se poltrona selecionada mas nenhum item anterior marcado
+  if(!poltronaInserida && S.poltrona){
     const p = POLTRONAS.find(x => x.id === S.poltrona);
-    itens += li(num++, `Instalação de ${p.label} (${p.planta}) — ${S.qty} lugares`);
+    const adsAtivos = getAllAdicionais().filter(a => S.adicionais[a.id] > 0);
+    let adsSub = adsAtivos.length > 0
+      ? `<ul class="p-sublist">${adsAtivos.map(a=>`<li>${a.label} — ${fmt(a.preco)}</li>`).join("")}</ul>` : "";
+    itens += li(num++, `${p.label}${S.qty ? " — " + S.qty + " lugares" : ""}${adsSub}`);
   }
 
-  // Opcionais marcados (com cores/variantes/qty)
+  // Opcionais
   OPT.forEach(cat => {
     cat.items.forEach(it => {
-      const sel = S.opts[it.id];
-      if(!sel) return;
-      let txt = it.label;
-      const tags = [];
-      if(sel.qty && sel.qty > 1) tags.push(`${sel.qty} unidades`);
-      if(sel.color) tags.push(`Cor: ${sel.color}`);
-      if(sel.variants){
-        Object.entries(sel.variants).forEach(([k,v]) => { if(v) tags.push(`${k}: ${v}`); });
-      }
-      if(tags.length > 0){
-        const subHTML = `<ul class="p-sublist">${tags.map(t => `<li>${t}</li>`).join("")}</ul>`;
-        itens += li(num++, txt, subHTML);
-      } else {
-        itens += li(num++, txt);
-      }
+      if(S.opts[it.id] > 0) itens += li(num++, it.label);
     });
   });
 
-  // Condição de pagamento
   const condStr = S.pag.desc > 0
     ? `${S.pag.cond} — com ${(S.pag.desc*100).toFixed(0)}% de desconto.`
     : `${S.pag.cond}.`;
 
-  // ── PÁGINA 1 ──
+  // Cabeçalho da proposta com dados do cliente
+  const clienteInfo = `
+    <div style="margin-bottom:18px;font-size:10.5pt;line-height:1.8">
+      <strong>Cliente:</strong> ${cliente}${cidade ? " — " + cidade : ""}${wpp ? " &nbsp;|&nbsp; WhatsApp: " + wpp : ""}<br>
+      <strong>Representante:</strong> ${rep}
+    </div>`;
+
   const pag1 = `
     <div class="proposta-page">
       <div class="p-logo"><img src="data:image/jpeg;base64,${LOGO}" alt="V12"/></div>
       <div class="p-titulo">PROPOSTA COMERCIAL</div>
-
-      <div class="p-cliente-box">
-        <strong>Cliente:</strong> ${cliente}<br>
-        <strong>Veículo:</strong> ${vNome}<br>
-        <strong>Configuração:</strong> Ônibus ${S.qty} Lugares<br>
-        <strong>Data:</strong> ${hoje}
-      </div>
-
       <div class="p-intro">
-        Segue proposta comercial conforme descrição abaixo, referente à adaptação do<br>
+        Segue proposta comercial conforme descrição abaixo, referente à adaptação de<br>
         veículo <b>${vNome}</b> em <b>Ônibus ${S.qty}L</b>.
       </div>
+      ${clienteInfo}
       <div class="p-section-title">1.&nbsp;&nbsp;SERVIÇOS:</div>
       <div class="p-sub">Projeto, montagem e acompanhamento técnico conforme especificações que seguem abaixo:</div>
       <ul class="p-list">${itens}</ul>
       ${footer}
     </div>`;
 
-  // ── PÁGINA 2 ──
   const pag2 = `
     <div class="proposta-page">
       <div class="p-logo"><img src="data:image/jpeg;base64,${LOGO}" alt="V12"/></div>
-
-      <div class="p-cliente-box">
-        <strong>Cliente:</strong> ${cliente}
-      </div>
-
       <div class="p-section-title" style="font-size:13pt;margin-top:24px">2.&nbsp;&nbsp;Forma de pagamento:&nbsp;<span style="font-size:13pt">(CONDIÇÃO ESPECIAL)</span></div>
       <div class="p-valor">Valor Total: ${fmt(total)}</div>
       <div class="p-cond-label">Condições de pagamento:</div>
       <div class="p-cond">${condStr}</div>
       <div class="p-cond" style="margin-top:8px"><strong>Prazo de Entrega:</strong> 30 dias úteis.</div>
-
       <div class="p-section-title" style="margin-top:28px">3.&nbsp;&nbsp;OBSERVAÇÕES:</div>
       <p class="p-obs-text">3.1&nbsp;&nbsp;A empresa V12 Veículos Especiais conta com equipe técnica especializada e acompanhamento técnico durante toda a execução do trabalho, garantindo ao cliente as melhores soluções, segurança e qualidade na execução dos serviços executados.</p>
       <div class="p-data">Caxias do Sul, ${hoje}.</div>
@@ -782,6 +794,12 @@ function gerarProposta(){
   document.getElementById("proposta-pages").innerHTML = pag1 + pag2;
   document.getElementById("modal").classList.add("open");
   document.getElementById("modal").scrollTop = 0;
+}
+
+function getAllAdicionais(){
+  const all = [];
+  Object.values(ADICIONAIS_GRUPOS).forEach(g => g.items.forEach(i => all.push(i)));
+  return all;
 }
 
 function li(n, txt, extra=""){
