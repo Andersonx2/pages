@@ -3,24 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr. Alexandre Walter - Tratamento de Dor Crônica</title>
+    <title>Tierra Guaraní - Imóveis de Luxo no Paraguai</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
                         sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        medical: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            500: '#0ea5e9', // Azul claro para destaques
-                            800: '#075985', // Azul escuro para textos
-                            900: '#0c4a6e', // Azul profundo para fundos
+                        guarani: {
+                            50: '#f7f5f0',
+                            100: '#efe9dc',
+                            200: '#dfd3b8',
+                            300: '#c9b48a',
+                            400: '#b59564',
+                            500: '#a67c52',
+                            600: '#8b6544',
+                            700: '#705038',
+                            800: '#5c4232',
+                            900: '#4d372b',
                         }
                     }
                 }
@@ -28,135 +34,961 @@
         }
     </script>
     <style>
-        /* Smooth Scrolling */
-        html { scroll-behavior: smooth; }
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+        }
+        .property-card:hover .property-image {
+            transform: scale(1.05);
+        }
+        .property-image {
+            transition: transform 0.5s ease;
+        }
+        .slide {
+            display: none;
+            animation: fadeIn 0.8s ease;
+        }
+        .slide.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .nav-blur {
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.95);
+        }
+        .gold-text {
+            background: linear-gradient(135deg, #b59564 0%, #dfd3b8 50%, #b59564 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .map-container {
+            background: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1200&q=80') center/cover;
+            position: relative;
+        }
+        .map-overlay {
+            background: rgba(77, 55, 43, 0.85);
+        }
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #a67c52;
+            border-radius: 3px;
+        }
     </style>
 </head>
-<body class="font-sans text-gray-700 antialiased bg-white">
+<body class="font-sans text-gray-800 bg-guarani-50">
 
-    <header class="relative bg-medical-900 h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Ambiente médico calmo" class="w-full h-full object-cover opacity-20">
-            <div class="absolute inset-0 bg-gradient-to-b from-medical-900/90 to-medical-900/70"></div>
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 nav-blur border-b border-guarani-200 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-guarani-700 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-landmark text-guarani-200 text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-serif text-2xl font-bold text-guarani-800">Tierra Guaraní</h1>
+                        <p class="text-xs text-guarani-600 tracking-widest uppercase">Imobiliária Premium</p>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#imoveis" class="text-guarani-800 hover:text-guarani-600 font-medium transition">Imóveis</a>
+                    <a href="#bairros" class="text-guarani-800 hover:text-guarani-600 font-medium transition">Bairros</a>
+                    <a href="#investimento" class="text-guarani-800 hover:text-guarani-600 font-medium transition">Investimento</a>
+                    <a href="#servicos" class="text-guarani-800 hover:text-guarani-600 font-medium transition">Serviços</a>
+                    <a href="#contato" class="bg-guarani-700 text-white px-6 py-2.5 rounded-full hover:bg-guarani-800 transition shadow-lg">Contato</a>
+                </div>
+
+                <button class="md:hidden text-guarani-800" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
         </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-guarani-200">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#imoveis" class="block text-guarani-800 py-2">Imóveis</a>
+                <a href="#bairros" class="block text-guarani-800 py-2">Bairros</a>
+                <a href="#investimento" class="block text-guarani-800 py-2">Investimento</a>
+                <a href="#servicos" class="block text-guarani-800 py-2">Serviços</a>
+                <a href="#contato" class="block bg-guarani-700 text-white px-4 py-2 rounded text-center">Contato</a>
+            </div>
+        </div>
+    </nav>
 
-        <div class="container mx-auto px-6 relative z-10 text-center max-w-4xl">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                A dor invisível para os outros é a realidade que tratamos com seriedade.
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80" class="w-full h-full object-cover" alt="Luxury Home">
+            <div class="absolute inset-0 hero-gradient"></div>
+        </div>
+        
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <div class="mb-6 inline-block">
+                <span class="text-guarani-300 text-sm tracking-[0.3em] uppercase font-medium">Assunção • Paraguai</span>
+            </div>
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl text-white font-bold mb-6 leading-tight">
+                Seu Refúgio<br>
+                <span class="gold-text">na América do Sul</span>
             </h1>
-            <p class="text-xl md:text-2xl text-gray-200 mb-10 font-light">
-                Diagnóstico preciso e intervenção cirúrgica para Neuralgia do Trigêmeo e Dores Craniofaciais Refratárias. <span class="font-semibold text-white">Existe vida além da dor.</span>
-            </p>
-            <a href="#contato" class="inline-block bg-medical-500 hover:bg-sky-400 text-white font-semibold py-4 px-8 rounded-full transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-lg">
-                Investigar a Causa da Minha Dor
-            </a>
-        </div>
-    </header>
-
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-6 max-w-5xl">
-            <div class="text-center mb-16">
-                <span class="text-medical-500 font-bold tracking-wider uppercase text-sm">Você não está sozinho</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mt-2 mb-6">Mais do que um sintoma, um sinal de alerta.</h2>
-                <p class="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
-                    Viver com dor crônica é exaustivo. É conviver com a incerteza de quando a próxima crise virá. Muitos de nossos pacientes chegam ao consultório após anos de tratamentos paliativos, ouvindo que "precisam aprender a conviver com isso". <strong>Nós discordamos.</strong>
-                </p>
-            </div>
-
-            <div class="bg-medical-50 rounded-2xl p-8 md:p-12 shadow-sm border border-medical-100">
-                <h3 class="text-xl font-semibold text-medical-900 mb-6">Se você sofre com:</h3>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="flex flex-col items-center text-center p-4">
-                        <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
-                        </div>
-                        <p class="text-gray-700 font-medium">Choques súbitos e excruciantes na face (como descargas elétricas).</p>
-                    </div>
-                    <div class="flex flex-col items-center text-center p-4">
-                        <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
-                        </div>
-                        <p class="text-gray-700 font-medium">Dores de cabeça que não respondem mais aos analgésicos potentes.</p>
-                    </div>
-                    <div class="flex flex-col items-center text-center p-4">
-                        <div class="w-12 h-12 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                        <p class="text-gray-700 font-medium">O medo constante de atividades simples como mastigar, falar ou sentir o vento.</p>
-                    </div>
-                </div>
-                <div class="mt-10 text-center">
-                    <p class="text-medical-800 font-semibold text-lg">É o momento de investigar a anatomia por trás do seu sofrimento.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-20 bg-gray-50">
-        <div class="container mx-auto px-6 max-w-6xl">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Tratando a causa, não apenas a consequência.</h2>
-                    <p class="text-lg text-gray-600 mb-6">
-                        A dor crônica, especialmente a Neuralgia do Trigêmeo, frequentemente possui uma origem mecânica, como a compressão de um nervo por um vaso sanguíneo. O <strong>Dr. Alexandre Walter</strong> é especialista em identificar essas sutilezas anatômicas.
-                    </p>
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 h-6 w-6 rounded-full bg-medical-500 flex items-center justify-center mt-1">
-                                <svg class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                </svg>
-                            </div>
-                            <div class="ml-4">
-                                <h4 class="text-xl font-bold text-gray-900">Descompressão Microvascular</h4>
-                                <p class="text-gray-600 mt-1">Uma intervenção minuciosa para libertar o nervo da compressão pulsátil, visando a cura definitiva.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 h-6 w-6 rounded-full bg-medical-500 flex items-center justify-center mt-1">
-                                <svg class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                </svg>
-                            </div>
-                            <div class="ml-4">
-                                <h4 class="text-xl font-bold text-gray-900">Neuromodulação e Rizotomia</h4>
-                                <p class="text-gray-600 mt-1">Procedimentos minimamente invasivos que interrompem o ciclo da dor para casos complexos.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1551884170-09fb70a3a2ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Tecnologia Médica" class="rounded-2xl shadow-2xl relative z-10 w-full">
-                    <div class="absolute -bottom-6 -left-6 w-full h-full bg-medical-200 rounded-2xl -z-0"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer id="contato" class="bg-medical-900 py-20">
-        <div class="container mx-auto px-6 text-center max-w-4xl">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Um novo capítulo, sem a sombra da dor.</h2>
-            <p class="text-xl text-gray-300 mb-10 leading-relaxed">
-                A medicina moderna oferece recursos extraordinários para que a dor deixe de ser a protagonista da sua vida. Agende uma análise detalhada do seu quadro clínico.
+            <p class="text-gray-200 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light">
+                Propriedades exclusivas nos bairros mais prestigiados de Assunção. 
+                Investimento seguro com retorno garantido no coração do Mercosul.
             </p>
             
-            <div class="flex flex-col md:flex-row justify-center items-center gap-4">
-                <a href="#" class="w-full md:w-auto bg-white text-medical-900 font-bold py-4 px-8 rounded-full shadow-lg hover:bg-gray-100 transition duration-300 text-lg">
-                    Solicitar Análise do Meu Caso com Dr. Alexandre
-                </a>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="scrollToSection('imoveis')" class="bg-guarani-500 text-white px-8 py-4 rounded-full hover:bg-guarani-400 transition shadow-xl text-lg font-medium">
+                    Explorar Imóveis
+                </button>
+                <button onclick="openTourModal()" class="border-2 border-white text-white px-8 py-4 rounded-full hover:bg-white hover:text-guarani-900 transition text-lg font-medium">
+                    <i class="fas fa-play-circle mr-2"></i> Tour Virtual
+                </button>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-white text-2xl opacity-70"></i>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="bg-guarani-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+                <div class="text-3xl md:text-4xl font-serif font-bold text-guarani-300">350+</div>
+                <div class="text-guarani-200 text-sm mt-1">Imóveis Premium</div>
+            </div>
+            <div>
+                <div class="text-3xl md:text-4xl font-serif font-bold text-guarani-300">15</div>
+                <div class="text-guarani-200 text-sm mt-1">Anos de Experiência</div>
+            </div>
+            <div>
+                <div class="text-3xl md:text-4xl font-serif font-bold text-guarani-300">98%</div>
+                <div class="text-guarani-200 text-sm mt-1">Clientes Satisfeitos</div>
+            </div>
+            <div>
+                <div class="text-3xl md:text-4xl font-serif font-bold text-guarani-300">3.15%</div>
+                <div class="text-guarani-200 text-sm mt-1">Valorização Anual (CAGR)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Properties -->
+    <section id="imoveis" class="py-20 max-w-7xl mx-auto px-4">
+        <div class="text-center mb-16">
+            <span class="text-guarani-600 font-medium tracking-widest uppercase text-sm">Portfólio Exclusivo</span>
+            <h2 class="font-serif text-4xl md:text-5xl text-guarani-900 mt-2 mb-4">Propriedades em Destaque</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Selecionamos os melhores imóveis em Assunção, desde apartamentos de luxo até mansões exclusivas nos bairros mais valorizados.</p>
+        </div>
+
+        <!-- Filters -->
+        <div class="flex flex-wrap justify-center gap-3 mb-12">
+            <button onclick="filterProperties('all')" class="filter-btn active bg-guarani-700 text-white px-6 py-2 rounded-full text-sm font-medium transition" data-filter="all">Todos</button>
+            <button onclick="filterProperties('casa')" class="filter-btn bg-white text-guarani-800 border border-guarani-300 px-6 py-2 rounded-full text-sm font-medium hover:bg-guarani-100 transition" data-filter="casa">Casas</button>
+            <button onclick="filterProperties('apartamento')" class="filter-btn bg-white text-guarani-800 border border-guarani-300 px-6 py-2 rounded-full text-sm font-medium hover:bg-guarani-100 transition" data-filter="apartamento">Apartamentos</button>
+            <button onclick="filterProperties('terreno')" class="filter-btn bg-white text-guarani-800 border border-guarani-300 px-6 py-2 rounded-full text-sm font-medium hover:bg-guarani-100 transition" data-filter="terreno">Terrenos</button>
+            <button onclick="filterProperties('lancamento')" class="filter-btn bg-white text-guarani-800 border border-guarani-300 px-6 py-2 rounded-full text-sm font-medium hover:bg-guarani-100 transition" data-filter="lancamento">Lançamentos</button>
+        </div>
+
+        <!-- Properties Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="propertiesGrid">
+            <!-- Property 1 -->
+            <div class="property-card group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300" data-type="casa" data-price="2200000" data-location="Las Lomas">
+                <div class="relative overflow-hidden h-72">
+                    <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80" class="property-image w-full h-full object-cover" alt="Casa Las Lomas">
+                    <div class="absolute top-4 left-4 bg-guarani-700 text-white px-3 py-1 rounded-full text-xs font-medium">Destaque</div>
+                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur text-guarani-900 px-3 py-1 rounded-full text-xs font-bold">USD 2.200.000</div>
+                    <button onclick="toggleFavorite(this)" class="absolute bottom-4 right-4 w-10 h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center text-guarani-400 hover:text-red-500 transition">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-serif text-xl font-bold text-guarani-900">Mansão Los Laureles</h3>
+                        <span class="text-xs bg-guarani-100 text-guarani-800 px-2 py-1 rounded">Casa</span>
+                    </div>
+                    <p class="text-gray-500 text-sm mb-4"><i class="fas fa-map-marker-alt mr-1 text-guarani-500"></i> Las Lomas, Assunção</p>
+                    <div class="flex items-center gap-4 text-sm text-gray-600 mb-4 border-t border-gray-100 pt-4">
+                        <span><i class="fas fa-bed mr-1"></i> 7 Suítes</span>
+                        <span><i class="fas fa-bath mr-1"></i> 8 Banh</span>
+                        <span><i class="fas fa-ruler-combined mr-1"></i> 2.904m²</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">Residência excepcional com 71m de frente, jardim exuberante, piscina e área de churrasqueira. Localização privilegiada próxima à Av. Mariscal López.</p>
+                    <button onclick="openPropertyModal(1)" class="w-full bg-guarani-800 text-white py-3 rounded-lg hover:bg-guarani-900 transition font-medium">Ver Detalhes</button>
+                </div>
             </div>
 
-            <p class="mt-12 text-sm text-gray-500 border-t border-gray-700 pt-8">
-                &copy; 2024 Dr. Alexandre Walter. Todos os direitos reservados. CRM/RQE INSERIR AQUI.
-            </p>
+            <!-- Property 2 -->
+            <div class="property-card group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300" data-type="apartamento" data-price="1100000" data-location="Villa Morra">
+                <div class="relative overflow-hidden h-72">
+                    <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80" class="property-image w-full h-full object-cover" alt="Apartamento Villa Morra">
+                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur text-guarani-900 px-3 py-1 rounded-full text-xs font-bold">USD 1.100.000</div>
+                    <button onclick="toggleFavorite(this)" class="absolute bottom-4 right-4 w-10 h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center text-guarani-400 hover:text-red-500 transition">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-serif text-xl font-bold text-guarani-900">Cobertura Casa Vista</h3>
+                        <span class="text-xs bg-guarani-100 text-guarani-800 px-2 py-1 rounded">Apartamento</span>
+                    </div>
+                    <p class="text-gray-500 text-sm mb-4"><i class="fas fa-map-marker-alt mr-1 text-guarani-500"></i> Villa Morra, Assunção</p>
+                    <div class="flex items-center gap-4 text-sm text-gray-600 mb-4 border-t border-gray-100 pt-4">
+                        <span><i class="fas fa-bed mr-1"></i> 3 Suítes</span>
+                        <span><i class="fas fa-bath mr-1"></i> 4 Banh</span>
+                        <span><i class="fas fa-ruler-combined mr-1"></i> 340m²</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">Cobertura de 340m² no Edifício Casa Vista com piscina privativa, terraço com jardim e vista panorâmica da Avenida Santa Teresa.</p>
+                    <button onclick="openPropertyModal(2)" class="w-full bg-guarani-800 text-white py-3 rounded-lg hover:bg-guarani-900 transition font-medium">Ver Detalhes</button>
+                </div>
+            </div>
+
+            <!-- Property 3 -->
+            <div class="property-card group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300" data-type="casa" data-price="2000000" data-location="Barrio Herrera">
+                <div class="relative overflow-hidden h-72">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80" class="property-image w-full h-full object-cover" alt="Casa Herrera">
+                    <div class="absolute top-4 left-4 bg-green-600 text-white px-3 py-1 rounded-full text-xs font-medium">Novo</div>
+                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur text-guarani-900 px-3 py-1 rounded-full text-xs font-bold">USD 2.000.000</div>
+                    <button onclick="toggleFavorite(this)" class="absolute bottom-4 right-4 w-10 h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center text-guarani-400 hover:text-red-500 transition">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-serif text-xl font-bold text-guarani-900">Residência Barrio Herrera</h3>
+                        <span class="text-xs bg-guarani-100 text-guarani-800 px-2 py-1 rounded">Casa</span>
+                    </div>
+                    <p class="text-gray-500 text-sm mb-4"><i class="fas fa-map-marker-alt mr-1 text-guarani-500"></i> Barrio Herrera, Assunção</p>
+                    <div class="flex items-center gap-4 text-sm text-gray-600 mb-4 border-t border-gray-100 pt-4">
+                        <span><i class="fas fa-bed mr-1"></i> 5 Suítes</span>
+                        <span><i class="fas fa-bath mr-1"></i> 6 Banh</span>
+                        <span><i class="fas fa-ruler-combined mr-1"></i> 1.512m²</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">Obra-prima arquitetônica com piscina aquecida, adega climatizada, quadra poliesportiva e vista para o jardim de 1.512m².</p>
+                    <button onclick="openPropertyModal(3)" class="w-full bg-guarani-800 text-white py-3 rounded-lg hover:bg-guarani-900 transition font-medium">Ver Detalhes</button>
+                </div>
+            </div>
+
+            <!-- Property 4 -->
+            <div class="property-card group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300" data-type="apartamento" data-price="315800" data-location="Ycua Sati">
+                <div class="relative overflow-hidden h-72">
+                    <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80" class="property-image w-full h-full object-cover" alt="Apartamento Ycua Sati">
+                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur text-guarani-900 px-3 py-1 rounded-full text-xs font-bold">USD 315.800</div>
+                    <button onclick="toggleFavorite(this)" class="absolute bottom-4 right-4 w-10 h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center text-guarani-400 hover:text-red-500 transition">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-serif text-xl font-bold text-guarani-900">Alzara Plaza</h3>
+                        <span class="text-xs bg-guarani-100 text-guarani-800 px-2 py-1 rounded">Apartamento</span>
+                    </div>
+                    <p class="text-gray-500 text-sm mb-4"><i class="fas fa-map-marker-alt mr-1 text-guarani-500"></i> Ycua Sati, Assunção</p>
+                    <div class="flex items-center gap-4 text-sm text-gray-600 mb-4 border-t border-gray-100 pt-4">
+                        <span><i class="fas fa-bed mr-1"></i> 2-3 Qts</span>
+                        <span><i class="fas fa-bath mr-1"></i> 2 Banh</span>
+                        <span><i class="fas fa-ruler-combined mr-1"></i> 180-220m²</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">Edifício sofisticado com 18 unidades novas, áreas verdes, piscina e segurança 24h. Excelente oportunidade de investimento.</p>
+                    <button onclick="openPropertyModal(4)" class="w-full bg-guarani-800 text-white py-3 rounded-lg hover:bg-guarani-900 transition font-medium">Ver Detalhes</button>
+                </div>
+            </div>
+
+            <!-- Property 5 -->
+            <div class="property-card group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300" data-type="terreno" data-price="820000" data-location="Mariscal Estigarribia">
+                <div class="relative overflow-hidden h-72">
+                    <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80" class="property-image w-full h-full object-cover" alt="Terreno">
+                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur text-guarani-900 px-3 py-1 rounded-full text-xs font-bold">USD 820.000</div>
+                    <button onclick="toggleFavorite(this)" class="absolute bottom-4 right-4 w-10 h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center text-guarani-400 hover:text-red-500 transition">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-serif text-xl font-bold text-guarani-900">Terreno Estratégico</h3>
+                        <span class="text-xs bg-guarani-100 text-guarani-800 px-2 py-1 rounded">Terreno</span>
+                    </div>
+                    <p class="text-gray-500 text-sm mb-4"><i class="fas fa-map-marker-alt mr-1 text-guarani-500"></i> Mariscal Estigarribia</p>
+                    <div class="flex items-center gap-4 text-sm text-gray-600 mb-4 border-t border-gray-100 pt-4">
+                        <span><i class="fas fa-expand mr-1"></i> 1.000m²</span>
+                        <span><i class="fas fa-building mr-1"></i> 600m² Constr.</span>
+                        <span><i class="fas fa-layer-group mr-1"></i> 10 Andares</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">Lote de 1.000m² com construção existente de 600m². Potencial para desenvolvimento residencial ou corporativo em área de alta valorização.</p>
+                    <button onclick="openPropertyModal(5)" class="w-full bg-guarani-800 text-white py-3 rounded-lg hover:bg-guarani-900 transition font-medium">Ver Detalhes</button>
+                </div>
+            </div>
+
+            <!-- Property 6 -->
+            <div class="property-card group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300" data-type="lancamento" data-price="0" data-location="Santa Teresa">
+                <div class="relative overflow-hidden h-72">
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80" class="property-image w-full h-full object-cover" alt="Lançamento">
+                    <div class="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium">Lançamento</div>
+                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur text-guarani-900 px-3 py-1 rounded-full text-xs font-bold">Sob Consulta</div>
+                    <button onclick="toggleFavorite(this)" class="absolute bottom-4 right-4 w-10 h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center text-guarani-400 hover:text-red-500 transition">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-serif text-xl font-bold text-guarani-900">Icono Tower</h3>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Lançamento</span>
+                    </div>
+                    <p class="text-gray-500 text-sm mb-4"><i class="fas fa-map-marker-alt mr-1 text-guarani-500"></i> Av. Santa Teresa, Assunção</p>
+                    <div class="flex items-center gap-4 text-sm text-gray-600 mb-4 border-t border-gray-100 pt-4">
+                        <span><i class="fas fa-building mr-1"></i> 55 Andares</span>
+                        <span><i class="fas fa-ruler-combined mr-1"></i> 212m Altura</span>
+                        <span><i class="fas fa-star mr-1"></i> Premium</span>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">A torre mais alta do Paraguai. 55 andares de pura sofisticação com acesso direto ao Paseo La Galería, piscina panorâmica e spa.</p>
+                    <button onclick="openPropertyModal(6)" class="w-full bg-guarani-800 text-white py-3 rounded-lg hover:bg-guarani-900 transition font-medium">Ver Detalhes</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-12">
+            <button class="border-2 border-guarani-700 text-guarani-700 px-8 py-3 rounded-full hover:bg-guarani-700 hover:text-white transition font-medium">
+                Ver Todos os Imóveis <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Neighborhoods Section -->
+    <section id="bairros" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="text-guarani-600 font-medium tracking-widest uppercase text-sm">Localização</span>
+                <h2 class="font-serif text-4xl md:text-5xl text-guarani-900 mt-2 mb-4">Bairros Premium</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Conheça os bairros mais exclusivos de Assunção, cada um com seu charme único e excelente potencial de valorização.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Villa Morra -->
+                <div class="group cursor-pointer" onclick="showNeighborhoodDetails('villa-morra')">
+                    <div class="relative overflow-hidden rounded-2xl h-80 mb-4">
+                        <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="Villa Morra">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 text-white">
+                            <h3 class="font-serif text-2xl font-bold">Villa Morra</h3>
+                            <p class="text-sm opacity-90">O bairro mais desejável</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Preço médio:</span>
+                            <span class="font-semibold text-guarani-800">USD 850 - 1.500/m²</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Perfil:</span>
+                            <span class="font-semibold text-guarani-800">Expatriados & Executivos</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-guarani-600 mt-3">
+                            <i class="fas fa-shopping-bag"></i> Shopping del Sol
+                            <i class="fas fa-utensils ml-2"></i> Gastronomia
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Las Lomas -->
+                <div class="group cursor-pointer" onclick="showNeighborhoodDetails('las-lomas')">
+                    <div class="relative overflow-hidden rounded-2xl h-80 mb-4">
+                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="Las Lomas">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 text-white">
+                            <h3 class="font-serif text-2xl font-bold">Las Lomas</h3>
+                            <p class="text-sm opacity-90">Luxo e tranquilidade</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Preço médio:</span>
+                            <span class="font-semibold text-guarani-800">USD 1.200 - 2.000/m²</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Perfil:</span>
+                            <span class="font-semibold text-guarani-800">Famílias & Aposentados</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-guarani-600 mt-3">
+                            <i class="fas fa-tree"></i> Áreas verdes
+                            <i class="fas fa-graduation-cap ml-2"></i> Escolas top
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carmelitas -->
+                <div class="group cursor-pointer" onclick="showNeighborhoodDetails('carmelitas')">
+                    <div class="relative overflow-hidden rounded-2xl h-80 mb-4">
+                        <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="Carmelitas">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 text-white">
+                            <h3 class="font-serif text-2xl font-bold">Carmelitas</h3>
+                            <p class="text-sm opacity-90">Vida social vibrante</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Preço médio:</span>
+                            <span class="font-semibold text-guarani-800">USD 900 - 1.400/m²</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Perfil:</span>
+                            <span class="font-semibold text-guarani-800">Jovens Profissionais</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-guarani-600 mt-3">
+                            <i class="fas fa-cocktail"></i> Vida noturna
+                            <i class="fas fa-laptop ml-2"></i> Coworking
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Section -->
+    <section id="investimento" class="py-20 bg-guarani-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80" class="w-full h-full object-cover" alt="Background">
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <span class="text-guarani-300 font-medium tracking-widest uppercase text-sm">Por que Investir?</span>
+                    <h2 class="font-serif text-4xl md:text-5xl mt-2 mb-6">O Paraguai é a Nova Fronteira do Investimento</h2>
+                    <p class="text-gray-300 text-lg mb-8 leading-relaxed">
+                        Com uma economia em crescimento constante, estabilidade política e custo de vida acessível, o Paraguai oferece oportunidades únicas para investidores estrangeiros. O mercado imobiliário projeta crescimento de <strong class="text-guarani-300">3,15% CAGR até 2029</strong>.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-guarani-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-shield-alt text-guarani-300 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">Segurança Jurídica</h4>
+                                <p class="text-gray-400 text-sm">Estrangeiros podem comprar imóveis com os mesmos direitos de residentes. Processo simplificado e transparente.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-guarani-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-percentage text-guarani-300 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">Retorno sobre Investimento</h4>
+                                <p class="text-gray-400 text-sm">Alugueis geram yield competitivo, especialmente em apartamentos de luxo próximos ao distrito corporativo.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-guarani-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-coins text-guarani-300 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">Custo de Vida Baixo</h4>
+                                <p class="text-gray-400 text-sm">Com custos gerais de ~USD 425/mês (excluindo aluguel), seu investimento rende mais.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20">
+                    <h3 class="font-serif text-2xl font-bold mb-6">Simulador de Investimento</h3>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm text-gray-300 mb-2">Valor do Investimento (USD)</label>
+                            <input type="range" id="investRange" min="100000" max="2500000" step="50000" value="500000" 
+                                   class="w-full h-2 bg-guarani-700 rounded-lg appearance-none cursor-pointer accent-guarani-400"
+                                   oninput="updateSimulation()">
+                            <div class="flex justify-between text-sm text-gray-400 mt-1">
+                                <span>100k</span>
+                                <span id="investValue" class="text-guarani-300 font-bold text-lg">USD 500.000</span>
+                                <span>2.5M</span>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-guarani-800/50 rounded-xl p-4 border border-guarani-600/30">
+                                <div class="text-sm text-gray-400 mb-1">Valorização Anual</div>
+                                <div class="text-2xl font-bold text-guarani-300" id="appreciation">3.15%</div>
+                            </div>
+                            <div class="bg-guarani-800/50 rounded-xl p-4 border border-guarani-600/30">
+                                <div class="text-sm text-gray-400 mb-1">Renda Mensal (Aluguel)</div>
+                                <div class="text-2xl font-bold text-guarani-300" id="rentalIncome">~USD 2.500</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-guarani-800/50 rounded-xl p-4 border border-guarani-600/30">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm text-gray-400">Projeção em 5 anos:</span>
+                                <span class="text-xl font-bold text-white" id="projection5y">USD 579.000</span>
+                            </div>
+                            <div class="w-full bg-guarani-900 rounded-full h-2">
+                                <div class="bg-guarani-400 h-2 rounded-full transition-all duration-500" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        
+                        <button onclick="openContactModal('investimento')" class="w-full bg-guarani-500 text-white py-4 rounded-xl hover:bg-guarani-400 transition font-bold text-lg shadow-lg">
+                            Falar com Consultor
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="servicos" class="py-20 max-w-7xl mx-auto px-4">
+        <div class="text-center mb-16">
+            <span class="text-guarani-600 font-medium tracking-widest uppercase text-sm">Nossos Serviços</span>
+            <h2 class="font-serif text-4xl md:text-5xl text-guarani-900 mt-2 mb-4">Experiência Completa</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Do primeiro contato até a entrega das chaves, cuidamos de cada detalhe para sua tranquilidade.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition border border-guarani-100 group">
+                <div class="w-16 h-16 bg-guarani-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-guarani-700 transition">
+                    <i class="fas fa-search text-guarani-700 text-2xl group-hover:text-white transition"></i>
+                </div>
+                <h3 class="font-serif text-xl font-bold text-guarani-900 mb-3">Consultoria Personalizada</h3>
+                <p class="text-gray-600 text-sm">Analisamos seu perfil e encontramos o imóvel ideal dentro do seu orçamento e necessidades.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition border border-guarani-100 group">
+                <div class="w-16 h-16 bg-guarani-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-guarani-700 transition">
+                    <i class="fas fa-file-contract text-guarani-700 text-2xl group-hover:text-white transition"></i>
+                </div>
+                <h3 class="font-serif text-xl font-bold text-guarani-900 mb-3">Suporte Jurídico</h3>
+                <p class="text-gray-600 text-sm">Equipe de advogados especializados em direito imobiliário paraguaio para segurança total.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition border border-guarani-100 group">
+                <div class="w-16 h-16 bg-guarani-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-guarani-700 transition">
+                    <i class="fas fa-hammer text-guarani-700 text-2xl group-hover:text-white transition"></i>
+                </div>
+                <h3 class="font-serif text-xl font-bold text-guarani-900 mb-3">Construção Sob Medida</h3>
+                <p class="text-gray-600 text-sm">Escolha seu terreno e construa a casa dos sonhos com nossa equipe de arquitetos e engenheiros.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition border border-guarani-100 group">
+                <div class="w-16 h-16 bg-guarani-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-guarani-700 transition">
+                    <i class="fas fa-plane text-guarani-700 text-2xl group-hover:text-white transition"></i>
+                </div>
+                <h3 class="font-serif text-xl font-bold text-guarani-900 mb-3">Tour VIP</h3>
+                <p class="text-gray-600 text-sm">Recepção no aeroporto, traslado e acompanhamento exclusivo durante sua visita aos imóveis.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-20 bg-guarani-100">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="text-guarani-600 font-medium tracking-widest uppercase text-sm">Depoimentos</span>
+                <h2 class="font-serif text-4xl md:text-5xl text-guarani-900 mt-2">O que dizem nossos clientes</h2>
+            </div>
+
+            <div class="relative max-w-4xl mx-auto">
+                <div id="testimonialSlider" class="overflow-hidden">
+                    <div class="slide active bg-white rounded-3xl p-8 md:p-12 shadow-xl">
+                        <div class="flex flex-col md:flex-row items-center gap-8">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80" class="w-24 h-24 rounded-full object-cover border-4 border-guarani-300" alt="Cliente">
+                            <div>
+                                <div class="flex text-guarani-500 mb-3">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </div>
+                                <p class="text-gray-700 text-lg italic mb-4">"A Tierra Guaraní tornou meu sonho de ter uma casa no Paraguai realidade. O suporte jurídico foi fundamental e o atendimento, impecável. Recomendo a todos os brasileiros que buscam qualidade de vida."</p>
+                                <div>
+                                    <h4 class="font-bold text-guarani-900">Ricardo Mendes</h4>
+                                    <p class="text-sm text-gray-500">Empresário, São Paulo → Las Lomas</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slide bg-white rounded-3xl p-8 md:p-12 shadow-xl">
+                        <div class="flex flex-col md:flex-row items-center gap-8">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80" class="w-24 h-24 rounded-full object-cover border-4 border-guarani-300" alt="Cliente">
+                            <div>
+                                <div class="flex text-guarani-500 mb-3">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </div>
+                                <p class="text-gray-700 text-lg italic mb-4">"Investi em um apartamento em Villa Morra e o retorno com aluguel superou minhas expectativas. A equipe cuidou de tudo, desde a compra até a gestão do imóvel."</p>
+                                <div>
+                                    <h4 class="font-bold text-guarani-900">Ana Carolina Silva</h4>
+                                    <p class="text-sm text-gray-500">Investidora, Rio de Janeiro → Villa Morra</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slide bg-white rounded-3xl p-8 md:p-12 shadow-xl">
+                        <div class="flex flex-col md:flex-row items-center gap-8">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80" class="w-24 h-24 rounded-full object-cover border-4 border-guarani-300" alt="Cliente">
+                            <div>
+                                <div class="flex text-guarani-500 mb-3">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <p class="text-gray-700 text-lg italic mb-4">"Profissionalismo e conhecimento do mercado local incomparáveis. Construí minha casa em San Bernardino e o processo foi tranquilo do início ao fim."</p>
+                                <div>
+                                    <h4 class="font-bold text-guarani-900">Carlos Eduardo</h4>
+                                    <p class="text-sm text-gray-500">Médico, Curitiba → San Bernardino</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center gap-3 mt-8">
+                    <button onclick="changeSlide(0)" class="w-3 h-3 rounded-full bg-guarani-700 transition slider-dot"></button>
+                    <button onclick="changeSlide(1)" class="w-3 h-3 rounded-full bg-guarani-300 transition slider-dot"></button>
+                    <button onclick="changeSlide(2)" class="w-3 h-3 rounded-full bg-guarani-300 transition slider-dot"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contato" class="py-20 max-w-7xl mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <div>
+                <span class="text-guarani-600 font-medium tracking-widest uppercase text-sm">Contato</span>
+                <h2 class="font-serif text-4xl md:text-5xl text-guarani-900 mt-2 mb-6">Vamos Conversar</h2>
+                <p class="text-gray-600 mb-8">Nossa equipe está pronta para ajudá-lo a encontrar o imóvel perfeito no Paraguai. Entre em contato e agende uma consultoria gratuita.</p>
+                
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-guarani-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-phone text-guarani-700"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-500">Telefone/WhatsApp</div>
+                            <div class="font-semibold text-guarani-900">+595 981 234 567</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-guarani-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-envelope text-guarani-700"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-500">E-mail</div>
+                            <div class="font-semibold text-guarani-900">contato@tierraguani.com.py</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-guarani-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-map-marker-alt text-guarani-700"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-500">Endereço</div>
+                            <div class="font-semibold text-guarani-900">Av. Santa Teresa 1026, Villa Morra, Assunção</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10">
+                    <h4 class="font-bold text-guarani-900 mb-4">Siga-nos</h4>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 bg-guarani-800 text-white rounded-full flex items-center justify-center hover:bg-guarani-700 transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 bg-guarani-800 text-white rounded-full flex items-center justify-center hover:bg-guarani-700 transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 bg-guarani-800 text-white rounded-full flex items-center justify-center hover:bg-guarani-700 transition"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="w-10 h-10 bg-guarani-800 text-white rounded-full flex items-center justify-center hover:bg-guarani-700 transition"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-xl p-8 border border-guarani-100">
+                <form id="contactForm" onsubmit="handleSubmit(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nome</label>
+                            <input type="text" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-guarani-500 focus:ring-2 focus:ring-guarani-200 outline-none transition" placeholder="Seu nome">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">E-mail</label>
+                            <input type="email" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-guarani-500 focus:ring-2 focus:ring-guarani-200 outline-none transition" placeholder="seu@email.com">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Telefone/WhatsApp</label>
+                        <input type="tel" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-guarani-500 focus:ring-2 focus:ring-guarani-200 outline-none transition" placeholder="+55 11 99999-9999">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Interesse</label>
+                        <select class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-guarani-500 focus:ring-2 focus:ring-guarani-200 outline-none transition">
+                            <option>Comprar imóvel residencial</option>
+                            <option>Investimento/Aluguel</option>
+                            <option>Terreno para construir</option>
+                            <option>Lançamentos</option>
+                            <option>Outro</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Mensagem</label>
+                        <textarea rows="4" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-guarani-500 focus:ring-2 focus:ring-guarani-200 outline-none transition" placeholder="Conte-nos o que procura..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-guarani-700 text-white py-4 rounded-xl hover:bg-guarani-800 transition font-bold text-lg shadow-lg flex items-center justify-center gap-2">
+                        <span>Enviar Mensagem</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="h-96 map-container relative">
+        <div class="absolute inset-0 map-overlay flex items-center justify-center">
+            <div class="text-center text-white px-4">
+                <h3 class="font-serif text-3xl md:text-4xl font-bold mb-4">Assunção Espera por Você</h3>
+                <p class="text-lg mb-6 max-w-xl mx-auto">Capital do Paraguai, centro econômico do Mercosul e uma das cidades com melhor qualidade de vida da América do Sul.</p>
+                <button onclick="window.open('https://maps.google.com/?q=Asuncion,Paraguay', '_blank')" class="bg-white text-guarani-900 px-8 py-3 rounded-full hover:bg-guarani-100 transition font-medium inline-flex items-center gap-2">
+                    <i class="fas fa-map-marked-alt"></i> Ver no Google Maps
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-guarani-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 bg-guarani-700 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-landmark text-guarani-200 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-serif text-xl font-bold">Tierra Guaraní</h3>
+                            <p class="text-xs text-guarani-400 tracking-widest uppercase">Imobiliária Premium</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">Especialistas em imóveis de luxo no Paraguai desde 2011. Conectando sonhos e oportunidades na América do Sul.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4 text-guarani-300">Links Rápidos</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#imoveis" class="hover:text-white transition">Imóveis à Venda</a></li>
+                        <li><a href="#bairros" class="hover:text-white transition">Bairros</a></li>
+                        <li><a href="#investimento" class="hover:text-white transition">Por que Investir</a></li>
+                        <li><a href="#servicos" class="hover:text-white transition">Serviços</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4 text-guarani-300">Imóveis</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-white transition">Casas em Las Lomas</a></li>
+                        <li><a href="#" class="hover:text-white transition">Apartamentos Villa Morra</a></li>
+                        <li><a href="#" class="hover:text-white transition">Terrenos Corporativos</a></li>
+                        <li><a href="#" class="hover:text-white transition">Lançamentos 2026</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4 text-guarani-300">Newsletter</h4>
+                    <p class="text-gray-400 text-sm mb-4">Receba as melhores oportunidades diretamente no seu e-mail.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Seu e-mail" class="flex-1 px-4 py-2 rounded-l-lg bg-guarani-800 border border-guarani-700 text-white placeholder-gray-500 focus:outline-none focus:border-guarani-500">
+                        <button class="bg-guarani-500 px-4 py-2 rounded-r-lg hover:bg-guarani-400 transition">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-guarani-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-sm"> 2026 Tierra Guaraní Imobiliária. Todos os direitos reservados.</p>
+                <div class="flex gap-6 text-sm text-gray-500">
+                    <a href="#" class="hover:text-white transition">Política de Privacidade</a>
+                    <a href="#" class="hover:text-white transition">Termos de Uso</a>
+                    <a href="#" class="hover:text-white transition">CRECI-PY 1254</a>
+                </div>
+            </div>
         </div>
     </footer>
 
-</body>
-</html>
+    <!-- Property Modal -->
+    <div id="propertyModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity bg-black/75" onclick="closePropertyModal()"></div>
+            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+                <div id="modalContent" class="bg-white">
+                    <!-- Content injected via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tour Modal -->
+    <div id="tourModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/90 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6 border-b flex justify-between items-center">
+                    <h3 class="font-serif text-2xl font-bold text-guarani-900">Tour Virtual - Mansão Los Laureles</h3>
+                    <button onclick="closeTourModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                </div>
+                <div class="p-6">
+                    <div class="aspect-video bg-gray-900 rounded-xl flex items-center justify-center mb-6 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80" class="w-full h-full object-cover opacity-50" alt="Tour">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center text-white">
+                                <i class="fas fa-vr-cardboard text-6xl mb-4 opacity-80"></i>
+                                <p class="text-lg">Tour Virtual 360°</p>
+                                <p class="text-sm opacity-70">Use seu mouse para explorar</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="aspect-square rounded-lg overflow-hidden cursor-pointer border-2 border-guarani-500">
+                            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80" class="w-full h-full object-cover" alt="Sala">
+                        </div>
+                        <div class="aspect-square rounded-lg overflow-hidden cursor-pointer opacity-70 hover:opacity-100 transition">
+                            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&q=80" class="w-full h-full object-cover" alt="Cozinha">
+                        </div>
+                        <div class="aspect-square rounded-lg overflow-hidden cursor-pointer opacity-70 hover:opacity-100 transition">
+                            <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&q=80" class="w-full h-full object-cover" alt="Quarto">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-green-600 text-white px-6 py-4 rounded-xl shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+        <i class="fas fa-check-circle text-xl"></i>
+        <div>
+            <div class="font-bold">Mensagem enviada!</div>
+            <div class="text-sm opacity-90">Entraremos em contato em breve.</div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Smooth Scroll
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-md');
+            } else {
+                nav.classList.remove('shadow-md');
+            }
+        });
+
+        // Property Filter
+        function filterProperties(type) {
+            const cards = document.querySelectorAll('.property-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            buttons.forEach(btn => {
+                if (btn.dataset.filter === type) {
+                    btn.classList.add('bg-guarani-700', 'text-white');
+                    btn.classList.remove('bg-white', 'text-guarani-800');
+                } else {
+                    btn.classList.remove('bg-guarani-700', 'text-white');
+                    btn.classList.add('bg-white', 'text-guarani-800');
+                }
+            });
+            
+            cards.forEach(card => {
+                if (type === 'all' || card.dataset.type === type) {
+                    card.style.display = 'block';
+                    setTimeout(() => card.style.opacity = '1', 10);
+                } else {
+                    card.style.opacity = '0';
+                    setTimeout(() => card.style.display = 'none', 300);
+                }
+            });
+        }
+
+        // Favorite Toggle
+        function toggleFavorite(btn) {
+            const icon = btn.querySelector('i');
+            if (icon.classList.contains('text-red-500')) {
+                icon.classList.remove('text-red-500');
+                icon.classList.add('text-guarani-400');
+            } else {
+                icon.classList.remove('text-guarani-400');
+                icon.classList.add('text-red-500');
+            }
+        }
+
+        // Property Modal Data
+        const properties = {
+            1: {
+                title: "Mansão Los Laureles",
+                price: "USD 2.200.000",
+                location: "Las Lomas, Assunção",
+                image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80",
+                beds: "7 Suítes",
+                baths: "8 Banheiros",
+                area: "2.904m² terreno | 1.150m² construção",
+                description: "Residência excepcional com 71 metros de frente, localizada a meio quarteirão da Avenida San Martín e 180m da Av. Mariscal López. Jardim exuberante com piscina, área de churrasqueira completa e vista panorâmica. Ideal para famílias grandes ou embaixadas.",
+                features: ["Piscina Olímpica", "Área de Churrasqueira", "7 Vagas", "Segurança 24h", "Jardim Paisagístico", "Quarto de Empregada"]
+            },
+            2: {
+                title: "Cobertura Casa Vista",
+                price: "USD 1.100.000",
+                location: "Villa Morra, Assunção",
+                image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=80",
+                beds: "3 Suítes",
+                baths: "4 Banheiros",
+                area: "340m² privativos | 3 Vagas",
+                description: "Cobertura de 340m² no prestigiado Edifício Casa Vista, Avenida Santa Teresa. Terraço com piscina privativa, jardim suspenso e churrasqueira. Vista panorâmica 360° da cidade. Acabamentos em madeira lapacho colonial.",
+                features: ["Piscina Privativa", "Terraço com Jardim", "Churrasqueira", "3 Entradas Independentes", "Pisos de Madeira Nobre", "Gerador 100%"]
+            },
+            3: {
+                title: "Residência Barrio Herrera",
+                price: "USD 2.000.000",
+                location: "Barrio Herrera, Assunção",
+                image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
+                beds: "5 Suítes",
+                baths: "6 Banheiros",
+                area: "1.512m² terreno | 1.549m² construção",
+                description: "Obra-prima arquitetônica com piscina aquecida, adega climatizada, quadra poliesportiva e academia com vista. 5 suítes no piso superior, sendo a master com closet ilha e banheiro em mármore com hidromassagem dupla.",
+                features: ["Piscina Aquecida", "Adega Climatizada", "Quadra Poliesportiva", "Sauna", "Home Theater", "4 Vagas Cobertas"]
+            }
+        };
+
+        function openPropertyModal(id) {
+            const prop = properties[id] || properties[1];
+            const modal = document.getElementById('propertyModal');
+            const content = document.getElementById('modalContent');
+            
+            content.innerHTML = `
+                <div class="relative h-96">
+                    <img src="${prop.image}" class="w-full h-full object-cover" alt="${prop.title}">
+                    <button onclick="closePropertyModal()" class="absolute top-4 right-4 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition">
+                        <i class="fas fa-times text-guarani-900"></i>
+                    </button>
+                    <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur px-4 py-2 rounded-lg">
+                        <div class="flex items-center gap-2">
+                            <div class="w-10 h-10 bg-guarani-                                       

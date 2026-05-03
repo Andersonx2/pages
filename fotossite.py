@@ -10,7 +10,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 
 # --- CONFIGURAÇÕES ---
-URL_CATEGORIA = "https://licoeteca.com.br/meninas/calcas"
+URL_CATEGORIA = "https://www.lojahip.com.br/categoria/calca-masc/?ordem=compras_desc"
+BASE_URL = "https://www.lojahip.com.br"
 PASTA_RAIZ = "fotos_produtos_licoeteca"
 TEMPO_ESPERA_PAGINA = 3
 
@@ -65,7 +66,7 @@ def extrair_urls_da_galeria(soup):
     """
     urls = set() # Usamos set para evitar duplicatas (sliders as vezes duplicam o DOM)
     
-    # 1. Encontra todos os slides do produto (baseado na classe do seu print)
+    # 1. Encontra todos os slides do produto
     slides = soup.find_all("div", class_="js-product-slide")
     
     for slide in slides:
@@ -103,12 +104,12 @@ def main():
     soup_cat = BeautifulSoup(driver.page_source, "html.parser")
     links_produtos = set()
     
-    # Pega apenas links que contêm '/produtos/'
+    # Pega apenas links de produtos (ajustado para '/produto/' no singular e concatenando a base URL)
     for a in soup_cat.find_all('a', href=True):
         href = a['href']
-        if '/produtos/' in href and href.count('/') > 2:
+        if '/produto/' in href and '/busca/' not in href:
             if not href.startswith('http'):
-                href = href # Ajuste se necessário, mas geralmente vem completo
+                href = f"{BASE_URL}{href}"
             links_produtos.add(href)
     
     lista_produtos = list(links_produtos)
@@ -134,7 +135,7 @@ def main():
             
             soup_produto = BeautifulSoup(driver.page_source, "html.parser")
             
-            # Aqui chamamos a função ajustada para o seu print
+            # Aqui chamamos a função para extrair a galeria
             imagens_urls = extrair_urls_da_galeria(soup_produto)
             
             if imagens_urls:
