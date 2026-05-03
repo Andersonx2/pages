@@ -89,6 +89,7 @@ header h1{font-size:17px;font-weight:600;flex:1}
 .desc-badge-label{font-size:11px;color:#888;margin-top:2px}
 
 .tag-escolar{font-size:10px;background:#fff3cd;color:#856404;border:1px solid #ffc107;border-radius:4px;padding:1px 6px;font-weight:700;margin-left:6px;white-space:nowrap}
+.tag-obrig{font-size:10px;background:#e6f4ea;color:#1a6b3a;border:1px solid #1a6b3a;border-radius:4px;padding:1px 6px;font-weight:700;margin-left:6px;white-space:nowrap}
 .radio-opt{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13px;cursor:pointer;border-bottom:1px solid #f0f0f0}
 .radio-opt input[type=radio]{accent-color:#1a3a5c;width:15px;height:15px;flex-shrink:0;cursor:pointer}
 
@@ -244,9 +245,9 @@ header h1{font-size:17px;font-weight:600;flex:1}
       <div class="pay-btn" onclick="selectPay('Cartão c/ Taxa',0.10,'Cartão com 10% de desconto + Assume a taxa sem NF',this)"><div class="pname">Cartão + Taxa</div><div class="pdesc">10% de desc (Assume taxa)</div></div>
     </div>
     <div class="desc-custom">
-      <label>Desconto Personalizado (Franco) - Máximo 10%</label>
+      <label>Desconto Personalizado (Autorização Franco)</label>
       <div class="desc-row">
-        <input type="number" id="desc-pct" min="0" max="10" step="0.5" value="10" oninput="setDesconto(this.value)"/>
+        <input type="number" id="desc-pct" min="0" step="0.5" value="10" onchange="setDesconto(this.value)"/>
         <div><div class="desc-badge" id="desc-badge">10%</div><div class="desc-badge-label">de desconto</div></div>
       </div>
     </div>
@@ -283,19 +284,19 @@ const VEICULOS = {
 };
 
 const ITENS = [
-  {id:"iso",  label:"Kit de Isolamento Termoacústico", propLabel:"Kit de Isolamento Termoacústico completo para redução de ruído e conforto térmico.", preco:990, horas:2, checked:false},
-  {id:"abs",  label:"Kit Revestimento Interno em ABS", propLabel:"Revestimento Teto e Laterais em ABS Termoformado.", preco:9850, horas:4, checked:false}, // Fica invisível na Sprinter
-  {id:"piso", label:"Kit de Piso (Vinílico)", propLabel:"Kit de Piso com Bagageiro e Levante, revestido em vinílico cor: 0023. (Tapete cabine incluso).", preco:9890, horas:23.48, checked:false,
+  {id:"iso",  label:"Kit de Isolamento Termoacústico", propLabel:"Kit de Isolamento Termoacústico completo para redução de ruído e conforto térmico.", preco:990, horas:2, checked:false, fixed:false},
+  {id:"abs",  label:"Kit Revestimento Interno em ABS", propLabel:"Revestimento Teto e Laterais em ABS Termoformado.", preco:9850, horas:4, checked:false, fixed:false}, 
+  {id:"piso", label:"Kit de Piso (Vinílico)", propLabel:"Kit de Piso com Bagageiro e Levante, revestido em vinílico cor: 0023. (Tapete cabine incluso).", preco:9890, horas:23.48, checked:false, fixed:false,
    variantes:[
      {label:"COM Bagageiro e COM Levante", preco:9890},
      {label:"SEM Bagageiro e SEM Levante (com Levante Cabine)", preco:7200},
      {label:"SEM Levante e SEM Plataforma", preco:5000},
    ], coresVinilico:["Ref. 0023","Ref. 0021","Ref. 0025","Ref. 0020"]},
-  {id:"seg",  label:"Kit de Segurança Obrigatório", propLabel:"Kit de Segurança Obrigatório:", preco:780, horas:0.45, checked:false,
+  {id:"seg",  label:"Kit de Segurança Obrigatório", propLabel:"Kit de Segurança Obrigatório:", preco:780, horas:0.45, checked:false, fixed:false,
    sub:["Martelinhos de emergência","Faixas refletivas","Extintor de incêndio 4 kg ABC","Adesivos indicativos de Saída de Emergência"]},
-  {id:"ilum", label:"Kit Iluminação Interna p/ Revestimento", propLabel:"Kit Iluminação interna para Revestimento cor Padrão.", preco:540, horas:2, checked:false},
-  {id:"hom",  label:"Homologação do Veículo", propLabel:"Homologação do Veículo", preco:2750, horas:0, checked:false},
-  {id:"mob",  label:"Mão de obra de instalação", propLabel:"Projeto, montagem e acompanhamento técnico.", preco:3270, horas:2, checked:false},
+  {id:"ilum", label:"Kit Iluminação Interna p/ Revestimento", propLabel:"Kit Iluminação interna para Revestimento cor Padrão.", preco:540, horas:2, checked:false, fixed:false},
+  {id:"hom",  label:"Homologação do Veículo", propLabel:"Homologação do Veículo", preco:2750, horas:0, checked:false, fixed:false},
+  {id:"mob",  label:"Mão de obra de instalação (Obrigatório)", propLabel:"Projeto, montagem e acompanhamento técnico.", preco:3270, horas:2, checked:true, fixed:true},
 ];
 
 const POLTRONAS = [
@@ -334,6 +335,9 @@ const ADICIONAIS_GRUPOS = {
       {id:"fix_cinto3e", label:"Kit Cinto 3 pontas estático", preco:268.31, hasQty:true, horas:0},
       {id:"fix_braco", label:"Braço Móvel", preco:173.45, hasQty:true, horas:0},
   ]},
+  polt_cli: { label:"Adicionais — Poltronas do Cliente", items:[
+      {id:"cli_usb", label:"Instalação de KIT USB em Poltrona Fornecida", preco:605, hasQty:true, horas:3},
+  ]},
   capa: { label:"Capa do Motorista e Acessórios", items:[
       {id:"cap_mot", label:"Troca da Capa do Motorista", preco:932.30, horas:0},
       {id:"cap_aux", label:"Troca da Capa do Carona (Auxiliar)", preco:1555.65, horas:0},
@@ -342,7 +346,7 @@ const ADICIONAIS_GRUPOS = {
 };
 
 const SEAT_GRUPO = {
-  exec_ss_tec:"exec_ss", exec_ss_cou:"exec_ss", exec_950_cou:"exec_950", exec_950_gan:"exec_950", exec_950_dia:"exec_950", exec_950_sue:"exec_950", exec_950_tec:"exec_950", van_esc:"van_esc", fixa:"fixa", leito:"leito"
+  exec_ss_tec:"exec_ss", exec_ss_cou:"exec_ss", exec_950_cou:"exec_950", exec_950_gan:"exec_950", exec_950_dia:"exec_950", exec_950_sue:"exec_950", exec_950_tec:"exec_950", van_esc:"van_esc", fixa:"fixa", leito:"leito", polt_cli:"polt_cli"
 };
 
 const OPT = [
@@ -356,8 +360,9 @@ const OPT = [
     {id:"molduramul", label:"Moldura 6.2\" (Obrigatório p/ Multimídia)", preco:630, horas:1},
     {id:"radio",      label:"Rádio Bluetooth", preco:610, horas:1},
     {id:"jbl69",      label:"Alto Falantes JBL 6x9 (Par)", preco:850, horas:1.5, locais:["Plataforma", "Revestimento"]},
+    {id:"jbl6",       label:"Alto Falantes JBL 6\" (Par) - Portas", preco:520, horas:1.5},
     {id:"tvabs",      label:"Smart TV 24' c/ Moldura ABS e Inversor 300w", preco:2400, horas:2},
-    {id:"tvmad",      label:"Smart TV 24' c/ Moldura Madeira e Inversor 300w", preco:2700, horas:3},
+    {id:"tvmad",      label:"Smart TV 24' c/ Moldura Madeira, Rev. Courvin e Inv. 300w", preco:2700, horas:3},
   ]},
   {cat:"Conforto, Ar e Frigobar", items:[
     {id:"ar",       label:"Kit Ar Condicionado com instalação completa", preco:8980, horas:0.4},
@@ -365,7 +370,7 @@ const OPT = [
     {id:"frig31",   label:"Frigobar 31 Litros com Console Revestido", preco:3100, horas:1, hasQty:true},
     {id:"frig29",   label:"Frigobar 29 Litros com Console Revestido", preco:2900, horas:1, hasQty:true},
     {id:"frig18",   label:"Frigobar 18 Litros com Console Revestido", preco:2500, horas:1, hasQty:true},
-    {id:"sofacama", label:"Sofá Cama (4 Lugares) com Cabeceira", preco:4500, horas:4},
+    {id:"sofacama", label:"Sofá Cama (4 Lugares) Com Cabeceira, Cinto de Segurança, revestido.", preco:4500, horas:4},
   ]},
   {cat:"Iluminação LED", items:[
     {id:"led_deg",  label:"Iluminação em LED no Degrau da Porta de Acesso", preco:300, horas:1.2, cores:["Branco","Azul","Vermelho"]},
@@ -373,6 +378,15 @@ const OPT = [
     {id:"led_azul", label:"Iluminação em LED sob Poltrona do Carona", preco:300, horas:1.2, cores:["Branco","Azul","Vermelho"]},
     {id:"led_bag",  label:"Iluminação em LED no Porta Pacote", preco:300, horas:1.2, cores:["Branco","Azul","Vermelho"]},
     {id:"led_rgb",  label:"Kit iluminação RGB Bluetooth (Degrau, Plat, Sob polt)", preco:1780, horas:4},
+  ]},
+  {cat:"Vidros", items:[
+    {id:"vidros",   label:"Kit Vidros Colados Completo", preco:8215, horas:8},
+    {id:"vidro1v",  label:"Kit Vidros Colados 1º Vão", preco:3160, horas:5},
+  ]},
+  {cat:"Elétrica", items:[
+    {id:"usb1",     label:"Carregador USB (unitário)", preco:150, horas:0.4, hasQty:true},
+    {id:"usb2",     label:"Carregador Duplo USB + USB-C (unitário)", preco:230, horas:0.4, hasQty:true},
+    {id:"tomada",   label:"Tomada 220v", preco:140, horas:0.4, hasQty:true},
   ]},
   {cat:"Cortinas e Películas", items:[
     {id:"cortina",  label:"Cortinas Padrões no Salão", preco:1320, horas:2,
@@ -387,6 +401,8 @@ const OPT = [
     {id:"maleiro_le", label:"Porta Pacote (Maleiro) — Lado Esquerdo", preco:2700, horas:2.8},
     {id:"maleiro_ld", label:"Porta Pacote (Maleiro) — Lado Direito", preco:2700, horas:2.3},
     {id:"pegamao",    label:"Pega Mão na Coluna da entrada (1ª fileira)", preco:150, horas:1, cores:["Grafite","Amarelo"]},
+    {id:"saiacorr",   label:"Saia na porta de correr para não entrar sujeira", preco:180, horas:1},
+    {id:"fechpolt",   label:"Fechamento embaixo Poltrona Motorista e Auxiliar", preco:1080, horas:2},
   ]}
 ];
 
@@ -410,7 +426,7 @@ let S = {
 
 function toggle(h){ h.classList.toggle("open"); h.nextElementSibling.classList.toggle("open"); }
 
-// --- CONTROLE DE LUGARES (A MÁGICA DO FILTRO AQUI) ---
+// --- CONTROLE DE LUGARES ---
 function updateLugaresField() {
   const container = document.getElementById("seat-qty-container");
   const transf = document.getElementById("veh-transf").value;
@@ -454,10 +470,15 @@ function renderItens(){
           </select>
         </div>`;
     }
+    
+    // Trava para itens obrigatórios não serem desmarcados
+    const disabledAttr = it.fixed ? 'disabled="disabled"' : '';
+    const tagObrig = it.fixed ? `<span class="tag-obrig">Obrigatório</span>` : "";
+
     c.insertAdjacentHTML("beforeend", `
       <div class="item-row" id="row_it_${it.id}">
-        <input type="checkbox" id="it_${it.id}" ${it.checked?"checked":""} onchange="toggleItem('${it.id}',this)"/>
-        <label for="it_${it.id}">${it.label}<small id="small_${it.id}">${fmt(it.preco)}</small></label>
+        <input type="checkbox" id="it_${it.id}" ${it.checked?"checked":""} ${disabledAttr} onchange="toggleItem('${it.id}',this)"/>
+        <label for="it_${it.id}">${it.label} ${tagObrig}<small id="small_${it.id}">${fmt(it.preco)}</small></label>
         <span class="item-price" id="price_${it.id}">${fmt(it.preco)}</span>
       </div>${subPanel}`);
   });
@@ -466,6 +487,7 @@ function renderItens(){
 
 function toggleItem(id, el){
   const it = ITENS.find(x => x.id === id);
+  if(it.fixed) { el.checked = true; return; } // Segurança extra via JS
   if(it) it.checked = el.checked;
   const sub = document.getElementById("sub_" + id);
   if(sub) sub.classList.toggle("visible", el.checked);
@@ -494,7 +516,6 @@ function selectVeh(v, el){
   const sel = document.getElementById("veh-config-sel");
   if(sel) sel.innerHTML = cfg.map(c => `<option>${c}</option>`).join("");
   
-  // REGRA DA SPRINTER (Sem Revestimento)
   const absRow = document.getElementById("row_it_abs");
   if(absRow) {
       if(v === 'sprinter') {
@@ -505,7 +526,6 @@ function selectVeh(v, el){
           absRow.style.display = 'flex';
       }
   }
-
   updateLugaresField(); 
 }
 
@@ -561,10 +581,15 @@ function toggleAd(id, preco, horas, el, hasQty){
     delete S.adicionais[id];
     if(qtyInp) qtyInp.style.display = "none";
   }
-  calcAll();
+  calcSeats(); 
 }
 
-function updateAdQty(id, val){ if(S.adicionais[id]){ S.adicionais[id].qty = parseInt(val) || 1; calcAll(); } }
+function updateAdQty(id, val){ 
+  if(S.adicionais[id]){ 
+    S.adicionais[id].qty = parseInt(val) || 1; 
+    calcSeats(); 
+  } 
+}
 
 function calcSeats(){
   const val = document.getElementById("seat-qty")?.value || "";
@@ -589,19 +614,20 @@ function calcSeats(){
   }
   
   document.getElementById("badge-seat").textContent = isNaN(val) ? "L" : S.qtyNum + "L";
-  calcAll();
+  calcAll(); 
 }
 
 function checkTacografo() {
    const tacogCb = document.getElementById("op_tacog");
    if(!tacogCb) return;
 
+   // O tacógrafo é obrigatório em qualquer situação que passe de 10 Lugares
    if(S.qtyNum > 10) {
        if(!tacogCb.checked) {
            tacogCb.checked = true;
            toggleOpt('tacog', 400, 1, tacogCb, false); 
        }
-       tacogCb.disabled = true; // Bloqueia para não desmarcar
+       tacogCb.disabled = true;
    } else {
        tacogCb.disabled = false;
    }
@@ -646,7 +672,6 @@ function toggleOpt(id, preco, horas, el, hasQty){
   const sub = document.getElementById("sub_" + id);
   if(sub) sub.classList.toggle("visible", el.checked);
 
-  // REGRA DA MULTIMÍDIA + MOLDURA
   if(id === 'multimidia') {
       const moldCb = document.getElementById("op_molduramul");
       if(el.checked) {
@@ -654,7 +679,7 @@ function toggleOpt(id, preco, horas, el, hasQty){
               moldCb.checked = true;
               toggleOpt('molduramul', 630, 1, moldCb, false);
           }
-          moldCb.disabled = true; // Bloqueia para não esquecer
+          moldCb.disabled = true; 
       } else {
           moldCb.disabled = false;
       }
@@ -725,8 +750,19 @@ function selectPay(label, desc, cond, el){
 }
 
 function setDesconto(val){
-  const pct = Math.min(10, Math.max(0, parseFloat(val) || 0)); // TRAVADO EM 10% MÁXIMO NO SCRIPT!
-  document.getElementById("desc-pct").value = pct; // Força input visual a respeitar a trava
+  let pct = parseFloat(val) || 0;
+  
+  // Senha do Franco para descontos maiores que 10%
+  if(pct > 10) {
+    const senha = prompt("Descontos acima de 10% exigem autorização. Digite a senha do Franco:");
+    if(senha !== "1234") { 
+       alert("Senha incorreta! Desconto ajustado para o teto de 10%.");
+       pct = 10;
+       document.getElementById("desc-pct").value = 10;
+    }
+  }
+  
+  if (pct < 0) pct = 0;
   S.pag.desc = pct / 100;
   document.getElementById("desc-badge").textContent = (pct % 1 === 0 ? pct.toFixed(0) : pct.toFixed(1)) + "%";
   document.querySelectorAll(".pay-btn").forEach(b => b.classList.remove("active"));
@@ -782,7 +818,7 @@ function calcAll(){
 
 function fmt(v){return"R$ "+(Math.round(v*100)/100).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
 
-// --- GERAÇÃO DO PDF (LAYOUT PREMIUM MANTIDO) ---
+// --- GERAÇÃO DO PDF ---
 function gerarProposta(){
   if(S.opts["cortina"] && S.cortinas["cortina"]?.cor === "Customizada" && !(S.cortinas["cortina"].modelo||"").trim()){
     alert("Preencha o modelo da cortina no salão antes de gerar a proposta."); return;
@@ -796,6 +832,7 @@ function gerarProposta(){
 
   const cliente = document.getElementById("cli-nome").value.trim() || "___________________";
   const cidade = document.getElementById("cli-cidade").value.trim() || "___________________";
+  const captacao = document.getElementById("cli-captacao").value || "";
   const rep = document.getElementById("cli-rep").value;
   
   let num = 1;
@@ -851,7 +888,10 @@ function gerarProposta(){
       </div>
       
       <div class="p-info-box">
-        <div><b>Cliente:</b> ${cliente} — ${cidade}</div>
+        <div>
+          <b>Cliente:</b> ${cliente} — ${cidade}<br>
+          <b>Captação:</b> ${captacao}
+        </div>
         <div><b>Representante:</b> ${rep}</div>
       </div>
       
