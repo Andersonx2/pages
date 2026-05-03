@@ -69,8 +69,8 @@ header h1{font-size:17px;font-weight:600;flex:1}
 .seat-extra-row .ep{font-weight:600;color:#1a3a5c;white-space:nowrap}
 
 .qty-row{display:flex;align-items:center;gap:12px;margin-top:10px}
-.qty-row label{font-size:13px;color:#444;white-space:nowrap}
-.qty-row input[type=number]{width:72px;padding:7px 10px;border:1.5px solid #dde1ea;border-radius:8px;font-size:14px;font-weight:600;text-align:center;outline:none}
+.qty-row label{font-size:13px;color:#444;white-space:nowrap;font-weight:bold;}
+.qty-row input[type=number], .qty-row input[type=text], .qty-row select{width:160px;padding:7px 10px;border:1.5px solid #e07b39;border-radius:8px;font-size:14px;font-weight:600;outline:none}
 .qty-result{background:#f0f6ff;border-radius:8px;padding:10px 14px;font-size:13px;color:#1a3a5c;margin-top:10px;border:1px solid #c8daf4}
 
 .pay-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -197,7 +197,7 @@ header h1{font-size:17px;font-weight:600;flex:1}
     <div class="veh-config">
       <div><label>Modelo do Veículo</label><select id="veh-config-sel" onchange="calcAll()"></select></div>
       <div><label>Tipo de Transformação</label>
-        <select id="veh-transf" onchange="calcAll()">
+        <select id="veh-transf" onchange="updateLugaresField()">
           <option value="Escolar">Escolar</option><option value="Executiva">Executiva</option>
           <option value="Fretamento">Fretamento</option><option value="Mista">Mista</option>
           <option value="Especial">Especial</option><option value="Ambulância">Ambulância</option>
@@ -217,7 +217,7 @@ header h1{font-size:17px;font-weight:600;flex:1}
   <div class="card-body open">
     <div class="seat-types" id="seat-types"></div>
     <div id="seat-extras-wrap"></div>
-    <div class="qty-row"><label>Quantidade de lugares do veículo:</label><input type="number" id="seat-qty" min="1" max="60" value="24" oninput="calcSeats()"/></div>
+    <div class="qty-row" id="seat-qty-container"></div>
     <div class="qty-result" id="seat-result">Selecione o tipo de poltrona acima.</div>
   </div>
 </div>
@@ -237,15 +237,16 @@ header h1{font-size:17px;font-weight:600;flex:1}
   <div class="card-header open" onclick="toggle(this)"><h2>💳 6. Condição de Pagamento</h2><span class="chevron">▼</span></div>
   <div class="card-body open">
     <div class="pay-opts">
-      <div class="pay-btn active" onclick="selectPay('PIX / Dinheiro',0.10,'50% de entrada + saldo via PIX',this)"><div class="pname">PIX / Dinheiro</div><div class="pdesc">10% de desconto</div></div>
-      <div class="pay-btn" onclick="selectPay('À Vista',0.05,'Pagamento à vista',this)"><div class="pname">À Vista (outro)</div><div class="pdesc">5% de desconto</div></div>
-      <div class="pay-btn" onclick="selectPay('Cartão / Boleto',0,'50% de entrada + 1 boleto para 30 dias',this)"><div class="pname">Cartão / Boleto</div><div class="pdesc">Sem desconto</div></div>
-      <div class="pay-btn" onclick="selectPay('Cheque',0,'50% de entrada + 1 cheque para 30 dias',this)"><div class="pname">Cheque</div><div class="pdesc">Sem desconto</div></div>
+      <div class="pay-btn active" onclick="selectPay('Dinheiro e Pix',0.10,'Dinheiro e Pix',this)"><div class="pname">Dinheiro e Pix</div><div class="pdesc">10% de desconto</div></div>
+      <div class="pay-btn" onclick="selectPay('Pix e Boleto',0,'Pix e Boleto',this)"><div class="pname">Pix e Boleto</div><div class="pdesc">Sem desconto</div></div>
+      <div class="pay-btn" onclick="selectPay('Dinheiro + Cartão + Cheque',0,'Dinheiro + Cartão + Cheque',this)"><div class="pname">Dinheiro + Cartão + Cheque</div><div class="pdesc">Sem desconto</div></div>
+      <div class="pay-btn" onclick="selectPay('Cartão 10x',0,'Cartão em até 10x (Valor de tabela)',this)"><div class="pname">Cartão 10x</div><div class="pdesc">Valor de tabela</div></div>
+      <div class="pay-btn" onclick="selectPay('Cartão c/ Taxa',0.10,'Cartão com 10% de desconto + Assume a taxa sem NF',this)"><div class="pname">Cartão + Taxa</div><div class="pdesc">10% de desc (Assume taxa)</div></div>
     </div>
     <div class="desc-custom">
-      <label>Desconto Personalizado (Franco)</label>
+      <label>Desconto Personalizado (Franco) - Máximo 10%</label>
       <div class="desc-row">
-        <input type="number" id="desc-pct" min="0" max="100" step="0.5" value="10" oninput="setDesconto(this.value)"/>
+        <input type="number" id="desc-pct" min="0" max="10" step="0.5" value="10" oninput="setDesconto(this.value)"/>
         <div><div class="desc-badge" id="desc-badge">10%</div><div class="desc-badge-label">de desconto</div></div>
       </div>
     </div>
@@ -272,7 +273,7 @@ header h1{font-size:17px;font-weight:600;flex:1}
 </div>
 
 <script>
-// ── BASE DE DADOS (CONTEXTO COMPLETO RESTAURADO) ─────────────────────────────────
+// ── BASE DE DADOS ─────────────────────────────────────────────────────────────
 const VEICULOS = {
   master:   {nome:"Renault Master",    taxa:0,      configs:["L3H2","L2H2","L1H1", "Furgão", "Vitrê"]},
   sprinter: {nome:"Mercedes Sprinter", taxa:0.1975, configs:["417 (10,5m)","417 (15,5m)","517 (10,5m)","517 (15,5m)", "Furgão", "Vitrê"]},
@@ -283,7 +284,7 @@ const VEICULOS = {
 
 const ITENS = [
   {id:"iso",  label:"Kit de Isolamento Termoacústico", propLabel:"Kit de Isolamento Termoacústico completo para redução de ruído e conforto térmico.", preco:990, horas:2, checked:false},
-  {id:"abs",  label:"Kit Revestimento Interno em ABS", propLabel:"Revestimento Teto e Laterais em ABS Termoformado.", preco:9850, horas:4, checked:false},
+  {id:"abs",  label:"Kit Revestimento Interno em ABS", propLabel:"Revestimento Teto e Laterais em ABS Termoformado.", preco:9850, horas:4, checked:false}, // Fica invisível na Sprinter
   {id:"piso", label:"Kit de Piso (Vinílico)", propLabel:"Kit de Piso com Bagageiro e Levante, revestido em vinílico cor: 0023. (Tapete cabine incluso).", preco:9890, horas:23.48, checked:false,
    variantes:[
      {label:"COM Bagageiro e COM Levante", preco:9890},
@@ -308,6 +309,7 @@ const POLTRONAS = [
   {id:"van_esc",      label:"Poltrona Van Escolar", unit:745.30, horas:3},
   {id:"fixa",         label:"Poltrona Fixa", unit:975.67, horas:3},
   {id:"leito",        label:"Poltrona Leito Total", unit:4553.11, horas:3},
+  {id:"polt_cli",     label:"Poltronas do Cliente (Apenas Instalação)", unit:0, precoFixo: 1295, horas:5},
 ];
 
 const ADICIONAIS_GRUPOS = {
@@ -353,6 +355,7 @@ const OPT = [
     {id:"multimidia", label:"Multimídia com Câmera de Ré e GPS", preco:1840, horas:2},
     {id:"molduramul", label:"Moldura 6.2\" (Obrigatório p/ Multimídia)", preco:630, horas:1},
     {id:"radio",      label:"Rádio Bluetooth", preco:610, horas:1},
+    {id:"jbl69",      label:"Alto Falantes JBL 6x9 (Par)", preco:850, horas:1.5, locais:["Plataforma", "Revestimento"]},
     {id:"tvabs",      label:"Smart TV 24' c/ Moldura ABS e Inversor 300w", preco:2400, horas:2},
     {id:"tvmad",      label:"Smart TV 24' c/ Moldura Madeira e Inversor 300w", preco:2700, horas:3},
   ]},
@@ -389,10 +392,10 @@ const OPT = [
 
 // ── STATE ─────────────────────────────────────────────────────────────────
 let S = {
-  veiculo:"master", poltrona:null, qty:24,
-  adicionais:{}, opts:{}, cores:{}, cortinas:{}, pelVariante:0,
+  veiculo:"master", poltrona:null, qtyStr:"24", qtyNum:24,
+  adicionais:{}, opts:{}, cores:{}, cortinas:{}, locais:{}, pelVariante:0,
   pisoCorVinilico:"Ref. 0023", extras:[],
-  pag:{label:"PIX / Dinheiro", desc:0.10, cond:"50% de entrada + saldo via PIX"}
+  pag:{label:"Dinheiro e Pix", desc:0.10, cond:"Dinheiro e Pix"}
 };
 
 // ── INIT ──────────────────────────────────────────────────────────────────
@@ -402,10 +405,35 @@ let S = {
   renderItens();
   renderPoltronas();
   renderOpcionais();
-  calcAll();
+  updateLugaresField();
 })();
 
 function toggle(h){ h.classList.toggle("open"); h.nextElementSibling.classList.toggle("open"); }
+
+// --- CONTROLE DE LUGARES (A MÁGICA DO FILTRO AQUI) ---
+function updateLugaresField() {
+  const container = document.getElementById("seat-qty-container");
+  const transf = document.getElementById("veh-transf").value;
+  const veh = S.veiculo;
+
+  let html = '<label>Qtd. de lugares / Especificação:</label>';
+
+  if (transf === "Escolar" && veh === "master") {
+      html += `<select id="seat-qty" onchange="calcSeats()"><option value="20">20L</option><option value="24" selected>24L</option></select>`;
+  } else if (transf === "Escolar" && veh === "sprinter") {
+      html += `<select id="seat-qty" onchange="calcSeats()"><option value="20">20L</option><option value="24" selected>24L</option><option value="28">28L</option></select>`;
+  } else if (transf === "Fretamento") { 
+      html += `<select id="seat-qty" onchange="calcSeats()"><option value="16">16L</option></select>`;
+  } else if (transf === "Mista") {
+      html += `<input type="text" id="seat-qty" placeholder="Ex: 9L ou menos" oninput="calcSeats()" />`;
+  } else if (transf === "Especial") {
+      html += `<input type="text" id="seat-qty" placeholder="Ex: Oficina Móvel, Clínica..." oninput="calcSeats()" />`;
+  } else {
+      html += `<input type="number" id="seat-qty" value="16" oninput="calcSeats()" />`;
+  }
+  container.innerHTML = html;
+  calcSeats();
+}
 
 // --- ITENS BASE ---
 function renderItens(){
@@ -427,7 +455,7 @@ function renderItens(){
         </div>`;
     }
     c.insertAdjacentHTML("beforeend", `
-      <div class="item-row">
+      <div class="item-row" id="row_it_${it.id}">
         <input type="checkbox" id="it_${it.id}" ${it.checked?"checked":""} onchange="toggleItem('${it.id}',this)"/>
         <label for="it_${it.id}">${it.label}<small id="small_${it.id}">${fmt(it.preco)}</small></label>
         <span class="item-price" id="price_${it.id}">${fmt(it.preco)}</span>
@@ -448,9 +476,8 @@ function updateBadgeItens(){ document.getElementById("badge-itens").textContent 
 
 function updateHom(){
   const hom = ITENS.find(x => x.id === "hom");
-  const qty = parseInt(document.getElementById("seat-qty").value) || 0;
   if(S.veiculo === "scudo") hom.preco = 3500;
-  else if(qty >= 24 || qty === 28) hom.preco = 5500;
+  else if(S.qtyNum >= 24 || S.qtyNum === 28) hom.preco = 5500;
   else hom.preco = 2750;
   
   const price = document.querySelector(`#it_hom`)?.closest(".item-row")?.querySelector(".item-price");
@@ -466,7 +493,20 @@ function selectVeh(v, el){
   const cfg = VEICULOS[v].configs;
   const sel = document.getElementById("veh-config-sel");
   if(sel) sel.innerHTML = cfg.map(c => `<option>${c}</option>`).join("");
-  updateHom(); calcAll();
+  
+  // REGRA DA SPRINTER (Sem Revestimento)
+  const absRow = document.getElementById("row_it_abs");
+  if(absRow) {
+      if(v === 'sprinter') {
+          absRow.style.display = 'none';
+          const cb = document.getElementById("it_abs");
+          if(cb && cb.checked) { cb.checked = false; toggleItem('abs', cb); }
+      } else {
+          absRow.style.display = 'flex';
+      }
+  }
+
+  updateLugaresField(); 
 }
 
 function selectPisoVariante(idx){
@@ -482,7 +522,8 @@ function renderPoltronas(){
   const c = document.getElementById("seat-types");
   c.innerHTML = "";
   POLTRONAS.forEach(p => {
-    c.insertAdjacentHTML("beforeend", `<div class="seat-btn" id="sb_${p.id}" onclick="selectSeat('${p.id}',this)"><div class="sname">${p.label}</div><div class="sprice">${fmt(p.unit)}/lugar</div></div>`);
+    const pStr = p.unit > 0 ? `${fmt(p.unit)}/lugar` : `Preço Fixo`;
+    c.insertAdjacentHTML("beforeend", `<div class="seat-btn" id="sb_${p.id}" onclick="selectSeat('${p.id}',this)"><div class="sname">${p.label}</div><div class="sprice">${pStr}</div></div>`);
   });
   renderAdicionais(null);
 }
@@ -526,15 +567,44 @@ function toggleAd(id, preco, horas, el, hasQty){
 function updateAdQty(id, val){ if(S.adicionais[id]){ S.adicionais[id].qty = parseInt(val) || 1; calcAll(); } }
 
 function calcSeats(){
-  S.qty = parseInt(document.getElementById("seat-qty").value) || 0;
+  const val = document.getElementById("seat-qty")?.value || "";
+  S.qtyStr = val; 
+  S.qtyNum = parseInt(val) || 0; 
+  
   updateHom();
+  checkTacografo();
+
   if(!S.poltrona){ calcAll(); return; }
   const p = POLTRONAS.find(x => x.id === S.poltrona);
   const adVal = Object.values(S.adicionais).reduce((a,b) => a + (b.preco * b.qty), 0);
-  const total = (p.unit * S.qty) + adVal;
-  document.getElementById("seat-result").innerHTML = `<strong>${p.label}</strong> — ${S.qty} lugares × ${fmt(p.unit)} = ${fmt(p.unit * S.qty)}` + (adVal > 0 ? ` + adicionais = <strong>${fmt(total)}</strong>` : ` = <strong>${fmt(p.unit * S.qty)}</strong>`);
-  document.getElementById("badge-seat").textContent = S.qty + "L";
+  
+  let total = 0;
+  if (p.id === 'polt_cli') {
+      total = p.precoFixo + adVal;
+      document.getElementById("seat-result").innerHTML = `<strong>${p.label}</strong> — Base: ${fmt(p.precoFixo)}` + (adVal > 0 ? ` + adicionais = <strong>${fmt(total)}</strong>` : ` = <strong>${fmt(total)}</strong>`);
+  } else {
+      total = (p.unit * S.qtyNum) + adVal;
+      const strL = isNaN(val) ? '' : `${S.qtyNum} lugares × `;
+      document.getElementById("seat-result").innerHTML = `<strong>${p.label}</strong> — ${strL}${fmt(p.unit)} = ${fmt(p.unit * S.qtyNum)}` + (adVal > 0 ? ` + adicionais = <strong>${fmt(total)}</strong>` : ` = <strong>${fmt(p.unit * S.qtyNum)}</strong>`);
+  }
+  
+  document.getElementById("badge-seat").textContent = isNaN(val) ? "L" : S.qtyNum + "L";
   calcAll();
+}
+
+function checkTacografo() {
+   const tacogCb = document.getElementById("op_tacog");
+   if(!tacogCb) return;
+
+   if(S.qtyNum > 10) {
+       if(!tacogCb.checked) {
+           tacogCb.checked = true;
+           toggleOpt('tacog', 400, 1, tacogCb, false); 
+       }
+       tacogCb.disabled = true; // Bloqueia para não desmarcar
+   } else {
+       tacogCb.disabled = false;
+   }
 }
 
 // --- OPCIONAIS ---
@@ -552,7 +622,10 @@ function renderOpcionais(){
         subCor = `<div class="opt-sub" id="sub_${it.id}"><div class="sub-label">COR</div><select onchange="selectOptCor('${it.id}',this.value)"><option value="">— selecione —</option>${it.cores.map(c=>`<option value="${c}">${c}</option>`).join("")}</select></div>`;
       } else if(it.variantesPel){
         subCor = `<div class="opt-sub" id="sub_${it.id}"><div class="sub-label">TIPO DE PELÍCULA</div>${it.variantesPel.map((v,i)=>`<label class="radio-opt"><input type="radio" name="pel_${it.id}" value="${i}" ${i===0?"checked":""} onchange="selectPelVariante('${it.id}',${i},${v.preco})"/> ${v.label}</label>`).join("")}</div>`;
+      } else if(it.locais){
+        subCor = `<div class="opt-sub" id="sub_${it.id}"><div class="sub-label">LOCAL DE INSTALAÇÃO</div><select onchange="selectOptLocal('${it.id}',this.value)"><option value="">— selecione —</option>${it.locais.map(l=>`<option value="${l}">${l}</option>`).join("")}</select></div>`;
       }
+
       const tagEscolar = it.tagEscolar ? `<span class="tag-escolar">Escolar</span>` : "";
       let qtyInput = it.hasQty ? `<input type="number" class="item-qty" min="1" value="1" onchange="updateOptQty('${it.id}', this.value)" style="display:none" id="qtyOpt_${it.id}">` : "";
       c.insertAdjacentHTML("beforeend", `<div class="item-row"><input type="checkbox" id="op_${it.id}" onchange="toggleOpt('${it.id}',${it.preco},${it.horas},this, ${it.hasQty})"/>${qtyInput}<label for="op_${it.id}">${it.label}${tagEscolar}</label><span class="item-price">${fmt(it.preco)}</span></div>${subCor}`);
@@ -567,17 +640,33 @@ function toggleOpt(id, preco, horas, el, hasQty){
     S.opts[id] = {preco, qty: q, horas};
     if(qtyInp) qtyInp.style.display = "inline-block";
   } else {
-    delete S.opts[id]; delete S.cores[id]; delete S.cortinas[id];
+    delete S.opts[id]; delete S.cores[id]; delete S.cortinas[id]; delete S.locais[id];
     if(qtyInp) qtyInp.style.display = "none";
   }
   const sub = document.getElementById("sub_" + id);
   if(sub) sub.classList.toggle("visible", el.checked);
+
+  // REGRA DA MULTIMÍDIA + MOLDURA
+  if(id === 'multimidia') {
+      const moldCb = document.getElementById("op_molduramul");
+      if(el.checked) {
+          if(!moldCb.checked) {
+              moldCb.checked = true;
+              toggleOpt('molduramul', 630, 1, moldCb, false);
+          }
+          moldCb.disabled = true; // Bloqueia para não esquecer
+      } else {
+          moldCb.disabled = false;
+      }
+  }
+
   document.getElementById("badge-opt").textContent = Object.keys(S.opts).length;
   calcAll();
 }
 
 function updateOptQty(id, val){ if(S.opts[id]){ S.opts[id].qty = parseInt(val) || 1; calcAll(); } }
 function selectOptCor(id, cor){ S.cores[id] = cor; }
+function selectOptLocal(id, loc){ S.locais[id] = loc; }
 function selectCortinaSaida(id, val){ if(!S.cortinas[id]) S.cortinas[id] = {}; S.cortinas[id].saida = val; }
 function selectCortinaCor(id, val){
   if(!S.cortinas[id]) S.cortinas[id] = {};
@@ -636,7 +725,8 @@ function selectPay(label, desc, cond, el){
 }
 
 function setDesconto(val){
-  const pct = Math.min(100, Math.max(0, parseFloat(val) || 0));
+  const pct = Math.min(10, Math.max(0, parseFloat(val) || 0)); // TRAVADO EM 10% MÁXIMO NO SCRIPT!
+  document.getElementById("desc-pct").value = pct; // Força input visual a respeitar a trava
   S.pag.desc = pct / 100;
   document.getElementById("desc-badge").textContent = (pct % 1 === 0 ? pct.toFixed(0) : pct.toFixed(1)) + "%";
   document.querySelectorAll(".pay-btn").forEach(b => b.classList.remove("active"));
@@ -647,25 +737,22 @@ function calcAll(){
   const taxa = VEICULOS[S.veiculo].taxa;
   let sub = 0; let horasTotais = 0;
 
-  // Itens Base
   ITENS.forEach(it => { if(it.checked) { sub += it.preco; horasTotais += it.horas; } });
 
-  // Poltronas e Adicionais
   let seatVal = 0; let adVal = 0;
   if(S.poltrona){
     const p = POLTRONAS.find(x => x.id === S.poltrona);
-    seatVal = p.unit * S.qty; horasTotais += p.horas;
+    seatVal = p.id === 'polt_cli' ? p.precoFixo : p.unit * S.qtyNum; 
+    horasTotais += p.horas;
     adVal = Object.values(S.adicionais).reduce((a,b) => a + (b.preco * b.qty), 0);
     horasTotais += Object.values(S.adicionais).reduce((a,b) => a + b.horas, 0);
     sub += seatVal + adVal;
   }
 
-  // Opcionais
   const optVal = Object.values(S.opts).reduce((a,b) => a + (b.preco * b.qty), 0);
   horasTotais += Object.values(S.opts).reduce((a,b) => a + b.horas, 0);
   sub += optVal;
 
-  // Extras
   const extraVal = S.extras.reduce((a,b) => a + b.preco, 0);
   horasTotais += S.extras.reduce((a,b) => a + b.horas, 0);
   sub += extraVal;
@@ -681,7 +768,7 @@ function calcAll(){
   let h = "";
   const itensVal = ITENS.filter(x => x.checked).reduce((a,b) => a+b.preco, 0);
   if(itensVal > 0) h += `<div class="summary-row"><span>Serviços e itens</span><span>${fmt(itensVal)}</span></div>`;
-  if(seatVal > 0)  h += `<div class="summary-row"><span>Poltronas (${S.qty} lugares)</span><span>${fmt(seatVal)}</span></div>`;
+  if(seatVal > 0)  h += `<div class="summary-row"><span>Poltronas</span><span>${fmt(seatVal)}</span></div>`;
   if(adVal > 0)    h += `<div class="summary-row"><span>Adicionais Poltronas</span><span>${fmt(adVal)}</span></div>`;
   if(optVal > 0)   h += `<div class="summary-row"><span>Opcionais</span><span>${fmt(optVal)}</span></div>`;
   if(extraVal > 0) h += `<div class="summary-row"><span>Itens Extras</span><span>${fmt(extraVal)}</span></div>`;
@@ -695,7 +782,7 @@ function calcAll(){
 
 function fmt(v){return"R$ "+(Math.round(v*100)/100).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
 
-// --- GERAÇÃO DO PDF (LAYOUT PREMIUM) ---
+// --- GERAÇÃO DO PDF (LAYOUT PREMIUM MANTIDO) ---
 function gerarProposta(){
   if(S.opts["cortina"] && S.cortinas["cortina"]?.cor === "Customizada" && !(S.cortinas["cortina"].modelo||"").trim()){
     alert("Preencha o modelo da cortina no salão antes de gerar a proposta."); return;
@@ -714,7 +801,6 @@ function gerarProposta(){
   let num = 1;
   let itensHTML = "";
 
-  // 1. Itens Base
   ITENS.forEach(it => {
     if(!it.checked) return;
     let propLabelFinal = it.propLabel;
@@ -722,17 +808,16 @@ function gerarProposta(){
     itensHTML += `<li><span class="number">${num++}.</span><span class="text">${propLabelFinal}</span></li>`;
   });
 
-  // 2. Poltronas
   if(S.poltrona){
     const p = POLTRONAS.find(x => x.id === S.poltrona);
-    let adsAtivos = Object.entries(S.adicionais).map(([k,v]) => {
+    let adsAtivos = Object.entries(S.adicionais).map(([k,val]) => {
        let opt = getAllAdicionais().find(a=>a.id===k);
-       return `<li>${opt.label}${v.qty > 1 ? ` (${v.qty} un)` : ''}</li>`;
+       return `<li>${opt.label}${val.qty > 1 ? ` (${val.qty} un)` : ''}</li>`;
     }).join("");
-    itensHTML += `<li><span class="number">${num++}.</span><span class="text">${p.label} — ${S.qty} lugares${adsAtivos ? `<ul class="p-sublist">${adsAtivos}</ul>`:''}</span></li>`;
+    const lText = isNaN(S.qtyStr) ? '' : ` — ${S.qtyStr} lugares`;
+    itensHTML += `<li><span class="number">${num++}.</span><span class="text">${p.label}${lText}${adsAtivos ? `<ul class="p-sublist">${adsAtivos}</ul>`:''}</span></li>`;
   }
 
-  // 3. Opcionais
   OPT.forEach(cat => cat.items.forEach(it => {
     if(S.opts[it.id]){
       let l = it.label;
@@ -743,23 +828,26 @@ function gerarProposta(){
         l = it.variantesPel[S.pelVariante].label;
       } else if(it.cores && S.cores[it.id]) {
         l += ` (Cor: ${S.cores[it.id]})`;
+      } else if (it.locais && S.locais[it.id]) {
+        l += ` (Local: ${S.locais[it.id]})`;
       }
       if(S.opts[it.id].qty > 1) l += ` (${S.opts[it.id].qty} unidades)`;
       itensHTML += `<li><span class="number">${num++}.</span><span class="text">${l}</span></li>`;
     }
   }));
 
-  // 4. Extras Manuais
   S.extras.forEach(ex => {
     itensHTML += `<li><span class="number">${num++}.</span><span class="text">${ex.label}</span></li>`;
   });
+
+  const subHeaderLugarText = isNaN(S.qtyStr) ? S.qtyStr.toUpperCase() : `${S.qtyStr} LUGARES`;
 
   const htmlPDF = `
     <div class="proposta-page">
       <div class="p-header-title">PROPOSTA COMERCIAL</div>
       <div class="p-intro">
         Prezados,<br>Segue proposta comercial conforme descrição abaixo, referente à adaptação de veículo<br>
-        <b>${vNome.toUpperCase()}</b> em <b>${transf.toUpperCase()} ${S.qty} LUGARES</b>.
+        <b>${vNome.toUpperCase()}</b> em <b>${transf.toUpperCase()} - ${subHeaderLugarText}</b>.
       </div>
       
       <div class="p-info-box">
