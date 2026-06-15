@@ -127,20 +127,11 @@ header h1{font-size:17px;font-weight:600;flex:1}
 .btn-voltar{flex:1;background:#e8eaf0;border:none;border-radius:8px;padding:11px;font-size:14px;font-weight:600;cursor:pointer}
 .btn-imprimir{flex:2;background:#1a3a5c;color:#fff;border:none;border-radius:8px;padding:11px;font-size:14px;font-weight:600;cursor:pointer}
 
-.proposta-page{background:#fff;padding:40px 50px;font-family:Arial,sans-serif;font-size:11pt;line-height:1.5;color:#333;border-radius:4px;margin-bottom:12px;box-shadow:0 1px 6px #0002;position:relative; page-break-after: always;}
-.proposta-page:last-child { page-break-after: avoid; }
-
+.proposta-page{background:#fff;padding:40px 50px;font-family:Arial,sans-serif;font-size:11pt;line-height:1.5;color:#333;border-radius:4px;margin-bottom:12px;box-shadow:0 1px 6px #0002;position:relative}
 .p-header-title{font-size:22pt;font-weight:bold;color:#000;text-align:center;margin-bottom:20px;text-transform:uppercase;letter-spacing:1px}
 .p-intro{text-align:center;margin-bottom:25px}
 .p-info-box{border-top:1px solid #ddd;border-bottom:1px solid #ddd;padding:15px 0;margin-bottom:30px; display:flex; justify-content:space-between}
 .p-section-title{font-size:13pt;font-weight:bold;color:#1a3a5c;margin-top:25px;margin-bottom:10px;text-transform:uppercase}
-
-/* Tabela Estilo Planilha da Página 2 */
-.p-table {width:100%; border-collapse:collapse; margin-top:15px; font-size:10.5pt;}
-.p-table th {background:#1a3a5c; color:white; padding:8px; font-weight:bold; border:1px solid #1a3a5c; text-align:center;}
-.p-table td {padding:7px 10px; border:1px solid #ddd; vertical-align:middle;}
-
-/* Lista da Página 1 */
 .p-list{list-style:none;padding-left:0}
 .p-list li{margin-bottom:10px;display:flex}
 .p-list li .number{font-weight:bold;min-width:30px}
@@ -148,7 +139,6 @@ header h1{font-size:17px;font-weight:600;flex:1}
 .p-sublist{list-style:none;margin:4px 0 2px 0;padding:0}
 .p-sublist li{font-size:10pt;padding:1px 0}
 .p-sublist li::before{content:"o  ";font-weight:normal; margin-right:5px;}
-
 .p-payment-card{margin-top:40px;padding:20px;border:2px solid #e07b39;border-radius:10px;background-color:#fffaf7}
 .p-total{font-size:18pt;font-weight:bold;color:#e07b39;margin-bottom:10px}
 .p-signatures{margin-top:80px;display:flex;justify-content:space-between}
@@ -159,14 +149,14 @@ header h1{font-size:17px;font-weight:600;flex:1}
   html,body{background:#fff}
   header,.modal-actions,.container{display:none!important}
   .modal-bg{display:block!important;position:static!important;padding:0!important;background:none!important}
-  .proposta-page{box-shadow:none;border-radius:0;padding:20mm;margin-bottom:0}
+  .proposta-page{box-shadow:none;border-radius:0;padding:20mm;page-break-after:always;margin-bottom:0}
 }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>V12 Customização — Gerador de Orçamentos</h1>
+  <h1>V12 Customização — Gerador de Orçamentos v4</h1>
   <div class="total-badge" id="header-total">R$ 0</div>
 </header>
 
@@ -481,6 +471,7 @@ function renderItens(){
         </div>`;
     }
     
+    // Trava para itens obrigatórios não serem desmarcados
     const disabledAttr = it.fixed ? 'disabled="disabled"' : '';
     const tagObrig = it.fixed ? `<span class="tag-obrig">Obrigatório</span>` : "";
 
@@ -496,7 +487,7 @@ function renderItens(){
 
 function toggleItem(id, el){
   const it = ITENS.find(x => x.id === id);
-  if(it.fixed) { el.checked = true; return; }
+  if(it.fixed) { el.checked = true; return; } // Segurança extra via JS
   if(it) it.checked = el.checked;
   const sub = document.getElementById("sub_" + id);
   if(sub) sub.classList.toggle("visible", el.checked);
@@ -630,6 +621,7 @@ function checkTacografo() {
    const tacogCb = document.getElementById("op_tacog");
    if(!tacogCb) return;
 
+   // O tacógrafo é obrigatório em qualquer situação que passe de 10 Lugares
    if(S.qtyNum > 10) {
        if(!tacogCb.checked) {
            tacogCb.checked = true;
@@ -760,6 +752,7 @@ function selectPay(label, desc, cond, el){
 function setDesconto(val){
   let pct = parseFloat(val) || 0;
   
+  // Senha do Franco para descontos maiores que 10%
   if(pct > 10) {
     const senha = prompt("Descontos acima de 10% exigem autorização. Digite a senha do Franco:");
     if(senha !== "1234") { 
@@ -820,12 +813,12 @@ function calcAll(){
   h += `<div class="summary-row total"><span>TOTAL</span><span>${fmt(total)}</span></div>`;
   r.innerHTML = h;
 
-  return { total, subtotal: sub, descVal, totalHoras: horasTotais };
+  return { total, totalHoras: horasTotais };
 }
 
 function fmt(v){return"R$ "+(Math.round(v*100)/100).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
 
-// --- GERAÇÃO DO PDF (FUSÃO DE CONTEXTO E 2ª PÁGINA) ---
+// --- GERAÇÃO DO PDF ---
 function gerarProposta(){
   if(S.opts["cortina"] && S.cortinas["cortina"]?.cor === "Customizada" && !(S.cortinas["cortina"].modelo||"").trim()){
     alert("Preencha o modelo da cortina no salão antes de gerar a proposta."); return;
@@ -841,51 +834,30 @@ function gerarProposta(){
   const cidade = document.getElementById("cli-cidade").value.trim() || "___________________";
   const captacao = document.getElementById("cli-captacao").value || "";
   const rep = document.getElementById("cli-rep").value;
-  const dataHoje = new Date().toLocaleDateString('pt-BR', {day: 'numeric', month: 'long', year: 'numeric'});
   
   let num = 1;
-  let itensP1HTML = ""; 
-  let planilhaRowsHTML = ""; 
+  let itensHTML = "";
 
-  // 1. Processamento de Itens Base
   ITENS.forEach(it => {
     if(!it.checked) return;
-    let descFinal = it.propLabel;
-    if(it.id === "piso" && it.variantes) {
-      descFinal = `Kit de Piso — ${it.variantes.find(v => v.preco === it.preco)?.label || it.variantes[0].label}, revestido em vinílico cor: ${S.pisoCorVinilico}. (Tapete da cabine incluso).`;
-    }
-    itensP1HTML += `<li><span class="number">${num++}.</span><span class="text">${descFinal}</span></li>`;
-    planilhaRowsHTML += `<tr><td style="text-align:center;">1</td><td>${descFinal}</td><td style="text-align:right; font-weight:600;">${fmt(it.preco)}</td></tr>`;
+    let propLabelFinal = it.propLabel;
+    if(it.id === "piso" && it.variantes) propLabelFinal = `Kit de Piso — ${it.variantes.find(v => v.preco === it.preco)?.label || it.variantes[0].label}, revestido em vinílico cor: ${S.pisoCorVinilico}. (Tapete da cabine incluso).`;
+    itensHTML += `<li><span class="number">${num++}.</span><span class="text">${propLabelFinal}</span></li>`;
   });
 
-  // 2. Processamento de Poltronas
   if(S.poltrona){
     const p = POLTRONAS.find(x => x.id === S.poltrona);
-    let adsAtivosTexto = Object.entries(S.adicionais).map(([k,val]) => {
+    let adsAtivos = Object.entries(S.adicionais).map(([k,val]) => {
        let opt = getAllAdicionais().find(a=>a.id===k);
        return `<li>${opt.label}${val.qty > 1 ? ` (${val.qty} un)` : ''}</li>`;
     }).join("");
     const lText = isNaN(S.qtyStr) ? '' : ` — ${S.qtyStr} lugares`;
-    
-    itensP1HTML += `<li><span class="number">${num++}.</span><span class="text">${p.label}${lText}${adsAtivosTexto ? `<ul class="p-sublist">${adsAtivosTexto}</ul>`:''}</span></li>`;
-    
-    if (p.id === 'polt_cli') {
-      planilhaRowsHTML += `<tr><td style="text-align:center;">1</td><td>${p.label} (Apenas Instalação)</td><td style="text-align:right; font-weight:600;">${fmt(p.precoFixo)}</td></tr>`;
-    } else {
-      planilhaRowsHTML += `<tr><td style="text-align:center;">${S.qtyNum}</td><td>${p.label}</td><td style="text-align:right; font-weight:600;">${fmt(p.unit * S.qtyNum)}</td></tr>`;
-    }
-
-    Object.entries(S.adicionais).forEach(([k, val]) => {
-       let opt = getAllAdicionais().find(a=>a.id===k);
-       planilhaRowsHTML += `<tr><td style="text-align:center;">${val.qty}</td><td>Adicional Poltrona: ${opt.label}</td><td style="text-align:right; font-weight:600;">${fmt(val.preco * val.qty)}</td></tr>`;
-    });
+    itensHTML += `<li><span class="number">${num++}.</span><span class="text">${p.label}${lText}${adsAtivos ? `<ul class="p-sublist">${adsAtivos}</ul>`:''}</span></li>`;
   }
 
-  // 3. Processamento de Opcionais
   OPT.forEach(cat => cat.items.forEach(it => {
     if(S.opts[it.id]){
       let l = it.label;
-      let q = S.opts[it.id].qty || 1;
       if((it.id === "cortina" || it.id === "cortdiv") && S.cortinas[it.id]){
         const c = S.cortinas[it.id];
         l += ` — ${c.saida || ""} Cor ${c.cor || "Padrão"}${c.modelo ? ` (${c.modelo})` : ""}`;
@@ -896,27 +868,20 @@ function gerarProposta(){
       } else if (it.locais && S.locais[it.id]) {
         l += ` (Local: ${S.locais[it.id]})`;
       }
-      
-      let pText = l;
-      if(S.opts[it.id].qty > 1) pText += ` (${S.opts[it.id].qty} unidades)`;
-      
-      itensP1HTML += `<li><span class="number">${num++}.</span><span class="text">${pText}</span></li>`;
-      planilhaRowsHTML += `<tr><td style="text-align:center;">${q}</td><td>${l}</td><td style="text-align:right; font-weight:600;">${fmt(it.preco * q)}</td></tr>`;
+      if(S.opts[it.id].qty > 1) l += ` (${S.opts[it.id].qty} unidades)`;
+      itensHTML += `<li><span class="number">${num++}.</span><span class="text">${l}</span></li>`;
     }
   }));
 
-  // 4. Processamento de Extras Manuais
   S.extras.forEach(ex => {
-    itensP1HTML += `<li><span class="number">${num++}.</span><span class="text">${ex.label}</span></li>`;
-    planilhaRowsHTML += `<tr><td style="text-align:center;">${ex.qty}</td><td>${ex.label} (Item Extra)</td><td style="text-align:right; font-weight:600;">${fmt(ex.preco)}</td></tr>`;
+    itensHTML += `<li><span class="number">${num++}.</span><span class="text">${ex.label}</span></li>`;
   });
 
   const subHeaderLugarText = isNaN(S.qtyStr) ? S.qtyStr.toUpperCase() : `${S.qtyStr} LUGARES`;
 
-  // --- PÁGINA 1: TEXTO FORMAL DA PROPOSTA ---
-  const pagina1 = `
+  const htmlPDF = `
     <div class="proposta-page">
-      <div class="p-header-title">PROPOSTA COMERCIAL</div>
+      <div class="p-header-title">PROPOSTA COMERCIAL V3</div>
       <div class="p-intro">
         Prezados,<br>Segue proposta comercial conforme descrição abaixo, referente à adaptação de veículo<br>
         <b>${vNome.toUpperCase()}</b> em <b>${transf.toUpperCase()} - ${subHeaderLugarText}</b>.
@@ -930,25 +895,25 @@ function gerarProposta(){
         <div><b>Representante:</b> ${rep}</div>
       </div>
       
-      <div class="p-section-title">1. SERVIÇOS E CONFIGURAÇÃO:</div>
-      <p style="margin-bottom:15px">Projeto, montagem e acompanhamento técnico conforme especificações descritas:</p>
+      <div class="p-section-title">1. SERVIÇOS:</div>
+      <p style="margin-bottom:15px">Projeto, montagem e acompanhamento técnico conforme especificações que seguem abaixo:</p>
       
-      <ul class="p-list">${itensP1HTML}</ul>
+      <ul class="p-list">${itensHTML}</ul>
       
       <div class="p-payment-card">
         <div class="p-section-title" style="margin-top:0; color:#e07b39;">2. CONDIÇÕES DE PAGAMENTO:</div>
-        <div class="p-total">VALOR TOTAL CONTRATADO: ${fmt(calcs.total)}</div>
-        <p><b>Forma de Pagamento:</b> ${S.pag.cond} — com ${(S.pag.desc*100).toFixed(0)}% de desconto incluso.</p>
-        <p><b>Estimativa de Produção:</b> ${Math.ceil(calcs.totalHoras)} horas técnicas aplicadas em fábrica.</p>
-        <p><b>Prazo de Entrega:</b> 30 dias úteis após o recebimento do veículo na unidade.</p>
+        <div class="p-total">VALOR TOTAL: ${fmt(calcs.total)}</div>
+        <p><b>Forma de Pagamento:</b> ${S.pag.cond} — com ${(S.pag.desc*100).toFixed(0)}% de desconto aplicado.</p>
+        <p><b>Estimativa de Produção:</b> ${Math.ceil(calcs.totalHoras)} horas de fabricação e montagem.</p>
+        <p><b>Prazo de Entrega:</b> 30 dias úteis após a entrega do veículo.</p>
       </div>
       
-      <div class="p-section-title">3. OBSERVAÇÕES LEGAIS:</div>
-      <p style="font-size:10pt; text-align:justify;">A V12 Veículos Especiais garante a qualidade estrutural e de acabamento, seguindo rigorosamente todas as homologações e normas do CONTRAN e INMETRO vigentes.</p>
+      <div class="p-section-title">3. OBSERVAÇÕES:</div>
+      <p style="font-size:10pt; text-align:justify;">A V12 Veículos Especiais garante a qualidade dos materiais e da mão de obra empregada, seguindo todas as normas do CONTRAN e INMETRO vigentes.</p>
       
       <div class="p-signatures">
         <div class="p-sig-line">V12 CUSTOMIZAÇÃO DE VEÍCULOS</div>
-        <div class="p-sig-line">ACEITE DO CLIENTE</div>
+        <div class="p-sig-line">CLIENTE</div>
       </div>
       
       <div class="p-footer">
@@ -958,55 +923,7 @@ function gerarProposta(){
     </div>
   `;
 
-  // --- PÁGINA 2: MEMÓRIA DE CÁLCULO ESTILO PLANILHA EXCEL ---
-  const pagina2 = `
-    <div class="proposta-page">
-      <div class="p-header-title" style="font-size:18pt; margin-bottom:5px;">V12 CUSTOMIZAÇÃO</div>
-      <div style="text-align:center; font-size:11pt; font-weight:bold; margin-bottom:20px; color:#666;">DETALHAMENTO DO ORÇAMENTO — ANEXO DA PROPOSTA</div>
-      
-      <div class="p-info-box" style="margin-bottom:15px; font-size:10pt; background:#f9f9f9; padding:10px;">
-        <div><b>Orçamento para:</b> ${cliente}<br><b>Veículo Base:</b> ${vNome}</div>
-        <div style="text-align:right;"><b>Data de Emissão:</b> ${dataHoje}<br><b>Representante:</b> ${rep}</div>
-      </div>
-      
-      <table class="p-table">
-        <thead>
-          <tr>
-            <th style="width:10%;">QTD</th>
-            <th style="width:65%;">DESCRIÇÃO DOS ITENS SELECIONADOS</th>
-            <th style="width:25%;">PREÇO DE VENDA (R$)</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${planilhaRowsHTML}
-          <tr style="font-weight:bold; background:#f5f5f7;">
-            <td colspan="2" style="text-align:right; padding-right:15px;">SUBTOTAL ACUMULADO:</td>
-            <td style="text-align:right;">${fmt(calcs.subtotal)}</td>
-          </tr>
-          ${calcs.descVal > 0 ? `
-          <tr style="font-weight:bold; color:#1a6b3a; background:#f5f5f7;">
-            <td colspan="2" style="text-align:right; padding-right:15px;">DESCONTO COMERCIAL APLICADO (${(S.pag.desc*100).toFixed(1)}%):</td>
-            <td style="text-align:right;">- ${fmt(calcs.descVal)}</td>
-          </tr>` : ''}
-          <tr style="font-weight:bold; background:#e07b39; color:white;">
-            <td colspan="2" style="text-align:right; padding-right:15px; font-size:11pt;">PREÇO FINAL REAJUSTADO:</td>
-            <td style="text-align:right; font-size:11pt;">${fmt(calcs.total)}</td>
-          </tr>
-        </tbody>
-      </table>
-      
-      <div style="margin-top:30px; font-size:9.5pt; color:#555; background:#fff8f3; border:1px solid #f0c89a; padding:12px; border-radius:6px;">
-        * Valores de venda calculados com base na customização selecionada. Este anexo serve para conferência detalhada dos materiais instalados e análise de reajustes.
-      </div>
-      
-      <div class="p-footer" style="margin-top:60px;">
-        V12 CUSTOMIZAÇÃO DE VEÍCULO LTDA | Caxias do Sul - RS <br>
-        Rua Boaventura Lucena, 100 - Bairro Ana Rech | Fone: (54) 99999-5399
-      </div>
-    </div>
-  `;
-
-  document.getElementById("proposta-pages").innerHTML = pagina1 + pagina2;
+  document.getElementById("proposta-pages").innerHTML = htmlPDF;
   document.getElementById("modal").classList.add("open");
 }
 
