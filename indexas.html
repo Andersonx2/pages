@@ -1,379 +1,1808 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Villa Serenity | O Cenário do Seu Grande Dia</title>
-    
-    <!-- Tailwind CSS (CDN para performance imediata no preview) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Fontes Google: Playfair Display (Luxo) e Lato (Leitura) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    
-    <!-- Ícones Lucide -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRM de Captação - Leads de Clínicas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .kanban-column {
+      min-height: 520px;
+    }
 
-    <!-- Configurações Personalizadas do Tailwind -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        gold: {
-                            100: '#F9F1D8',
-                            400: '#D4AF37',
-                            500: '#C5A028',
-                            900: '#8A7018',
-                        },
-                        sage: {
-                            50: '#F4F7F5',
-                            100: '#E3EBE6',
-                            500: '#8DA399',
-                            800: '#4A5D55',
-                            900: '#2F3E38',
-                        },
-                        dark: '#1A1A1A'
-                    },
-                    fontFamily: {
-                        serif: ['"Playfair Display"', 'serif'],
-                        sans: ['"Lato"', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    .dragging {
+      opacity: 0.45;
+      transform: rotate(1deg);
+    }
 
-    <style>
-        /* Efeitos suaves */
-        .fade-in-up {
-            animation: fadeInUp 1s ease-out;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .drop-active {
+      outline: 2px dashed #2563eb;
+      outline-offset: -6px;
+      background: #eff6ff;
+    }
 
-        .smooth-scroll {
-            scroll-behavior: smooth;
-        }
+    .scrollbar-thin::-webkit-scrollbar {
+      height: 8px;
+      width: 8px;
+    }
 
-        /* Estilo para imagem de fundo com overlay */
-        .hero-bg {
-            background-image: url('https://images.unsplash.com/photo-1519225421980-715cb0202128?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed; /* Parallax effect */
-        }
-    </style>
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 999px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+  </style>
 </head>
-<body class="font-sans text-dark antialiased bg-sage-50 smooth-scroll">
 
-    <!-- Navbar Fixa com Transparência -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md shadow-sm py-4">
-        <div class="container mx-auto px-6 flex justify-between items-center">
-            <a href="#" class="text-2xl font-serif font-bold text-sage-900 tracking-wider">
-                VILLA <span class="text-gold-500">SERENITY</span>
-            </a>
-            
-            <!-- Menu Desktop -->
-            <div class="hidden md:flex space-x-8 items-center">
-                <a href="#espacos" class="text-sage-900 hover:text-gold-500 transition text-sm uppercase tracking-widest">Espaços</a>
-                <a href="#experiencia" class="text-sage-900 hover:text-gold-500 transition text-sm uppercase tracking-widest">Experiência</a>
-                <a href="#depoimentos" class="text-sage-900 hover:text-gold-500 transition text-sm uppercase tracking-widest">Histórias Reais</a>
-                <a href="#contato" class="bg-sage-900 text-white px-6 py-2 rounded-full hover:bg-gold-500 transition duration-300 text-sm uppercase tracking-widest shadow-lg transform hover:-translate-y-1">
-                    Solicitar Orçamento
-                </a>
-            </div>
+<body class="bg-slate-100 text-slate-900">
+  <div class="min-h-screen">
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30">
+      <div class="max-w-[1600px] mx-auto px-4 py-4">
+        <div class="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+          <div>
+            <h1 class="text-2xl font-bold">CRM de Captação</h1>
+            <p class="text-sm text-slate-500">Importe leads, salve em arquivo .data, acompanhe o funil em Kanban e conduza a prospecção.</p>
+          </div>
 
-            <!-- Menu Mobile Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-sage-900 focus:outline-none">
-                <i data-lucide="menu" class="w-8 h-8"></i>
+          <div class="flex flex-wrap gap-2">
+            <label class="cursor-pointer inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
+              Importar CSV
+              <input id="csvInput" type="file" accept=".csv,text/csv" class="hidden" />
+            </label>
+
+            <label class="cursor-pointer inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50">
+              Abrir .data
+              <input id="dataInput" type="file" accept=".data,application/json" class="hidden" />
+            </label>
+
+            <button id="saveDataBtn" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+              Salvar .data
             </button>
-        </div>
-        
-        <!-- Menu Mobile Dropdown -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-sage-100 absolute w-full">
-            <div class="flex flex-col p-6 space-y-4 text-center">
-                <a href="#espacos" class="text-sage-900 hover:text-gold-500">Espaços</a>
-                <a href="#experiencia" class="text-sage-900 hover:text-gold-500">Experiência</a>
-                <a href="#depoimentos" class="text-sage-900 hover:text-gold-500">Histórias Reais</a>
-                <a href="#contato" class="bg-sage-900 text-white px-6 py-3 rounded-full">Solicitar Orçamento</a>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Hero Section (Dobra Mágica) -->
-    <header class="relative h-screen flex items-center justify-center hero-bg">
-        <div class="absolute inset-0 bg-black/40 z-10"></div> <!-- Overlay escuro -->
-        
-        <div class="relative z-20 text-center px-4 max-w-4xl mx-auto fade-in-up">
-            <p class="text-gold-100 uppercase tracking-[0.3em] mb-4 text-sm md:text-base font-bold">Agenda 2026/2027 Aberta</p>
-            <h1 class="text-5xl md:text-7xl font-serif text-white mb-6 leading-tight">
-                Onde o "Sim"<br> se torna Eterno.
-            </h1>
-            <p class="text-white/90 text-lg md:text-xl font-light mb-10 max-w-2xl mx-auto">
-                Uma arquitetura neoclássica cercada pela natureza. O cenário perfeito para casamentos exclusivos e memórias inesquecíveis.
-            </p>
-            <div class="flex flex-col md:flex-row gap-4 justify-center">
-                <a href="#contato" class="bg-gold-500 text-white px-8 py-4 rounded-full text-sm uppercase tracking-widest hover:bg-white hover:text-gold-900 transition duration-300 font-bold shadow-2xl">
-                    Verificar Disponibilidade
-                </a>
-                <a href="#video-tour" class="border border-white text-white px-8 py-4 rounded-full text-sm uppercase tracking-widest hover:bg-white hover:text-sage-900 transition duration-300 flex items-center justify-center gap-2">
-                    <i data-lucide="play-circle" class="w-5 h-5"></i> Tour Virtual
-                </a>
-            </div>
+            <button id="exportCsvBtn" class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold hover:bg-slate-50">
+              Exportar CSV
+            </button>
+
+            <button id="clearBtn" class="rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50">
+              Limpar
+            </button>
+          </div>
         </div>
-        
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
-            <i data-lucide="chevron-down" class="text-white w-8 h-8 opacity-70"></i>
+
+        <div class="mt-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <nav class="flex flex-wrap gap-2">
+            <button data-view="dashboard" class="view-btn rounded-lg px-3 py-2 text-sm font-semibold bg-slate-900 text-white">Dashboard</button>
+            <button data-view="kanban" class="view-btn rounded-lg px-3 py-2 text-sm font-semibold bg-white border border-slate-300 text-slate-700">Kanban</button>
+            <button data-view="lista" class="view-btn rounded-lg px-3 py-2 text-sm font-semibold bg-white border border-slate-300 text-slate-700">Lista</button>
+            <button data-view="mensagens" class="view-btn rounded-lg px-3 py-2 text-sm font-semibold bg-white border border-slate-300 text-slate-700">Mensagens</button>
+            <button data-view="banco" class="view-btn rounded-lg px-3 py-2 text-sm font-semibold bg-white border border-slate-300 text-slate-700">Banco de Dados</button>
+          </nav>
+
+          <div id="saveStatus" class="text-xs text-slate-500">
+            Banco local pronto.
+          </div>
         </div>
+      </div>
     </header>
 
-    <!-- Social Proof Bar -->
-    <section class="bg-white py-8 border-b border-sage-100">
-        <div class="container mx-auto px-6">
-            <p class="text-center text-gray-400 text-xs uppercase tracking-widest mb-6">Destaque em</p>
-            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                <!-- Logos fictícios -->
-                <span class="text-2xl font-serif font-bold text-sage-800">VOGUE <span class="text-xs font-sans">NOIVAS</span></span>
-                <span class="text-2xl font-serif font-bold text-sage-800">CONSTANCE ZAHN</span>
-                <span class="text-2xl font-serif font-bold text-sage-800">INESQUECÍVEL <span class="text-xs font-sans">CASAMENTO</span></span>
-                <span class="text-2xl font-serif font-bold text-sage-800">LÁPIS DE NOIVA</span>
-            </div>
+    <main class="max-w-[1600px] mx-auto px-4 py-6">
+      <section class="bg-white rounded-xl border border-slate-200 p-4 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-3">
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Buscar por clínica, telefone, cidade, observação..."
+            class="xl:col-span-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <select id="stageFilter" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">Todas as etapas</option>
+          </select>
+
+          <select id="siteFilter" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">Todos os tipos de site</option>
+            <option value="Sim">Com site próprio</option>
+            <option value="Não tem site próprio">Sem site próprio</option>
+            <option value="Não listado no Google Maps">Não listado no Maps</option>
+          </select>
+
+          <select id="priorityFilter" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">Todas as prioridades</option>
+            <option value="Alta">Alta</option>
+            <option value="Média">Média</option>
+            <option value="Baixa">Baixa</option>
+          </select>
+
+          <button id="showDueBtn" class="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600">
+            Follow-ups de hoje/vencidos
+          </button>
         </div>
-    </section>
+      </section>
 
-    <!-- Diferenciais (Why Us) -->
-    <section id="experiencia" class="py-20 bg-sage-50">
-        <div class="container mx-auto px-6">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-3xl md:text-5xl font-serif text-sage-900 mb-4">Experiência All-Inclusive</h2>
-                <div class="w-24 h-1 bg-gold-500 mx-auto mb-6"></div>
-                <p class="text-gray-600">Não alugamos apenas um espaço. Entregamos a tranquilidade de uma infraestrutura completa pensada nos mínimos detalhes.</p>
+      <section id="emptyState" class="bg-white rounded-xl border border-dashed border-slate-300 p-10 text-center">
+        <h2 class="text-xl font-semibold">Nenhum lead importado ainda</h2>
+        <p class="text-slate-500 mt-2">Importe o CSV do extrator ou abra um arquivo .data para começar.</p>
+        <p class="text-xs text-slate-400 mt-4">
+          Colunas esperadas: Nome da Clínica, Telefone, Tem Site?, Tipo de Site, Website Encontrado, Endereço, Avaliação, Link Google Maps.
+        </p>
+      </section>
+
+      <section id="appViews" class="hidden">
+        <div id="dashboardView" class="view-panel"></div>
+        <div id="kanbanView" class="view-panel hidden"></div>
+        <div id="listaView" class="view-panel hidden"></div>
+        <div id="mensagensView" class="view-panel hidden"></div>
+        <div id="bancoView" class="view-panel hidden"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="leadModal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-slate-900/50" onclick="closeLeadModal()"></div>
+    <div class="absolute inset-y-0 right-0 w-full max-w-2xl bg-white shadow-2xl overflow-y-auto scrollbar-thin">
+      <div id="leadModalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "crm_captacao_clientes_v2";
+
+    const STAGES = [
+      "Importado",
+      "Prioridade - Sem site",
+      "Mensagem pronta",
+      "Contato feito",
+      "Follow-up 1",
+      "Follow-up 2",
+      "Respondeu",
+      "Qualificado",
+      "Reunião agendada",
+      "Proposta enviada",
+      "Fechado",
+      "Perdido"
+    ];
+
+    const ACTIVE_STAGES = [
+      "Contato feito",
+      "Follow-up 1",
+      "Follow-up 2",
+      "Respondeu",
+      "Qualificado",
+      "Reunião agendada",
+      "Proposta enviada",
+      "Fechado"
+    ];
+
+    const WON_STAGES = ["Fechado"];
+    const LOST_STAGES = ["Perdido"];
+
+    const MESSAGE_TEMPLATES = {
+      semSite: {
+        nome: "Clínica sem site próprio",
+        texto: `Olá, tudo bem? Vi a ficha da {{nome}} no Google Maps e percebi que vocês ainda não têm um site próprio bem apresentado na ficha.
+
+Hoje, quando um paciente pesquisa por tratamentos no Google, ele geralmente compara estrutura, especialidades, avaliações e facilidade de contato antes de chamar no WhatsApp.
+
+Trabalho ajudando clínicas a criarem uma presença digital mais profissional para captar pacientes com mais previsibilidade.
+
+Faz sentido eu te mostrar uma ideia simples de como a {{nome_curto}} poderia melhorar essa captação?`
+      },
+      naoListado: {
+        nome: "Site não listado no Maps",
+        texto: `Olá, tudo bem? Encontrei a {{nome}} no Google Maps, mas não vi um site listado na ficha da clínica.
+
+Isso pode fazer vocês perderem pacientes que pesquisam por tratamentos e querem entender melhor a estrutura, especialidades e formas de contato antes de chamar no WhatsApp.
+
+Faz sentido eu te enviar uma sugestão rápida de melhoria para a presença digital da {{nome_curto}}?`
+      },
+      comSite: {
+        nome: "Clínica com site",
+        texto: `Olá, tudo bem? Vi a {{nome}} no Google Maps e também acessei o site de vocês.
+
+Trabalho ajudando clínicas a transformar presença digital em mais oportunidades comerciais, com páginas mais claras, tráfego pago e uma jornada melhor para o paciente entrar em contato.
+
+Faz sentido eu te enviar uma análise rápida com possíveis melhorias?`
+      },
+      followUp1: {
+        nome: "Follow-up 1",
+        texto: `Olá, tudo bem? Passando só para retomar minha mensagem anterior sobre a presença digital da {{nome}}.
+
+A ideia não é fazer uma proposta genérica, mas mostrar onde a clínica pode melhorar a captação de pacientes a partir do Google, site e WhatsApp.
+
+Posso te enviar uma análise rápida?`
+      },
+      followUp2: {
+        nome: "Follow-up 2",
+        texto: `Oi, tudo bem? Última tentativa por aqui.
+
+Encontrei alguns pontos que podem estar limitando a captação digital da {{nome}}, principalmente para pacientes que pesquisam no Google antes de escolher uma clínica.
+
+Se fizer sentido, posso te enviar um diagnóstico simples e direto.`
+      },
+      reuniao: {
+        nome: "Convite para reunião",
+        texto: `Perfeito. Para eu te mostrar com clareza as oportunidades da {{nome}}, o ideal seria uma conversa rápida de 20 minutos.
+
+Nessa conversa, consigo te mostrar:
+1. O que pode estar travando a captação hoje
+2. Como melhorar a presença no Google e no site
+3. Quais ações podem gerar mais contatos qualificados
+
+Qual melhor horário para você?`
+      }
+    };
+
+    let state = createEmptyState();
+    let currentView = "dashboard";
+    let selectedLeadId = null;
+    let dataFileHandle = null;
+    let autoSaveTimer = null;
+
+    const els = {
+      csvInput: document.getElementById("csvInput"),
+      dataInput: document.getElementById("dataInput"),
+      saveDataBtn: document.getElementById("saveDataBtn"),
+      exportCsvBtn: document.getElementById("exportCsvBtn"),
+      clearBtn: document.getElementById("clearBtn"),
+      searchInput: document.getElementById("searchInput"),
+      stageFilter: document.getElementById("stageFilter"),
+      siteFilter: document.getElementById("siteFilter"),
+      priorityFilter: document.getElementById("priorityFilter"),
+      showDueBtn: document.getElementById("showDueBtn"),
+      saveStatus: document.getElementById("saveStatus"),
+      emptyState: document.getElementById("emptyState"),
+      appViews: document.getElementById("appViews"),
+      dashboardView: document.getElementById("dashboardView"),
+      kanbanView: document.getElementById("kanbanView"),
+      listaView: document.getElementById("listaView"),
+      mensagensView: document.getElementById("mensagensView"),
+      bancoView: document.getElementById("bancoView"),
+      leadModal: document.getElementById("leadModal"),
+      leadModalContent: document.getElementById("leadModalContent")
+    };
+
+    function createEmptyState() {
+      return {
+        version: "2.0.0",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        imports: [],
+        leads: [],
+        activities: [],
+        settings: {
+          crmName: "CRM de Captação",
+          defaultOwner: "",
+          autoSaveDataFile: false
+        }
+      };
+    }
+
+    function init() {
+      fillStageFilter();
+      bindEvents();
+      loadFromLocalStorage();
+      render();
+    }
+
+    function bindEvents() {
+      els.csvInput.addEventListener("change", handleCsvImport);
+      els.dataInput.addEventListener("change", handleDataImport);
+      els.saveDataBtn.addEventListener("click", saveDataFile);
+      els.exportCsvBtn.addEventListener("click", exportCsv);
+      els.clearBtn.addEventListener("click", clearData);
+
+      els.searchInput.addEventListener("input", render);
+      els.stageFilter.addEventListener("change", render);
+      els.siteFilter.addEventListener("change", render);
+      els.priorityFilter.addEventListener("change", render);
+
+      els.showDueBtn.addEventListener("click", () => {
+        els.searchInput.value = "followup_due";
+        render();
+      });
+
+      document.querySelectorAll(".view-btn").forEach(button => {
+        button.addEventListener("click", () => setView(button.dataset.view));
+      });
+    }
+
+    function fillStageFilter() {
+      STAGES.forEach(stage => {
+        const option = document.createElement("option");
+        option.value = stage;
+        option.textContent = stage;
+        els.stageFilter.appendChild(option);
+      });
+    }
+
+    function setView(view) {
+      currentView = view;
+
+      document.querySelectorAll(".view-btn").forEach(button => {
+        const active = button.dataset.view === view;
+        button.className = active
+          ? "view-btn rounded-lg px-3 py-2 text-sm font-semibold bg-slate-900 text-white"
+          : "view-btn rounded-lg px-3 py-2 text-sm font-semibold bg-white border border-slate-300 text-slate-700";
+      });
+
+      document.querySelectorAll(".view-panel").forEach(panel => panel.classList.add("hidden"));
+      document.getElementById(`${view}View`).classList.remove("hidden");
+
+      render();
+    }
+
+    function markDirty(actionLabel = "Alteração salva no navegador") {
+      state.updatedAt = new Date().toISOString();
+      saveToLocalStorage();
+      setSaveStatus(actionLabel);
+
+      if (state.settings.autoSaveDataFile && dataFileHandle) {
+        scheduleDataFileSave();
+      }
+    }
+
+    function setSaveStatus(text) {
+      const now = new Date().toLocaleString("pt-BR");
+      els.saveStatus.textContent = `${text} · ${now}`;
+    }
+
+    function saveToLocalStorage() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function loadFromLocalStorage() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        state = saved ? hydrateState(JSON.parse(saved)) : createEmptyState();
+      } catch (error) {
+        console.error("Erro ao carregar banco local:", error);
+        state = createEmptyState();
+      }
+    }
+
+    function hydrateState(raw) {
+      const empty = createEmptyState();
+
+      return {
+        ...empty,
+        ...raw,
+        settings: {
+          ...empty.settings,
+          ...(raw.settings || {})
+        },
+        imports: Array.isArray(raw.imports) ? raw.imports : [],
+        leads: Array.isArray(raw.leads) ? raw.leads : [],
+        activities: Array.isArray(raw.activities) ? raw.activities : []
+      };
+    }
+
+    function clearData() {
+      const ok = confirm("Tem certeza que deseja apagar todos os dados salvos neste navegador?");
+      if (!ok) return;
+
+      state = createEmptyState();
+      selectedLeadId = null;
+      localStorage.removeItem(STORAGE_KEY);
+      setSaveStatus("Banco limpo");
+      render();
+    }
+
+    async function handleCsvImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      try {
+        const text = await file.text();
+        const rows = parseCsv(text);
+        const batchId = `imp_${Date.now()}`;
+        const imported = rows.map(row => normalizeLead(row, batchId, file.name)).filter(Boolean);
+
+        mergeLeads(imported);
+
+        state.imports.unshift({
+          id: batchId,
+          fileName: file.name,
+          importedAt: new Date().toISOString(),
+          totalRows: rows.length,
+          validLeads: imported.length
+        });
+
+        addActivity(null, "Importação", `${imported.length} leads importados do arquivo ${file.name}.`);
+
+        markDirty("CSV importado e registrado no banco");
+        render();
+
+        alert(`${imported.length} leads importados e registrados no banco do CRM.`);
+      } catch (error) {
+        console.error(error);
+        alert("Erro ao importar CSV. Verifique o arquivo e tente novamente.");
+      } finally {
+        els.csvInput.value = "";
+      }
+    }
+
+    async function handleDataImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      try {
+        const text = await file.text();
+        const importedState = hydrateState(JSON.parse(text));
+
+        state = importedState;
+        dataFileHandle = null;
+        markDirty("Arquivo .data carregado");
+        render();
+
+        alert("Banco .data carregado com sucesso.");
+      } catch (error) {
+        console.error(error);
+        alert("Erro ao abrir o arquivo .data. Verifique se ele foi gerado por este CRM.");
+      } finally {
+        els.dataInput.value = "";
+      }
+    }
+
+    async function saveDataFile() {
+      const data = JSON.stringify(state, null, 2);
+      const filename = `crm_captacao_${formatDateForFilename(new Date())}.data`;
+
+      if ("showSaveFilePicker" in window) {
+        try {
+          if (!dataFileHandle) {
+            dataFileHandle = await window.showSaveFilePicker({
+              suggestedName: filename,
+              types: [{
+                description: "Banco de dados do CRM",
+                accept: { "application/json": [".data"] }
+              }]
+            });
+          }
+
+          const writable = await dataFileHandle.createWritable();
+          await writable.write(data);
+          await writable.close();
+
+          setSaveStatus("Arquivo .data salvo");
+          alert("Banco .data salvo com sucesso.");
+          return;
+        } catch (error) {
+          if (error.name !== "AbortError") {
+            console.error(error);
+            alert("Não foi possível salvar diretamente. Um download será gerado como alternativa.");
+          } else {
+            return;
+          }
+        }
+      }
+
+      downloadFile(data, filename, "application/json;charset=utf-8;");
+      setSaveStatus("Arquivo .data baixado");
+    }
+
+    function scheduleDataFileSave() {
+      clearTimeout(autoSaveTimer);
+      autoSaveTimer = setTimeout(async () => {
+        try {
+          const writable = await dataFileHandle.createWritable();
+          await writable.write(JSON.stringify(state, null, 2));
+          await writable.close();
+          setSaveStatus("Auto-save no .data realizado");
+        } catch (error) {
+          console.error(error);
+          setSaveStatus("Auto-save no .data falhou");
+        }
+      }, 900);
+    }
+
+    function detectDelimiter(firstLine) {
+      const semicolonCount = (firstLine.match(/;/g) || []).length;
+      const commaCount = (firstLine.match(/,/g) || []).length;
+      return semicolonCount >= commaCount ? ";" : ",";
+    }
+
+    function parseCsv(text) {
+      const cleanText = text.replace(/^\uFEFF/, "").trim();
+      if (!cleanText) return [];
+
+      const delimiter = detectDelimiter(cleanText.split(/\r?\n/)[0]);
+      const rows = [];
+      let row = [];
+      let value = "";
+      let insideQuotes = false;
+
+      for (let i = 0; i < cleanText.length; i++) {
+        const char = cleanText[i];
+        const nextChar = cleanText[i + 1];
+
+        if (char === '"' && insideQuotes && nextChar === '"') {
+          value += '"';
+          i++;
+          continue;
+        }
+
+        if (char === '"') {
+          insideQuotes = !insideQuotes;
+          continue;
+        }
+
+        if (char === delimiter && !insideQuotes) {
+          row.push(value.trim());
+          value = "";
+          continue;
+        }
+
+        if ((char === "\n" || char === "\r") && !insideQuotes) {
+          if (char === "\r" && nextChar === "\n") i++;
+          row.push(value.trim());
+          rows.push(row);
+          row = [];
+          value = "";
+          continue;
+        }
+
+        value += char;
+      }
+
+      row.push(value.trim());
+      rows.push(row);
+
+      const headers = rows.shift().map(h => normalizeHeader(h));
+
+      return rows
+        .filter(r => r.some(cell => cell && cell.trim() !== ""))
+        .map(r => {
+          const obj = {};
+          headers.forEach((header, index) => {
+            obj[header] = r[index] || "";
+          });
+          return obj;
+        });
+    }
+
+    function normalizeHeader(header) {
+      return String(header || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\?/g, "")
+        .trim()
+        .toLowerCase();
+    }
+
+    function getField(row, aliases) {
+      for (const alias of aliases) {
+        const key = normalizeHeader(alias);
+        if (row[key] !== undefined) return String(row[key] || "").trim();
+      }
+      return "";
+    }
+
+    function normalizeLead(row, batchId, fileName) {
+      const nome = getField(row, ["Nome da Clínica", "Nome da Clinica", "Nome"]);
+      if (!nome) return null;
+
+      const telefone = getField(row, ["Telefone", "Celular", "WhatsApp"]);
+      const temSite = getField(row, ["Tem Site?", "Tem Site", "Site"]);
+      const tipoSite = getField(row, ["Tipo de Site", "Tipo Site"]);
+      const website = getField(row, ["Website Atual", "Website Encontrado", "Website", "Site Atual"]);
+      const endereco = getField(row, ["Endereço", "Endereco"]);
+      const avaliacao = getField(row, ["Avaliação", "Avaliacao"]);
+      const linkMaps = getField(row, ["Link Google Maps", "Google Maps", "Link Maps"]);
+      const cidade = inferCityFromAddress(endereco);
+      const siteStatus = classifySiteStatus(temSite, website);
+      const score = calculateScore(siteStatus, telefone, avaliacao, website);
+
+      const lead = {
+        id: createLeadId(nome, telefone, linkMaps),
+        nome,
+        nomeCurto: cleanClinicName(nome),
+        telefone: telefone || "N/A",
+        email: "",
+        responsavel: state.settings.defaultOwner || "",
+        origem: "Google Maps / CSV",
+        importBatchId: batchId,
+        importFileName: fileName,
+        cidade,
+        temSite: siteStatus,
+        tipoSite: tipoSite || inferSiteType(siteStatus),
+        website: website || "Não listado",
+        endereco: endereco || "N/A",
+        avaliacao: avaliacao || "N/A",
+        linkMaps: linkMaps || "",
+        etapa: siteStatus === "Não tem site próprio" ? "Prioridade - Sem site" : "Importado",
+        prioridade: score >= 80 ? "Alta" : score >= 55 ? "Média" : "Baixa",
+        score,
+        proximaAcao: siteStatus === "Sim" ? "Analisar site e enviar abordagem" : "Enviar primeira abordagem",
+        followUpDate: "",
+        observacoes: "",
+        tags: siteStatus === "Sim" ? ["com-site"] : ["oportunidade-site"],
+        mensagem: "",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        lastContactAt: "",
+        closedAt: "",
+        lostReason: ""
+      };
+
+      lead.mensagem = generateMessage(lead);
+
+      return lead;
+    }
+
+    function createLeadId(nome, telefone, linkMaps) {
+      const base = `${nome}|${telefone}|${linkMaps}`.toLowerCase().trim();
+      let hash = 0;
+
+      for (let i = 0; i < base.length; i++) {
+        hash = ((hash << 5) - hash) + base.charCodeAt(i);
+        hash |= 0;
+      }
+
+      return `lead_${Math.abs(hash)}`;
+    }
+
+    function classifySiteStatus(temSite, website) {
+      const status = String(temSite || "").trim();
+      const site = String(website || "").trim().toLowerCase();
+
+      if (status) {
+        const normalized = status
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "");
+
+        if (normalized.includes("nao tem site proprio")) return "Não tem site próprio";
+        if (normalized.includes("nao listado")) return "Não listado no Google Maps";
+        if (normalized === "sim") return "Sim";
+      }
+
+      if (!site || site === "não listado" || site === "nao listado" || site === "n/a") {
+        return "Não listado no Google Maps";
+      }
+
+      const socialDomains = [
+        "instagram.com",
+        "facebook.com",
+        "wa.me",
+        "whatsapp",
+        "linktr.ee",
+        "bio.site",
+        "beacons.ai",
+        "taplink",
+        "bit.ly"
+      ];
+
+      if (socialDomains.some(domain => site.includes(domain))) {
+        return "Não tem site próprio";
+      }
+
+      return "Sim";
+    }
+
+    function inferSiteType(siteStatus) {
+      if (siteStatus === "Sim") return "Site próprio";
+      if (siteStatus === "Não tem site próprio") return "Rede social / Link da bio";
+      return "Não encontrado";
+    }
+
+    function inferCityFromAddress(address) {
+      if (!address || address === "N/A") return "";
+
+      const parts = String(address).split(",");
+      const lastRelevant = parts.slice(-2).join(",").trim();
+
+      return lastRelevant || "";
+    }
+
+    function cleanClinicName(nome) {
+      return String(nome || "")
+        .replace(/^cl[ií]nica\s+/i, "")
+        .replace(/^consult[oó]rio\s+/i, "")
+        .trim();
+    }
+
+    function calculateScore(siteStatus, telefone, avaliacao, website) {
+      let score = 40;
+
+      if (siteStatus === "Não tem site próprio") score += 35;
+      if (siteStatus === "Não listado no Google Maps") score += 30;
+      if (siteStatus === "Sim") score += 10;
+
+      if (telefone && telefone !== "N/A") score += 15;
+      if (avaliacao && avaliacao !== "N/A") score += 5;
+      if (!website || website === "Não listado") score += 5;
+
+      return Math.max(0, Math.min(100, score));
+    }
+
+    function mergeLeads(imported) {
+      const byId = new Map(state.leads.map(lead => [lead.id, lead]));
+
+      imported.forEach(newLead => {
+        const existing = byId.get(newLead.id);
+
+        if (existing) {
+          byId.set(newLead.id, {
+            ...newLead,
+            etapa: existing.etapa || newLead.etapa,
+            prioridade: existing.prioridade || newLead.prioridade,
+            responsavel: existing.responsavel || newLead.responsavel,
+            proximaAcao: existing.proximaAcao || newLead.proximaAcao,
+            followUpDate: existing.followUpDate || "",
+            observacoes: existing.observacoes || "",
+            tags: Array.isArray(existing.tags) ? existing.tags : newLead.tags,
+            mensagem: existing.mensagem || newLead.mensagem,
+            createdAt: existing.createdAt || newLead.createdAt,
+            updatedAt: new Date().toISOString(),
+            lastContactAt: existing.lastContactAt || "",
+            closedAt: existing.closedAt || "",
+            lostReason: existing.lostReason || ""
+          });
+
+          addActivity(existing.id, "Lead atualizado", "Lead já existia no CRM e teve dados da importação atualizados.");
+        } else {
+          byId.set(newLead.id, newLead);
+          addActivity(newLead.id, "Lead criado", "Lead importado para o CRM.");
+        }
+      });
+
+      state.leads = Array.from(byId.values());
+    }
+
+    function addActivity(leadId, type, description) {
+      state.activities.unshift({
+        id: `act_${Date.now()}_${Math.random().toString(16).slice(2)}`,
+        leadId,
+        type,
+        description,
+        createdAt: new Date().toISOString()
+      });
+
+      if (state.activities.length > 5000) {
+        state.activities = state.activities.slice(0, 5000);
+      }
+    }
+
+    function getFilteredLeads() {
+      const search = els.searchInput.value.trim().toLowerCase();
+      const stage = els.stageFilter.value;
+      const site = els.siteFilter.value;
+      const priority = els.priorityFilter.value;
+      const now = startOfToday();
+
+      return state.leads.filter(lead => {
+        let matchSearch = true;
+
+        if (search === "followup_due") {
+          matchSearch = isFollowUpDue(lead, now);
+        } else if (search) {
+          const searchBlob = [
+            lead.nome,
+            lead.telefone,
+            lead.email,
+            lead.endereco,
+            lead.cidade,
+            lead.website,
+            lead.temSite,
+            lead.etapa,
+            lead.prioridade,
+            lead.observacoes,
+            Array.isArray(lead.tags) ? lead.tags.join(" ") : ""
+          ].join(" ").toLowerCase();
+
+          matchSearch = searchBlob.includes(search);
+        }
+
+        const matchStage = !stage || lead.etapa === stage;
+        const matchSite = !site || lead.temSite === site;
+        const matchPriority = !priority || lead.prioridade === priority;
+
+        return matchSearch && matchStage && matchSite && matchPriority;
+      });
+    }
+
+    function render() {
+      if (state.leads.length === 0) {
+        els.emptyState.classList.remove("hidden");
+        els.appViews.classList.add("hidden");
+      } else {
+        els.emptyState.classList.add("hidden");
+        els.appViews.classList.remove("hidden");
+      }
+
+      if (currentView === "dashboard") renderDashboard();
+      if (currentView === "kanban") renderKanban();
+      if (currentView === "lista") renderLista();
+      if (currentView === "mensagens") renderMensagens();
+      if (currentView === "banco") renderBanco();
+    }
+
+    function getStats() {
+      const today = startOfToday();
+      const leads = state.leads;
+
+      return {
+        total: leads.length,
+        semSite: leads.filter(l => l.temSite === "Não tem site próprio").length,
+        naoListado: leads.filter(l => l.temSite === "Não listado no Google Maps").length,
+        comSite: leads.filter(l => l.temSite === "Sim").length,
+        contatados: leads.filter(l => ACTIVE_STAGES.includes(l.etapa)).length,
+        reunioes: leads.filter(l => ["Reunião agendada", "Proposta enviada", "Fechado"].includes(l.etapa)).length,
+        fechados: leads.filter(l => WON_STAGES.includes(l.etapa)).length,
+        perdidos: leads.filter(l => LOST_STAGES.includes(l.etapa)).length,
+        followUpsDue: leads.filter(l => isFollowUpDue(l, today)).length,
+        altaPrioridade: leads.filter(l => l.prioridade === "Alta").length
+      };
+    }
+
+    function renderDashboard() {
+      const stats = getStats();
+      const filtered = getFilteredLeads();
+      const hotLeads = [...state.leads]
+        .filter(l => !WON_STAGES.includes(l.etapa) && !LOST_STAGES.includes(l.etapa))
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 8);
+
+      const stageCards = STAGES.map(stage => {
+        const count = state.leads.filter(l => l.etapa === stage).length;
+        const percent = stats.total ? Math.round((count / stats.total) * 100) : 0;
+
+        return `
+          <div class="rounded-xl border border-slate-200 bg-white p-4">
+            <div class="flex items-center justify-between gap-2">
+              <p class="text-sm font-semibold text-slate-700">${escapeHtml(stage)}</p>
+              <p class="text-sm font-bold">${count}</p>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <!-- Card 1 -->
-                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-xl transition duration-300 text-center group">
-                    <div class="w-16 h-16 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-gold-500 transition duration-300">
-                        <i data-lucide="utensils" class="w-8 h-8 text-sage-800 group-hover:text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-serif font-bold mb-3 text-sage-900">Gastronomia Premiada</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Menus assinados por chefs renomados, com opções personalizadas do coquetel ao jantar empratado.</p>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-xl transition duration-300 text-center group">
-                    <div class="w-16 h-16 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-gold-500 transition duration-300">
-                        <i data-lucide="flower-2" class="w-8 h-8 text-sage-800 group-hover:text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-serif font-bold mb-3 text-sage-900">Jardins Fotográficos</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Paisagismo europeu com iluminação cênica integrada, perfeito para cerimônias ao ar livre.</p>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-xl transition duration-300 text-center group">
-                    <div class="w-16 h-16 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-gold-500 transition duration-300">
-                        <i data-lucide="shield-check" class="w-8 h-8 text-sage-800 group-hover:text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-serif font-bold mb-3 text-sage-900">Segurança & Conforto</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Gerador próprio full-time, suíte da noiva exclusiva e estacionamento com valet incluso.</p>
-                </div>
+            <div class="mt-3 h-2 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-2 rounded-full bg-slate-900" style="width:${percent}%"></div>
             </div>
+            <p class="mt-2 text-xs text-slate-500">${percent}% do total</p>
+          </div>
+        `;
+      }).join("");
+
+      els.dashboardView.innerHTML = `
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-4 mb-6">
+          ${metricCard("Total", stats.total, "Leads no CRM")}
+          ${metricCard("Sem site", stats.semSite, "Oportunidade alta")}
+          ${metricCard("Não listado", stats.naoListado, "Não tem site no Maps")}
+          ${metricCard("Alta prioridade", stats.altaPrioridade, "Score comercial")}
+          ${metricCard("Contatados", stats.contatados, "Avançaram no funil")}
+          ${metricCard("Follow-up", stats.followUpsDue, "Hoje ou vencidos")}
+          ${metricCard("Reuniões", stats.reunioes, "Agenda comercial")}
+          ${metricCard("Fechados", stats.fechados, "Ganhos")}
         </div>
-    </section>
 
-    <!-- Galeria Mosaico (Visual Selling) -->
-    <section id="espacos" class="py-0">
-        <div class="grid grid-cols-1 md:grid-cols-4 h-auto md:h-[600px]">
-            <div class="md:col-span-2 relative group overflow-hidden h-96 md:h-full">
-                <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" alt="Cerimônia" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
-                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                    <span class="text-white font-serif text-3xl tracking-widest">O Jardim</span>
-                </div>
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+          <section class="xl:col-span-8">
+            <div class="flex items-center justify-between mb-3">
+              <h2 class="text-lg font-bold">Evolução do Funil</h2>
+              <p class="text-sm text-slate-500">${filtered.length} leads nos filtros atuais</p>
             </div>
-            <div class="relative group overflow-hidden h-64 md:h-full">
-                <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Detalhes" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
-                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                    <span class="text-white font-serif text-2xl tracking-widest">Os Detalhes</span>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              ${stageCards}
             </div>
-            <div class="relative group overflow-hidden h-64 md:h-full">
-                <img src="https://images.unsplash.com/photo-1507504031981-8230c3e34a53?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Salão de Festa" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
-                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                    <span class="text-white font-serif text-2xl tracking-widest">O Salão</span>
-                </div>
+          </section>
+
+          <aside class="xl:col-span-4">
+            <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+              <div class="p-4 border-b border-slate-200">
+                <h2 class="text-lg font-bold">Melhores oportunidades</h2>
+                <p class="text-sm text-slate-500">Priorizadas por score, site e contato disponível.</p>
+              </div>
+
+              <div class="divide-y divide-slate-100">
+                ${hotLeads.length ? hotLeads.map(leadMiniCard).join("") : `
+                  <div class="p-6 text-sm text-slate-500 text-center">Nenhuma oportunidade ativa.</div>
+                `}
+              </div>
             </div>
+          </aside>
         </div>
-    </section>
+      `;
+    }
 
-    <!-- Depoimentos (Prova Social) -->
-    <section id="depoimentos" class="py-20 bg-sage-900 text-white">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row items-center gap-12">
-                <div class="md:w-1/2">
-                    <div class="flex items-center space-x-2 text-gold-400 mb-6">
-                        <i data-lucide="star" class="fill-current w-5 h-5"></i>
-                        <i data-lucide="star" class="fill-current w-5 h-5"></i>
-                        <i data-lucide="star" class="fill-current w-5 h-5"></i>
-                        <i data-lucide="star" class="fill-current w-5 h-5"></i>
-                        <i data-lucide="star" class="fill-current w-5 h-5"></i>
-                        <span class="text-sage-200 text-sm ml-2">(4.9/5 em 230 avaliações)</span>
-                    </div>
-                    <h2 class="text-3xl md:text-5xl font-serif mb-8 leading-tight">
-                        "Foi mais mágico do que nos meus melhores sonhos."
-                    </h2>
-                    <p class="text-sage-100 text-lg font-light italic mb-6">
-                        "A equipe da Villa Serenity cuidou de tudo. Do momento que entramos no jardim até a última música da festa, nos sentimos a realeza. A gastronomia foi o ponto alto, todos os convidados elogiaram."
-                    </p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://images.unsplash.com/photo-1623091410901-00e2d268901f?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Noiva" class="w-16 h-16 rounded-full border-2 border-gold-500 object-cover">
-                        <div>
-                            <p class="font-bold text-gold-100">Mariana & Pedro</p>
-                            <p class="text-xs text-sage-300 uppercase tracking-widest">Casaram em Novembro de 2024</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="md:w-1/2 relative">
-                    <!-- Vídeo ou Imagem de destaque do depoimento -->
-                    <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10">
-                        <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="w-full object-cover transform hover:scale-105 transition duration-700">
-                        <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur text-sage-900 px-4 py-2 rounded text-xs font-bold uppercase tracking-widest">
-                            Real Wedding
-                        </div>
-                    </div>
-                </div>
-            </div>
+    function metricCard(label, value, caption) {
+      return `
+        <div class="bg-white rounded-xl border border-slate-200 p-4">
+          <p class="text-sm text-slate-500">${escapeHtml(label)}</p>
+          <p class="text-3xl font-bold mt-1">${escapeHtml(value)}</p>
+          <p class="text-xs text-slate-400 mt-1">${escapeHtml(caption)}</p>
         </div>
-    </section>
+      `;
+    }
 
-    <!-- Seção de Conversão Final (Formulário) -->
-    <section id="contato" class="py-24 bg-white relative">
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="max-w-4xl mx-auto bg-white shadow-2xl rounded-2xl overflow-hidden flex flex-col md:flex-row">
-                
-                <!-- Lado Esquerdo: Imagem e Info -->
-                <div class="md:w-2/5 bg-sage-800 text-white p-10 flex flex-col justify-between relative overflow-hidden">
-                    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+    function leadMiniCard(lead) {
+      return `
+        <button onclick="openLeadModal('${escapeJs(lead.id)}')" class="w-full text-left p-4 hover:bg-slate-50">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="font-semibold">${escapeHtml(lead.nome)}</p>
+              <p class="text-xs text-slate-500 mt-1">${escapeHtml(lead.etapa)} · ${escapeHtml(lead.telefone)}</p>
+            </div>
+            <span class="rounded-full px-2 py-1 text-xs font-bold ${scoreBadgeClass(lead.score)}">${lead.score}</span>
+          </div>
+        </button>
+      `;
+    }
+
+    function renderKanban() {
+      const filtered = getFilteredLeads();
+      const grouped = {};
+      STAGES.forEach(stage => grouped[stage] = []);
+      filtered.forEach(lead => {
+        if (!grouped[lead.etapa]) grouped[lead.etapa] = [];
+        grouped[lead.etapa].push(lead);
+      });
+
+      els.kanbanView.innerHTML = `
+        <div class="mb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+          <div>
+            <h2 class="text-lg font-bold">Kanban do Funil</h2>
+            <p class="text-sm text-slate-500">Arraste os cards para atualizar a etapa comercial.</p>
+          </div>
+          <p class="text-sm text-slate-500">${filtered.length} leads visíveis</p>
+        </div>
+
+        <div class="overflow-x-auto scrollbar-thin pb-4">
+          <div class="grid gap-4" style="grid-template-columns: repeat(${STAGES.length}, minmax(280px, 1fr));">
+            ${STAGES.map(stage => renderKanbanColumn(stage, grouped[stage] || [])).join("")}
+          </div>
+        </div>
+      `;
+
+      bindKanbanDragEvents();
+    }
+
+    function renderKanbanColumn(stage, leads) {
+      return `
+        <section class="kanban-column rounded-xl border border-slate-200 bg-white flex flex-col" data-stage="${escapeHtml(stage)}">
+          <div class="p-3 border-b border-slate-200 sticky top-0 bg-white rounded-t-xl z-10">
+            <div class="flex items-center justify-between gap-2">
+              <h3 class="font-bold text-sm">${escapeHtml(stage)}</h3>
+              <span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">${leads.length}</span>
+            </div>
+          </div>
+
+          <div class="kanban-dropzone p-3 space-y-3 grow" data-stage="${escapeHtml(stage)}">
+            ${leads.map(renderKanbanCard).join("")}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderKanbanCard(lead) {
+      const due = isFollowUpDue(lead, startOfToday());
+      const tags = Array.isArray(lead.tags) ? lead.tags : [];
+
+      return `
+        <article
+          draggable="true"
+          data-lead-id="${escapeHtml(lead.id)}"
+          class="kanban-card rounded-xl border border-slate-200 bg-white p-3 shadow-sm cursor-grab active:cursor-grabbing hover:shadow-md"
+        >
+          <div class="flex items-start justify-between gap-2">
+            <h4 class="font-semibold text-sm leading-snug">${escapeHtml(lead.nome)}</h4>
+            <span class="rounded-full px-2 py-1 text-[11px] font-bold ${scoreBadgeClass(lead.score)}">${lead.score}</span>
+          </div>
+
+          <p class="text-xs text-slate-500 mt-2">${escapeHtml(lead.telefone)}</p>
+
+          <div class="flex flex-wrap gap-1.5 mt-3">
+            <span class="rounded-full px-2 py-1 text-[11px] font-semibold ${siteBadgeClass(lead.temSite)}">${escapeHtml(lead.temSite)}</span>
+            <span class="rounded-full px-2 py-1 text-[11px] font-semibold ${priorityBadgeClass(lead.prioridade)}">${escapeHtml(lead.prioridade)}</span>
+            ${due ? `<span class="rounded-full px-2 py-1 text-[11px] font-semibold bg-red-100 text-red-700">Follow-up</span>` : ""}
+          </div>
+
+          ${tags.length ? `
+            <p class="text-[11px] text-slate-400 mt-2">${escapeHtml(tags.slice(0, 3).join(", "))}</p>
+          ` : ""}
+
+          <div class="mt-3 flex gap-2">
+            <button onclick="event.stopPropagation(); openLeadModal('${escapeJs(lead.id)}')" class="rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-800">
+              Abrir
+            </button>
+            <button onclick="event.stopPropagation(); quickAdvance('${escapeJs(lead.id)}')" class="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold hover:bg-slate-50">
+              Avançar
+            </button>
+          </div>
+        </article>
+      `;
+    }
+
+    function bindKanbanDragEvents() {
+      document.querySelectorAll(".kanban-card").forEach(card => {
+        card.addEventListener("dragstart", event => {
+          event.dataTransfer.setData("text/plain", card.dataset.leadId);
+          card.classList.add("dragging");
+        });
+
+        card.addEventListener("dragend", () => {
+          card.classList.remove("dragging");
+          document.querySelectorAll(".kanban-dropzone").forEach(zone => zone.classList.remove("drop-active"));
+        });
+      });
+
+      document.querySelectorAll(".kanban-dropzone").forEach(zone => {
+        zone.addEventListener("dragover", event => {
+          event.preventDefault();
+          zone.classList.add("drop-active");
+        });
+
+        zone.addEventListener("dragleave", () => {
+          zone.classList.remove("drop-active");
+        });
+
+        zone.addEventListener("drop", event => {
+          event.preventDefault();
+          const leadId = event.dataTransfer.getData("text/plain");
+          const newStage = zone.dataset.stage;
+
+          updateLeadStage(leadId, newStage);
+          zone.classList.remove("drop-active");
+        });
+      });
+    }
+
+    function renderLista() {
+      const filtered = getFilteredLeads();
+
+      els.listaView.innerHTML = `
+        <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+          <div class="p-4 border-b border-slate-200 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div>
+              <h2 class="text-lg font-bold">Lista de Leads</h2>
+              <p class="text-sm text-slate-500">${filtered.length} leads visíveis</p>
+            </div>
+
+            <button onclick="bulkSetMessages()" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
+              Gerar mensagens dos filtrados
+            </button>
+          </div>
+
+          <div class="overflow-x-auto scrollbar-thin">
+            <table class="min-w-full text-sm">
+              <thead class="bg-slate-50 text-slate-600">
+                <tr>
+                  <th class="text-left p-3">Lead</th>
+                  <th class="text-left p-3">Telefone</th>
+                  <th class="text-left p-3">Site</th>
+                  <th class="text-left p-3">Prioridade</th>
+                  <th class="text-left p-3">Score</th>
+                  <th class="text-left p-3">Etapa</th>
+                  <th class="text-left p-3">Follow-up</th>
+                  <th class="text-left p-3">Ações</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                ${filtered.length ? filtered.map(renderLeadRow).join("") : `
+                  <tr>
+                    <td colspan="8" class="p-8 text-center text-slate-500">Nenhum lead encontrado.</td>
+                  </tr>
+                `}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderLeadRow(lead) {
+      return `
+        <tr class="hover:bg-slate-50">
+          <td class="p-3">
+            <p class="font-semibold">${escapeHtml(lead.nome)}</p>
+            <p class="text-xs text-slate-500">${escapeHtml(lead.cidade || lead.endereco)}</p>
+          </td>
+          <td class="p-3">${escapeHtml(lead.telefone)}</td>
+          <td class="p-3">
+            <span class="rounded-full px-2 py-1 text-xs font-semibold ${siteBadgeClass(lead.temSite)}">${escapeHtml(lead.temSite)}</span>
+          </td>
+          <td class="p-3">
+            <span class="rounded-full px-2 py-1 text-xs font-semibold ${priorityBadgeClass(lead.prioridade)}">${escapeHtml(lead.prioridade)}</span>
+          </td>
+          <td class="p-3">
+            <span class="rounded-full px-2 py-1 text-xs font-bold ${scoreBadgeClass(lead.score)}">${lead.score}</span>
+          </td>
+          <td class="p-3">
+            <select onchange="updateLeadStage('${escapeJs(lead.id)}', this.value)" class="rounded-lg border border-slate-300 px-2 py-1 text-xs">
+              ${STAGES.map(stage => `<option value="${escapeHtml(stage)}" ${lead.etapa === stage ? "selected" : ""}>${escapeHtml(stage)}</option>`).join("")}
+            </select>
+          </td>
+          <td class="p-3">${lead.followUpDate ? formatDate(lead.followUpDate) : "-"}</td>
+          <td class="p-3">
+            <button onclick="openLeadModal('${escapeJs(lead.id)}')" class="rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-800">
+              Abrir
+            </button>
+          </td>
+        </tr>
+      `;
+    }
+
+    function renderMensagens() {
+      const filtered = getFilteredLeads();
+      const messages = filtered.map(lead => ({
+        lead,
+        text: lead.mensagem || generateMessage(lead)
+      }));
+
+      els.mensagensView.innerHTML = `
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+          <section class="xl:col-span-4 bg-white rounded-xl border border-slate-200 p-4">
+            <h2 class="text-lg font-bold">Templates de Captação</h2>
+            <p class="text-sm text-slate-500 mt-1">Modelos usados para gerar mensagens personalizadas por lead.</p>
+
+            <div class="mt-4 space-y-3">
+              ${Object.entries(MESSAGE_TEMPLATES).map(([key, template]) => `
+                <div class="rounded-xl border border-slate-200 p-3">
+                  <p class="font-semibold text-sm">${escapeHtml(template.nome)}</p>
+                  <p class="text-xs text-slate-500 mt-1">${escapeHtml(template.texto.slice(0, 130))}...</p>
+                  <button onclick="copyTemplate('${escapeJs(key)}')" class="mt-3 rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold hover:bg-slate-50">
+                    Copiar template
+                  </button>
+                </div>
+              `).join("")}
+            </div>
+          </section>
+
+          <section class="xl:col-span-8 bg-white rounded-xl border border-slate-200 overflow-hidden">
+            <div class="p-4 border-b border-slate-200 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+              <div>
+                <h2 class="text-lg font-bold">Mensagens por Lead</h2>
+                <p class="text-sm text-slate-500">${messages.length} mensagens nos filtros atuais.</p>
+              </div>
+
+              <button onclick="copyAllVisibleMessages()" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
+                Copiar todas
+              </button>
+            </div>
+
+            <div class="divide-y divide-slate-100 max-h-[720px] overflow-y-auto scrollbar-thin">
+              ${messages.length ? messages.map(({ lead, text }) => `
+                <article class="p-4">
+                  <div class="flex items-start justify-between gap-4">
                     <div>
-                        <h3 class="text-2xl font-serif mb-2">Vamos conversar?</h3>
-                        <p class="text-sage-200 text-sm mb-8">Nossa equipe de concierges entrará em contato em até 2 horas.</p>
-                        
-                        <div class="space-y-4">
-                            <div class="flex items-center gap-3">
-                                <i data-lucide="phone" class="text-gold-400 w-5 h-5"></i>
-                                <span class="text-sm">(11) 99999-9999</span>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <i data-lucide="map-pin" class="text-gold-400 w-5 h-5"></i>
-                                <span class="text-sm">Serra da Cantareira, SP</span>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <i data-lucide="instagram" class="text-gold-400 w-5 h-5"></i>
-                                <span class="text-sm">@villaserenity</span>
-                            </div>
-                        </div>
+                      <h3 class="font-semibold">${escapeHtml(lead.nome)}</h3>
+                      <p class="text-xs text-slate-500">${escapeHtml(lead.telefone)} · ${escapeHtml(lead.etapa)}</p>
                     </div>
-                    <div class="mt-10">
-                        <p class="text-xs text-sage-300 uppercase tracking-widest mb-1">Datas Premium</p>
-                        <p class="font-bold text-gold-100">Sábados de 2026: Últimas 3 datas</p>
+                    <div class="flex gap-2">
+                      <button onclick="copyTextById('msg_${escapeJs(lead.id)}')" class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold hover:bg-slate-50">
+                        Copiar
+                      </button>
+                      <a href="${escapeHtml(createWhatsappLink(lead.telefone, text))}" target="_blank" rel="noopener noreferrer" class="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700">
+                        WhatsApp
+                      </a>
                     </div>
-                </div>
-
-                <!-- Lado Direito: Formulário -->
-                <div class="md:w-3/5 p-10">
-                    <form onsubmit="event.preventDefault(); alert('Solicitação enviada! Nossa equipe entrará em contato em breve.');">
-                        <h3 class="text-2xl font-serif text-sage-900 mb-6">Solicite um Orçamento</h3>
-                        
-                        <div class="grid grid-cols-1 gap-6">
-                            <div>
-                                <label class="block text-xs font-bold text-sage-500 uppercase tracking-wider mb-2">Seu Nome</label>
-                                <input type="text" class="w-full border-b-2 border-sage-100 py-2 focus:border-gold-500 focus:outline-none transition-colors bg-transparent" placeholder="Como podemos te chamar?" required>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-xs font-bold text-sage-500 uppercase tracking-wider mb-2">Data Prevista</label>
-                                    <input type="date" class="w-full border-b-2 border-sage-100 py-2 focus:border-gold-500 focus:outline-none transition-colors bg-transparent">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-sage-500 uppercase tracking-wider mb-2">Nº Convidados</label>
-                                    <select class="w-full border-b-2 border-sage-100 py-2 focus:border-gold-500 focus:outline-none transition-colors bg-transparent">
-                                        <option>80 - 150</option>
-                                        <option>150 - 250</option>
-                                        <option>250 - 400</option>
-                                        <option>+400</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-bold text-sage-500 uppercase tracking-wider mb-2">Seu WhatsApp</label>
-                                <input type="tel" class="w-full border-b-2 border-sage-100 py-2 focus:border-gold-500 focus:outline-none transition-colors bg-transparent" placeholder="(DDD) 99999-9999" required>
-                            </div>
-                            
-                            <div class="pt-4">
-                                <button type="submit" class="w-full bg-gold-500 text-white font-bold py-4 rounded-lg uppercase tracking-widest hover:bg-gold-900 transition duration-300 shadow-lg flex items-center justify-center gap-2">
-                                    <span>Receber Proposta VIP</span>
-                                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                                </button>
-                                <p class="text-center text-xs text-gray-400 mt-4"><i data-lucide="lock" class="w-3 h-3 inline mr-1"></i> Seus dados estão seguros conosco.</p>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                  </div>
+                  <textarea id="msg_${escapeHtml(lead.id)}" rows="5" class="mt-3 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">${escapeHtml(text)}</textarea>
+                </article>
+              `).join("") : `
+                <div class="p-8 text-center text-slate-500">Nenhum lead encontrado.</div>
+              `}
             </div>
+          </section>
         </div>
-    </section>
+      `;
+    }
 
-    <!-- Footer -->
-    <footer class="bg-sage-900 text-sage-300 py-12 border-t border-sage-800">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-2xl font-serif text-white mb-6">VILLA SERENITY</h2>
-            <div class="flex justify-center space-x-6 mb-8">
-                <a href="#" class="hover:text-gold-500 transition"><i data-lucide="instagram"></i></a>
-                <a href="#" class="hover:text-gold-500 transition"><i data-lucide="facebook"></i></a>
-                <a href="#" class="hover:text-gold-500 transition"><i data-lucide="youtube"></i></a>
+    function renderBanco() {
+      const dataSize = new Blob([JSON.stringify(state)]).size;
+      const lastImports = state.imports.slice(0, 10);
+
+      els.bancoView.innerHTML = `
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+          <section class="xl:col-span-5 bg-white rounded-xl border border-slate-200 p-5">
+            <h2 class="text-lg font-bold">Banco de Dados .data</h2>
+            <p class="text-sm text-slate-500 mt-1">
+              O CRM salva automaticamente no navegador. Para ter um banco em arquivo, use o botão "Salvar .data".
+            </p>
+
+            <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+              <div class="rounded-xl bg-slate-50 p-4">
+                <p class="text-slate-500">Leads salvos</p>
+                <p class="text-2xl font-bold mt-1">${state.leads.length}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-4">
+                <p class="text-slate-500">Atividades</p>
+                <p class="text-2xl font-bold mt-1">${state.activities.length}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-4">
+                <p class="text-slate-500">Importações</p>
+                <p class="text-2xl font-bold mt-1">${state.imports.length}</p>
+              </div>
+              <div class="rounded-xl bg-slate-50 p-4">
+                <p class="text-slate-500">Tamanho do banco</p>
+                <p class="text-2xl font-bold mt-1">${formatBytes(dataSize)}</p>
+              </div>
             </div>
-            <p class="text-sm opacity-60">&copy; 2026 Villa Serenity Eventos. Todos os direitos reservados.</p>
+
+            <div class="mt-5 space-y-3">
+              <button onclick="saveDataFile()" class="w-full rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+                Salvar banco em arquivo .data
+              </button>
+
+              <button onclick="downloadBackup()" class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold hover:bg-slate-50">
+                Baixar backup .data
+              </button>
+
+              <button onclick="exportCsv()" class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold hover:bg-slate-50">
+                Exportar leads em CSV
+              </button>
+            </div>
+
+            <div class="mt-5 rounded-xl bg-amber-50 border border-amber-200 p-4 text-sm text-amber-900">
+              <p class="font-semibold">Importante</p>
+              <p class="mt-1">
+                Por segurança, o navegador não grava arquivos no computador sem permissão.
+                Por isso o sistema salva no navegador e permite baixar/abrir um arquivo .data.
+              </p>
+            </div>
+          </section>
+
+          <section class="xl:col-span-7 bg-white rounded-xl border border-slate-200 overflow-hidden">
+            <div class="p-4 border-b border-slate-200">
+              <h2 class="text-lg font-bold">Histórico de importações</h2>
+              <p class="text-sm text-slate-500">Cada CSV importado fica registrado no banco.</p>
+            </div>
+
+            <div class="divide-y divide-slate-100">
+              ${lastImports.length ? lastImports.map(imp => `
+                <div class="p-4">
+                  <p class="font-semibold">${escapeHtml(imp.fileName)}</p>
+                  <p class="text-sm text-slate-500 mt-1">
+                    ${formatDateTime(imp.importedAt)} · ${imp.validLeads} leads válidos · ${imp.totalRows} linhas lidas
+                  </p>
+                </div>
+              `).join("") : `
+                <div class="p-8 text-center text-slate-500">Nenhuma importação registrada.</div>
+              `}
+            </div>
+          </section>
         </div>
-    </footer>
+      `;
+    }
 
-    <!-- Scripts -->
-    <script>
-        // Inicializa ícones
-        lucide.createIcons();
+    window.openLeadModal = function(leadId) {
+      selectedLeadId = leadId;
+      renderLeadModal();
+      els.leadModal.classList.remove("hidden");
+    }
 
-        // Mobile Menu Toggle
-        const btn = document.getElementById('mobile-menu-btn');
-        const menu = document.getElementById('mobile-menu');
+    window.closeLeadModal = function() {
+      els.leadModal.classList.add("hidden");
+      selectedLeadId = null;
+    }
 
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
+    function renderLeadModal() {
+      const lead = state.leads.find(l => l.id === selectedLeadId);
 
-        // Navbar Scroll Effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('shadow-md');
-                navbar.classList.replace('py-4', 'py-2');
-            } else {
-                navbar.classList.remove('shadow-md');
-                navbar.classList.replace('py-2', 'py-4');
-            }
-        });
-    </script>
+      if (!lead) {
+        els.leadModalContent.innerHTML = "";
+        return;
+      }
+
+      const activities = state.activities
+        .filter(activity => activity.leadId === lead.id)
+        .slice(0, 20);
+
+      const message = lead.mensagem || generateMessage(lead);
+
+      els.leadModalContent.innerHTML = `
+        <div class="p-5 border-b border-slate-200 sticky top-0 bg-white z-20">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <h2 class="text-xl font-bold">${escapeHtml(lead.nome)}</h2>
+              <p class="text-sm text-slate-500 mt-1">${escapeHtml(lead.endereco)}</p>
+            </div>
+
+            <button onclick="closeLeadModal()" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">
+              Fechar
+            </button>
+          </div>
+        </div>
+
+        <div class="p-5">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="rounded-xl bg-slate-50 p-4">
+              <p class="text-xs text-slate-500">Score</p>
+              <p class="text-2xl font-bold mt-1">${lead.score}</p>
+            </div>
+            <div class="rounded-xl bg-slate-50 p-4">
+              <p class="text-xs text-slate-500">Prioridade</p>
+              <p class="text-2xl font-bold mt-1">${escapeHtml(lead.prioridade)}</p>
+            </div>
+            <div class="rounded-xl bg-slate-50 p-4">
+              <p class="text-xs text-slate-500">Site</p>
+              <p class="text-sm font-bold mt-2">${escapeHtml(lead.temSite)}</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
+            ${inputField("Nome", "nome", lead.nome)}
+            ${inputField("Telefone", "telefone", lead.telefone)}
+            ${inputField("E-mail", "email", lead.email)}
+            ${inputField("Responsável", "responsavel", lead.responsavel)}
+            ${inputField("Cidade/Região", "cidade", lead.cidade)}
+            ${inputField("Website", "website", lead.website)}
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
+            <div>
+              <label class="block text-sm font-semibold mb-2">Etapa do funil</label>
+              <select onchange="updateLeadField('${escapeJs(lead.id)}', 'etapa', this.value)" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
+                ${STAGES.map(stage => `<option value="${escapeHtml(stage)}" ${lead.etapa === stage ? "selected" : ""}>${escapeHtml(stage)}</option>`).join("")}
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold mb-2">Prioridade</label>
+              <select onchange="updateLeadField('${escapeJs(lead.id)}', 'prioridade', this.value)" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
+                ${["Alta", "Média", "Baixa"].map(priority => `<option value="${priority}" ${lead.prioridade === priority ? "selected" : ""}>${priority}</option>`).join("")}
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold mb-2">Próxima ação</label>
+              <input value="${escapeHtml(lead.proximaAcao || "")}" oninput="updateLeadField('${escapeJs(lead.id)}', 'proximaAcao', this.value, false)" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold mb-2">Data de follow-up</label>
+              <input type="date" value="${escapeHtml(lead.followUpDate || "")}" onchange="updateLeadField('${escapeJs(lead.id)}', 'followUpDate', this.value)" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <label class="block text-sm font-semibold mb-2">Mensagem personalizada</label>
+
+            <div class="flex flex-wrap gap-2 mb-3">
+              ${Object.entries(MESSAGE_TEMPLATES).map(([key, template]) => `
+                <button onclick="applyTemplateToLead('${escapeJs(lead.id)}', '${escapeJs(key)}')" class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold hover:bg-slate-50">
+                  ${escapeHtml(template.nome)}
+                </button>
+              `).join("")}
+            </div>
+
+            <textarea id="modalMessage" rows="8" oninput="updateLeadField('${escapeJs(lead.id)}', 'mensagem', this.value, false)" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">${escapeHtml(message)}</textarea>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-3">
+              <button onclick="copyTextById('modalMessage')" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
+                Copiar
+              </button>
+              <a href="${escapeHtml(createWhatsappLink(lead.telefone, message))}" target="_blank" rel="noopener noreferrer" class="text-center rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700">
+                WhatsApp
+              </a>
+              <button onclick="markContacted('${escapeJs(lead.id)}')" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+                Marcar contato
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <label class="block text-sm font-semibold mb-2">Observações comerciais</label>
+            <textarea rows="5" oninput="updateLeadField('${escapeJs(lead.id)}', 'observacoes', this.value, false)" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="Ex.: pediu orçamento, não respondeu, pediu retorno, objeção de preço...">${escapeHtml(lead.observacoes || "")}</textarea>
+          </div>
+
+          <div class="mt-5">
+            <label class="block text-sm font-semibold mb-2">Tags</label>
+            <input value="${escapeHtml((lead.tags || []).join(", "))}" oninput="updateLeadTags('${escapeJs(lead.id)}', this.value, false)" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="Ex.: oportunidade-site, implante, alto-potencial" />
+          </div>
+
+          <div class="mt-5 flex flex-wrap gap-2">
+            ${lead.linkMaps ? `<a href="${escapeHtml(lead.linkMaps)}" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold hover:bg-slate-50">Ver no Maps</a>` : ""}
+            ${lead.website && lead.website !== "Não listado" ? `<a href="${escapeHtml(lead.website)}" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold hover:bg-slate-50">Abrir site</a>` : ""}
+            <button onclick="deleteLead('${escapeJs(lead.id)}')" class="rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50">Excluir lead</button>
+          </div>
+
+          <div class="mt-8">
+            <h3 class="font-bold">Histórico do lead</h3>
+            <div class="mt-3 space-y-3">
+              ${activities.length ? activities.map(activity => `
+                <div class="rounded-xl border border-slate-200 p-3">
+                  <div class="flex items-center justify-between gap-3">
+                    <p class="font-semibold text-sm">${escapeHtml(activity.type)}</p>
+                    <p class="text-xs text-slate-400">${formatDateTime(activity.createdAt)}</p>
+                  </div>
+                  <p class="text-sm text-slate-600 mt-1">${escapeHtml(activity.description)}</p>
+                </div>
+              `).join("") : `
+                <p class="text-sm text-slate-500">Nenhuma atividade registrada para este lead.</p>
+              `}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function inputField(label, field, value) {
+      const leadId = selectedLeadId;
+
+      return `
+        <div>
+          <label class="block text-sm font-semibold mb-2">${escapeHtml(label)}</label>
+          <input value="${escapeHtml(value || "")}" oninput="updateLeadField('${escapeJs(leadId)}', '${escapeJs(field)}', this.value, false)" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+        </div>
+      `;
+    }
+
+    window.updateLeadField = function(leadId, field, value, shouldRender = true) {
+      const lead = state.leads.find(l => l.id === leadId);
+      if (!lead) return;
+
+      const oldValue = lead[field];
+      lead[field] = value;
+      lead.updatedAt = new Date().toISOString();
+
+      if (field === "etapa") {
+        if (value === "Fechado") lead.closedAt = new Date().toISOString();
+        if (ACTIVE_STAGES.includes(value)) lead.lastContactAt = lead.lastContactAt || new Date().toISOString();
+        addActivity(leadId, "Etapa alterada", `Etapa alterada de "${oldValue}" para "${value}".`);
+      }
+
+      if (field === "followUpDate") {
+        addActivity(leadId, "Follow-up definido", value ? `Próximo follow-up em ${formatDate(value)}.` : "Data de follow-up removida.");
+      }
+
+      markDirty("Lead atualizado");
+
+      if (shouldRender) {
+        render();
+        if (!els.leadModal.classList.contains("hidden")) renderLeadModal();
+      }
+    }
+
+    window.updateLeadTags = function(leadId, value, shouldRender = true) {
+      const lead = state.leads.find(l => l.id === leadId);
+      if (!lead) return;
+
+      lead.tags = value
+        .split(",")
+        .map(tag => tag.trim())
+        .filter(Boolean);
+
+      lead.updatedAt = new Date().toISOString();
+      markDirty("Tags atualizadas");
+
+      if (shouldRender) render();
+    }
+
+    window.updateLeadStage = function(leadId, newStage) {
+      updateLeadField(leadId, "etapa", newStage, false);
+      render();
+
+      if (!els.leadModal.classList.contains("hidden")) {
+        renderLeadModal();
+      }
+    }
+
+    window.quickAdvance = function(leadId) {
+      const lead = state.leads.find(l => l.id === leadId);
+      if (!lead) return;
+
+      const index = STAGES.indexOf(lead.etapa);
+      const nextStage = STAGES[Math.min(index + 1, STAGES.length - 1)];
+
+      updateLeadStage(leadId, nextStage);
+    }
+
+    window.markContacted = function(leadId) {
+      const lead = state.leads.find(l => l.id === leadId);
+      if (!lead) return;
+
+      lead.etapa = lead.etapa === "Importado" || lead.etapa === "Mensagem pronta" || lead.etapa === "Prioridade - Sem site"
+        ? "Contato feito"
+        : lead.etapa;
+
+      lead.lastContactAt = new Date().toISOString();
+      lead.followUpDate = addDaysToDate(new Date(), 2);
+      lead.updatedAt = new Date().toISOString();
+
+      addActivity(leadId, "Contato registrado", "Lead marcado como contatado. Follow-up sugerido em 2 dias.");
+      markDirty("Contato registrado");
+
+      render();
+      renderLeadModal();
+    }
+
+    window.applyTemplateToLead = function(leadId, templateKey) {
+      const lead = state.leads.find(l => l.id === leadId);
+      const template = MESSAGE_TEMPLATES[templateKey];
+
+      if (!lead || !template) return;
+
+      lead.mensagem = fillTemplate(template.texto, lead);
+      lead.updatedAt = new Date().toISOString();
+
+      if (lead.etapa === "Importado" || lead.etapa === "Prioridade - Sem site") {
+        lead.etapa = "Mensagem pronta";
+      }
+
+      addActivity(leadId, "Mensagem gerada", `Template aplicado: ${template.nome}.`);
+      markDirty("Mensagem gerada");
+
+      render();
+      renderLeadModal();
+    }
+
+    window.deleteLead = function(leadId) {
+      const lead = state.leads.find(l => l.id === leadId);
+      if (!lead) return;
+
+      const ok = confirm(`Excluir o lead "${lead.nome}"?`);
+      if (!ok) return;
+
+      state.leads = state.leads.filter(l => l.id !== leadId);
+      addActivity(null, "Lead excluído", `Lead removido: ${lead.nome}.`);
+      markDirty("Lead excluído");
+
+      closeLeadModal();
+      render();
+    }
+
+    window.bulkSetMessages = function() {
+      const filtered = getFilteredLeads();
+
+      filtered.forEach(lead => {
+        lead.mensagem = generateMessage(lead);
+        if (lead.etapa === "Importado" || lead.etapa === "Prioridade - Sem site") {
+          lead.etapa = "Mensagem pronta";
+        }
+        lead.updatedAt = new Date().toISOString();
+      });
+
+      addActivity(null, "Mensagens em lote", `${filtered.length} mensagens foram geradas para os leads filtrados.`);
+      markDirty("Mensagens geradas");
+      render();
+      alert(`${filtered.length} mensagens geradas.`);
+    }
+
+    window.copyTemplate = async function(key) {
+      const template = MESSAGE_TEMPLATES[key];
+      if (!template) return;
+
+      await copyToClipboard(template.texto);
+      alert("Template copiado.");
+    }
+
+    window.copyTextById = async function(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      await copyToClipboard(el.value || el.textContent || "");
+      alert("Texto copiado.");
+    }
+
+    window.copyAllVisibleMessages = async function() {
+      const filtered = getFilteredLeads();
+      const text = filtered.map(lead => {
+        return `### ${lead.nome}\nTelefone: ${lead.telefone}\nEtapa: ${lead.etapa}\n\n${lead.mensagem || generateMessage(lead)}`;
+      }).join("\n\n---------------------\n\n");
+
+      await copyToClipboard(text);
+      alert("Mensagens visíveis copiadas.");
+    }
+
+    async function copyToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (error) {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+    }
+
+    function generateMessage(lead) {
+      if (lead.temSite === "Não tem site próprio") {
+        return fillTemplate(MESSAGE_TEMPLATES.semSite.texto, lead);
+      }
+
+      if (lead.temSite === "Não listado no Google Maps") {
+        return fillTemplate(MESSAGE_TEMPLATES.naoListado.texto, lead);
+      }
+
+      return fillTemplate(MESSAGE_TEMPLATES.comSite.texto, lead);
+    }
+
+    function fillTemplate(template, lead) {
+      return template
+        .replaceAll("{{nome}}", lead.nome || "")
+        .replaceAll("{{nome_curto}}", lead.nomeCurto || cleanClinicName(lead.nome) || lead.nome || "")
+        .replaceAll("{{telefone}}", lead.telefone || "")
+        .replaceAll("{{cidade}}", lead.cidade || "");
+    }
+
+    function createWhatsappLink(phone, message) {
+      const digits = String(phone || "").replace(/\D/g, "");
+
+      if (!digits || digits.length < 10) {
+        return `https://wa.me/?text=${encodeURIComponent(message)}`;
+      }
+
+      const phoneWithCountry = digits.startsWith("55") ? digits : `55${digits}`;
+      return `https://wa.me/${phoneWithCountry}?text=${encodeURIComponent(message)}`;
+    }
+
+    function exportCsv() {
+      if (state.leads.length === 0) {
+        alert("Não há leads para exportar.");
+        return;
+      }
+
+      const headers = [
+        "Nome da Clínica",
+        "Telefone",
+        "E-mail",
+        "Cidade",
+        "Tem Site?",
+        "Tipo de Site",
+        "Website Encontrado",
+        "Endereço",
+        "Avaliação",
+        "Etapa do Funil",
+        "Prioridade",
+        "Score",
+        "Próxima Ação",
+        "Follow-up",
+        "Mensagem",
+        "Observações",
+        "Tags",
+        "Origem",
+        "Arquivo de Importação",
+        "Última Atualização",
+        "Link Google Maps"
+      ];
+
+      const rows = state.leads.map(lead => [
+        lead.nome,
+        lead.telefone,
+        lead.email,
+        lead.cidade,
+        lead.temSite,
+        lead.tipoSite,
+        lead.website,
+        lead.endereco,
+        lead.avaliacao,
+        lead.etapa,
+        lead.prioridade,
+        lead.score,
+        lead.proximaAcao,
+        lead.followUpDate,
+        lead.mensagem || generateMessage(lead),
+        lead.observacoes,
+        Array.isArray(lead.tags) ? lead.tags.join(", ") : "",
+        lead.origem,
+        lead.importFileName,
+        lead.updatedAt,
+        lead.linkMaps
+      ]);
+
+      const csv = [headers, ...rows]
+        .map(row => row.map(escapeCsv).join(";"))
+        .join("\n");
+
+      downloadFile(csv, `crm_leads_${formatDateForFilename(new Date())}.csv`, "text/csv;charset=utf-8;");
+      addActivity(null, "Exportação CSV", "Base de leads exportada em CSV.");
+      markDirty("CSV exportado");
+    }
+
+    window.exportCsv = exportCsv;
+    window.saveDataFile = saveDataFile;
+
+    window.downloadBackup = function() {
+      const data = JSON.stringify(state, null, 2);
+      downloadFile(data, `backup_crm_captacao_${formatDateForFilename(new Date())}.data`, "application/json;charset=utf-8;");
+      setSaveStatus("Backup .data baixado");
+    }
+
+    function downloadFile(content, filename, mimeType) {
+      const blob = new Blob(["\uFEFF" + content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+
+    function escapeCsv(value) {
+      const stringValue = String(value ?? "");
+      const escaped = stringValue.replace(/"/g, '""');
+      return `"${escaped}"`;
+    }
+
+    function isFollowUpDue(lead, today) {
+      if (!lead.followUpDate) return false;
+
+      const date = new Date(`${lead.followUpDate}T00:00:00`);
+      return date <= today && !WON_STAGES.includes(lead.etapa) && !LOST_STAGES.includes(lead.etapa);
+    }
+
+    function startOfToday() {
+      const date = new Date();
+      date.setHours(0, 0, 0, 0);
+      return date;
+    }
+
+    function addDaysToDate(date, days) {
+      const result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result.toISOString().slice(0, 10);
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return "-";
+
+      try {
+        const date = new Date(`${dateString}T00:00:00`);
+        return date.toLocaleDateString("pt-BR");
+      } catch {
+        return dateString;
+      }
+    }
+
+    function formatDateTime(dateString) {
+      if (!dateString) return "-";
+
+      try {
+        return new Date(dateString).toLocaleString("pt-BR");
+      } catch {
+        return dateString;
+      }
+    }
+
+    function formatDateForFilename(date) {
+      return date.toISOString().slice(0, 19).replace(/[-:T]/g, "");
+    }
+
+    function formatBytes(bytes) {
+      if (bytes < 1024) return `${bytes} B`;
+      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+      return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    }
+
+    function siteBadgeClass(status) {
+      if (status === "Sim") return "bg-emerald-100 text-emerald-700";
+      if (status === "Não tem site próprio") return "bg-amber-100 text-amber-800";
+      return "bg-red-100 text-red-700";
+    }
+
+    function priorityBadgeClass(priority) {
+      if (priority === "Alta") return "bg-red-100 text-red-700";
+      if (priority === "Média") return "bg-amber-100 text-amber-800";
+      return "bg-slate-100 text-slate-700";
+    }
+
+    function scoreBadgeClass(score) {
+      if (score >= 80) return "bg-red-100 text-red-700";
+      if (score >= 55) return "bg-amber-100 text-amber-800";
+      return "bg-slate-100 text-slate-700";
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function escapeJs(value) {
+      return String(value ?? "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+    }
+
+    init();
+  </script>
 </body>
 </html>

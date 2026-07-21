@@ -1,254 +1,308 @@
-"""
-Instagram Photo Downloader v2.0 - Anti-Bloqueio
-Anderson Gonçalves - Freedom Pulse
+from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
+import pandas as pd
+import urllib.parse
+import re
 
-MELHORIAS:
-- Rate limiting inteligente
-- Salvamento de sessão
-- Delays entre requisições
-- Tratamento robusto de erros
-"""
 
-import instaloader
-from datetime import datetime, timedelta
-import os
-import sys
-import time
+PHONE_RE = re.compile(
+    r"(?:(?:\+55\s?)?(?:\(?\d{2}\)?\s?)?(?:9?\d{4})[-\s]?\d{4})"
+)
 
-# Configurações
-PERFIL_ALVO = "mairavida.adv"
-DIAS_RETROATIVOS = 365
-PASTA_DESTINO = "retrospectiva_mairavida"
-SESSAO_ARQUIVO = "instagram_session"
 
-# Configurações anti-bloqueio
-DELAY_ENTRE_POSTS = 3  # Segundos entre cada download
-MAX_TENTATIVAS = 3
-DELAY_APOS_ERRO = 30  # Segundos para aguardar após erro
+def limpar_texto(valor):
+    if not valor:
+        return ""
+    return " ".join(valor.replace("\n", " ").split()).strip()
 
-def criar_pasta_destino():
-    """Cria a pasta de destino"""
-    if not os.path.exists(PASTA_DESTINO):
-        os.makedirs(PASTA_DESTINO)
-        print(f"✓ Pasta criada: {PASTA_DESTINO}")
-    else:
-        print(f"✓ Usando pasta: {PASTA_DESTINO}")
 
-def fazer_login(loader):
+def aceitar_cookies(page):
     """
-    Login OBRIGATÓRIO para evitar bloqueios
-    Sessão é salva para reusar depois
+    Tenta aceitar/rejeitar cookies caso o Google mostre uma tela de consentimento.
+    Se não aparecer, segue normalmente.
     """
-    print("\n" + "=" * 60)
-    print("LOGIN NECESSÁRIO")
-    print("=" * 60)
-    print("Instagram bloqueia downloads sem autenticação.")
-    print("Sua senha NÃO é enviada para nós, apenas para o Instagram.\n")
-    
-    # Tentar carregar sessão salva
-    try:
-        loader.load_session_from_file(SESSAO_ARQUIVO)
-        print("✓ Sessão anterior carregada com sucesso!")
-        return True
-    except:
-        print("⚠️  Nenhuma sessão anterior encontrada. Fazendo login...")
-    
-    # Fazer novo login
-    tentativas = 0
-    while tentativas < 3:
-        usuario = input("\nUsuário do Instagram: ").strip()
-        
-        if not usuario:
-            print("✗ Usuário é obrigatório!")
-            tentativas += 1
-            continue
-            
-        senha = input("Senha: ").strip()
-        
-        if not senha:
-            print("✗ Senha é obrigatória!")
-            tentativas += 1
-            continue
-        
+    possiveis_botoes = [
+        "Aceitar tudo",
+        "Accept all",
+        "Concordo",
+        "I agree",
+        "Rejeitar tudo",
+        "Reject all",
+    ]
+
+    for texto in possiveis_botoes:
         try:
-            print("\n🔄 Fazendo login...")
-            loader.login(usuario, senha)
-            
-            # Salvar sessão para próximas vezes
-            loader.save_session_to_file(SESSAO_ARQUIVO)
-            print("✓ Login realizado! Sessão salva para próximo uso.")
-            return True
-            
-        except instaloader.exceptions.BadCredentialsException:
-            print("✗ Usuário ou senha incorretos!")
-            tentativas += 1
-        except instaloader.exceptions.TwoFactorAuthRequiredException:
-            print("✗ Esta conta usa autenticação de dois fatores.")
-            print("Infelizmente, não suportamos 2FA via script.")
-            print("Dica: Crie uma conta secundária sem 2FA para downloads.")
-            return False
-        except Exception as e:
-            print(f"✗ Erro no login: {e}")
-            tentativas += 1
-    
-    print("\n✗ Falha no login após 3 tentativas.")
-    return False
-
-def baixar_com_retry(loader, post, tentativa=1):
-    """
-    Tenta baixar um post com retry em caso de erro
-    """
-    try:
-        loader.download_post(post, target=PASTA_DESTINO)
-        return True
-    except instaloader.exceptions.ConnectionException as e:
-        if tentativa < MAX_TENTATIVAS:
-            print(f"   ⚠️  Erro de conexão. Tentativa {tentativa}/{MAX_TENTATIVAS}")
-            print(f"   ⏳ Aguardando {DELAY_APOS_ERRO}s antes de retry...")
-            time.sleep(DELAY_APOS_ERRO)
-            return baixar_com_retry(loader, post, tentativa + 1)
-        else:
-            raise e
-    except Exception as e:
-        raise e
-
-def baixar_fotos_v2():
-    """
-    Versão melhorada com proteções anti-bloqueio
-    """
-    print("=" * 60)
-    print("INSTAGRAM DOWNLOADER v2.0 - ANTI-BLOQUEIO")
-    print("=" * 60)
-    
-    criar_pasta_destino()
-    
-    # Configurar Instaloader com rate limiting
-    loader = instaloader.Instaloader(
-        dirname_pattern=PASTA_DESTINO,
-        download_videos=False,
-        download_video_thumbnails=False,
-        download_geotags=False,
-        download_comments=False,
-        save_metadata=True,
-        compress_json=False,
-        post_metadata_txt_pattern="",
-        max_connection_attempts=3,  # Limitar tentativas
-        request_timeout=30.0,  # Timeout de 30s
-        rate_controller=lambda query_type: time.sleep(2)  # 2s entre requests
-    )
-    
-    # Login obrigatório
-    if not fazer_login(loader):
-        print("\n✗ Não foi possível fazer login. Abortando.")
-        return
-    
-    try:
-        # Carregar perfil
-        print(f"\n📱 Carregando perfil: @{PERFIL_ALVO}...")
-        profile = instaloader.Profile.from_username(loader.context, PERFIL_ALVO)
-        
-        if profile.is_private and not profile.followed_by_viewer:
-            print(f"\n⚠️  ATENÇÃO: @{PERFIL_ALVO} é PRIVADO!")
-            print("Você precisa seguir este perfil para baixar as fotos.")
-            return
-        
-        # Data limite
-        data_limite = datetime.now() - timedelta(days=DIAS_RETROATIVOS)
-        print(f"📅 Período: {data_limite.strftime('%d/%m/%Y')} até hoje")
-        
-        # Estatísticas
-        posts_analisados = 0
-        fotos_baixadas = 0
-        videos_ignorados = 0
-        erros = 0
-        
-        print("\n🔄 Iniciando download (COM DELAY entre posts)...\n")
-        print("⏱️  Isso pode demorar. Instagram limita velocidade de requisições.")
-        print("🛑 Pressione Ctrl+C para pausar/parar a qualquer momento.\n")
-        
-        # Iterar posts
-        for post in profile.get_posts():
-            posts_analisados += 1
-            
-            # Verificar data
-            if post.date < data_limite:
-                print(f"\n⏹️  Alcançamos posts de {post.date.strftime('%d/%m/%Y')} (antes do período)")
-                break
-            
-            # Apenas fotos
-            if post.is_video:
-                videos_ignorados += 1
-                print(f"⏭️  [{posts_analisados}] Vídeo ignorado: {post.date.strftime('%d/%m/%Y')}")
-                continue
-            
-            # Tentar baixar
-            try:
-                print(f"⬇️  [{fotos_baixadas + 1}] Baixando: {post.date.strftime('%d/%m/%Y %H:%M')}", end="")
-                
-                if baixar_com_retry(loader, post):
-                    fotos_baixadas += 1
-                    print(" ✓")
-                    
-                    # DELAY entre posts (crucial!)
-                    if DELAY_ENTRE_POSTS > 0:
-                        print(f"   ⏳ Aguardando {DELAY_ENTRE_POSTS}s (anti-bloqueio)...")
-                        time.sleep(DELAY_ENTRE_POSTS)
-                
-            except instaloader.exceptions.LoginRequiredException:
-                print("\n\n✗ Sessão expirou! Execute novamente o script.")
-                # Deletar sessão antiga
-                try:
-                    os.remove(SESSAO_ARQUIVO)
-                except:
-                    pass
+            botao = page.get_by_role("button", name=texto)
+            if botao.count() > 0:
+                botao.first.click(timeout=3000)
+                page.wait_for_timeout(1000)
                 return
-                
-            except Exception as e:
-                erros += 1
-                print(f" ✗ ERRO: {str(e)[:100]}")
-                
-                if erros >= 5:
-                    print("\n⚠️  Muitos erros consecutivos. Parando para evitar bloqueio.")
-                    break
-        
-        # Resumo final
-        print("\n" + "=" * 60)
-        print("RESUMO FINAL")
-        print("=" * 60)
-        print(f"Posts analisados: {posts_analisados}")
-        print(f"✓ Fotos baixadas: {fotos_baixadas}")
-        print(f"⏭️  Vídeos ignorados: {videos_ignorados}")
-        print(f"✗ Erros: {erros}")
-        print(f"\n📁 Pasta: {os.path.abspath(PASTA_DESTINO)}")
-        print("=" * 60)
-        
-        if fotos_baixadas > 0:
-            print("\n🎉 Download concluído com sucesso!")
+        except Exception:
+            pass
+
+
+def obter_texto(locator, padrao="N/A", timeout=3000):
+    try:
+        if locator.count() > 0:
+            texto = locator.first.inner_text(timeout=timeout)
+            texto = limpar_texto(texto)
+            return texto if texto else padrao
+    except Exception:
+        pass
+
+    return padrao
+
+
+def obter_atributo(locator, atributo, padrao="", timeout=3000):
+    try:
+        if locator.count() > 0:
+            valor = locator.first.get_attribute(atributo, timeout=timeout)
+            valor = limpar_texto(valor)
+            return valor if valor else padrao
+    except Exception:
+        pass
+
+    return padrao
+
+
+def extrair_telefone(page):
+    seletores_telefone = [
+        'button[data-item-id^="phone:tel:"]',
+        'button[aria-label^="Telefone:"]',
+        'button[aria-label^="Phone:"]',
+        'button[aria-label*="+55"]',
+    ]
+
+    for seletor in seletores_telefone:
+        telefone_bruto = obter_atributo(page.locator(seletor), "aria-label")
+        if telefone_bruto:
+            telefone = re.sub(
+                r"^(Telefone|Phone|Teléfono|Tel):\s*",
+                "",
+                telefone_bruto,
+                flags=re.IGNORECASE,
+            )
+            return limpar_texto(telefone)
+
+    try:
+        texto_pagina = page.locator("body").inner_text(timeout=3000)
+        match = PHONE_RE.search(texto_pagina)
+        if match:
+            return limpar_texto(match.group(0))
+    except Exception:
+        pass
+
+    return "N/A"
+
+
+def extrair_website(page):
+    seletores_site = [
+        'a[data-item-id="authority"]',
+        'a[aria-label^="Website:"]',
+        'a[aria-label^="Site:"]',
+    ]
+
+    for seletor in seletores_site:
+        website = obter_atributo(page.locator(seletor), "href")
+        if website:
+            return website
+
+    return "Não listado"
+
+
+def extrair_endereco(page):
+    seletores_endereco = [
+        'button[data-item-id="address"]',
+        'button[aria-label^="Endereço:"]',
+        'button[aria-label^="Address:"]',
+    ]
+
+    for seletor in seletores_endereco:
+        endereco = obter_atributo(page.locator(seletor), "aria-label")
+        if endereco:
+            endereco = re.sub(
+                r"^(Endereço|Address|Dirección):\s*",
+                "",
+                endereco,
+                flags=re.IGNORECASE,
+            )
+            return limpar_texto(endereco)
+
+    return "N/A"
+
+
+def extrair_detalhes_local(page, nome_fallback, link_mapa):
+    nome = obter_texto(page.locator("h1.DUwDvf"), padrao=nome_fallback)
+
+    if nome == "N/A":
+        nome = obter_texto(page.locator("h1"), padrao=nome_fallback)
+
+    telefone = extrair_telefone(page)
+    website = extrair_website(page)
+    endereco = extrair_endereco(page)
+
+    avaliacao = obter_texto(
+        page.locator('div.F7nice span[aria-hidden="true"]'),
+        padrao="N/A",
+    )
+
+    return {
+        "Nome da Clínica": nome,
+        "Telefone": telefone,
+        "Website Atual": website,
+        "Endereço": endereco,
+        "Avaliação": avaliacao,
+        "Link Google Maps": link_mapa,
+    }
+
+
+def coletar_links_resultados(page, max_scrolls=10, pausa_ms=2000):
+    feed = page.locator('div[role="feed"]').first
+
+    try:
+        feed.wait_for(timeout=20000)
+    except PlaywrightTimeoutError:
+        raise RuntimeError(
+            "O painel de resultados do Google Maps não carregou. "
+            "Pode ter ocorrido bloqueio, captcha ou mudança na estrutura da página."
+        )
+
+    ultima_quantidade = 0
+    tentativas_sem_novos = 0
+
+    for _ in range(max_scrolls):
+        feed.evaluate("(el) => el.scrollTo(0, el.scrollHeight)")
+        page.wait_for_timeout(pausa_ms)
+
+        quantidade_atual = page.locator('a.hfpxzc, a[href*="/maps/place/"]').count()
+
+        if quantidade_atual == ultima_quantidade:
+            tentativas_sem_novos += 1
+            if tentativas_sem_novos >= 2:
+                break
         else:
-            print("\n⚠️  Nenhuma foto foi baixada. Verifique:")
-            print("   - Se o perfil tem posts de fotos no período")
-            print("   - Se o perfil é privado e você o segue")
-            print("   - Se sua sessão está válida")
-        
-    except instaloader.exceptions.ProfileNotExistsException:
-        print(f"\n✗ ERRO: Perfil @{PERFIL_ALVO} não existe")
-        
-    except KeyboardInterrupt:
-        print("\n\n⏸️  Download pausado pelo usuário!")
-        print(f"✓ Fotos baixadas até agora: {fotos_baixadas}")
-        print(f"📁 Pasta: {os.path.abspath(PASTA_DESTINO)}")
-        print("\n💡 Execute novamente para continuar de onde parou")
-        
-    except Exception as e:
-        print(f"\n✗ ERRO GERAL: {e}")
-        print("\nVerifique:")
-        print("1. Sua conexão com internet")
-        print("2. Se o perfil existe e é acessível")
-        print("3. Se você segue o perfil (se for privado)")
+            tentativas_sem_novos = 0
+            ultima_quantidade = quantidade_atual
+
+    links_locator = page.locator('a.hfpxzc, a[href*="/maps/place/"]')
+
+    resultados = links_locator.evaluate_all(
+        """
+        (links) => links
+            .map((a) => ({
+                nome: a.getAttribute("aria-label") || a.textContent || "",
+                link: a.href || ""
+            }))
+            .filter((item) => item.nome && item.link && item.link.includes("/maps/place/"))
+        """
+    )
+
+    resultados_unicos = []
+    links_vistos = set()
+
+    for item in resultados:
+        nome = limpar_texto(item.get("nome", ""))
+        link = item.get("link", "")
+
+        if not nome or not link or link in links_vistos:
+            continue
+
+        links_vistos.add(link)
+        resultados_unicos.append({
+            "nome": nome,
+            "link": link,
+        })
+
+    return resultados_unicos
+
+
+def extrair_clinicas(
+    termo_busca,
+    max_scrolls=10,
+    arquivo_saida="leads_clinicas.csv",
+    headless=False,
+):
+    dados_extraidos = []
+
+    termo_codificado = urllib.parse.quote_plus(termo_busca)
+    url_busca = f"https://www.google.com/maps/search/{termo_codificado}"
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=headless)
+
+        context = browser.new_context(
+            locale="pt-BR",
+            viewport={"width": 1366, "height": 768},
+        )
+
+        page = context.new_page()
+        page.set_default_timeout(15000)
+
+        try:
+            page.goto(url_busca, wait_until="domcontentloaded", timeout=60000)
+            aceitar_cookies(page)
+
+            resultados = coletar_links_resultados(
+                page,
+                max_scrolls=max_scrolls,
+                pausa_ms=2000,
+            )
+
+            print(f"{len(resultados)} resultados encontrados na listagem.")
+
+            for indice, resultado in enumerate(resultados, start=1):
+                nome_fallback = resultado["nome"]
+                link_mapa = resultado["link"]
+
+                try:
+                    print(f"Extraindo {indice}/{len(resultados)}: {nome_fallback}")
+
+                    page.goto(link_mapa, wait_until="domcontentloaded", timeout=60000)
+                    page.wait_for_timeout(2500)
+
+                    dados = extrair_detalhes_local(
+                        page=page,
+                        nome_fallback=nome_fallback,
+                        link_mapa=link_mapa,
+                    )
+
+                    dados_extraidos.append(dados)
+
+                except Exception as erro:
+                    print(f"Erro ao extrair '{nome_fallback}': {erro}")
+                    continue
+
+        finally:
+            browser.close()
+
+    if not dados_extraidos:
+        print(
+            "Nenhum dado foi extraído. "
+            "Verifique se houve captcha, bloqueio ou alteração no layout do Google Maps."
+        )
+        return
+
+    df = pd.DataFrame(dados_extraidos)
+
+    df.drop_duplicates(
+        subset=["Nome da Clínica", "Telefone", "Link Google Maps"],
+        inplace=True,
+    )
+
+    df.to_csv(
+        arquivo_saida,
+        index=False,
+        encoding="utf-8-sig",
+        sep=";",
+    )
+
+    print(f"Extração concluída! {len(df)} leads salvos em: {arquivo_saida}")
+
 
 if __name__ == "__main__":
-    try:
-        baixar_fotos_v2()
-    except KeyboardInterrupt:
-        print("\n\n👋 Programa encerrado")
-        sys.exit(0)
+    nicho = "Clínica de implante dentário em Salvador"
+    extrair_clinicas(
+        termo_busca=nicho,
+        max_scrolls=10,
+        arquivo_saida="leads_clinicas.csv",
+        headless=False,
+    )

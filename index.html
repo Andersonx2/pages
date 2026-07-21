@@ -135,7 +135,7 @@ header h1{font-size:17px;font-weight:600;flex:1}
 .p-info-box{border-top:1px solid #ddd;border-bottom:1px solid #ddd;padding:15px 0;margin-bottom:30px; display:flex; justify-content:space-between}
 .p-section-title{font-size:13pt;font-weight:bold;color:#1a3a5c;margin-top:25px;margin-bottom:10px;text-transform:uppercase}
 
-/* Tabela Estilo Planilha da Página 2 */
+/* Tabela Estilo Planilha da Página 2 (Comentada no HTML final) */
 .p-table {width:100%; border-collapse:collapse; margin-top:15px; font-size:10.5pt;}
 .p-table th {background:#1a3a5c; color:white; padding:8px; font-weight:bold; border:1px solid #1a3a5c; text-align:center;}
 .p-table td {padding:7px 10px; border:1px solid #ddd; vertical-align:middle;}
@@ -172,6 +172,7 @@ header h1{font-size:17px;font-weight:600;flex:1}
 
 <div class="container">
 
+<!-- 1. DADOS DO CLIENTE -->
 <div class="card">
   <div class="card-header open" onclick="toggle(this)"><h2>👤 1. Dados do Cliente</h2><span class="chevron">▼</span></div>
   <div class="card-body open">
@@ -195,6 +196,7 @@ header h1{font-size:17px;font-weight:600;flex:1}
   </div>
 </div>
 
+<!-- 2. VEÍCULO E TRANSFORMAÇÃO -->
 <div class="card">
   <div class="card-header open" onclick="toggle(this)"><h2>🚐 2. Veículo e Transformação</h2><span class="chevron">▼</span></div>
   <div class="card-body open">
@@ -219,11 +221,13 @@ header h1{font-size:17px;font-weight:600;flex:1}
   </div>
 </div>
 
+<!-- 3. ITENS BASE -->
 <div class="card">
   <div class="card-header open" onclick="toggle(this)"><h2>🔧 3. Serviços e Itens Base</h2><span class="badge" id="badge-itens">0</span><span class="chevron">▼</span></div>
   <div class="card-body open" id="lista-itens"></div>
 </div>
 
+<!-- 4. POLTRONAS -->
 <div class="card">
   <div class="card-header open" onclick="toggle(this)"><h2>💺 4. Poltronas</h2><span class="badge" id="badge-seat">—</span><span class="chevron">▼</span></div>
   <div class="card-body open">
@@ -234,6 +238,7 @@ header h1{font-size:17px;font-weight:600;flex:1}
   </div>
 </div>
 
+<!-- 5. OPCIONAIS E EXTRAS -->
 <div class="card">
   <div class="card-header open" onclick="toggle(this)"><h2>⚡ 5. Opcionais e Acessórios</h2><span class="badge" id="badge-opt">0</span><span class="chevron">▼</span></div>
   <div class="card-body open">
@@ -245,6 +250,7 @@ header h1{font-size:17px;font-weight:600;flex:1}
   </div>
 </div>
 
+<!-- 6. PAGAMENTO -->
 <div class="card">
   <div class="card-header open" onclick="toggle(this)"><h2>💳 6. Condição de Pagamento</h2><span class="chevron">▼</span></div>
   <div class="card-body open">
@@ -265,6 +271,7 @@ header h1{font-size:17px;font-weight:600;flex:1}
   </div>
 </div>
 
+<!-- 7. RESUMO -->
 <div class="card">
   <div class="card-header open" onclick="toggle(this)"><h2>📋 Resumo do Orçamento</h2><span class="chevron">▼</span></div>
   <div class="card-body open" id="resumo"></div>
@@ -274,6 +281,7 @@ header h1{font-size:17px;font-weight:600;flex:1}
 
 </div>
 
+<!-- MODAL PDF -->
 <div class="modal-bg" id="modal">
   <div class="modal-wrap">
     <div class="modal-actions">
@@ -288,7 +296,7 @@ header h1{font-size:17px;font-weight:600;flex:1}
 // ── BASE DE DADOS E INTELIGÊNCIA DINÂMICA (TABELA VERSÃO 07) ─────────────────────────────────
 const VEICULOS = {
   master:   {nome:"Renault Master",    taxa:0,      configs:["L3H2","L2H2","L1H1", "Furgão", "Vitrê"]},
-  sprinter: {nome:"Mercedes Sprinter", taxa:0.1975, configs:["417 (10,5m)","417 (15,5m)","517 (10,5m)","517 (15,5m)", "Furgão", "Vitrê"]},
+  sprinter: {nome:"Mercedes Sprinter", taxa:0.1975, configs:["417 (10,5m)","417 (14m)","417 (15,5m)","517 (10,5m)","517 (14m)","517 (15,5m)", "Furgão", "Vitrê"]},
   scudo:    {nome:"Fiat Scudo",        taxa:0,      configs:["Furgão","Vitrê"]},
   ducato:   {nome:"Fiat Ducato",       taxa:0.1975, configs:["Furgão","Vitrê"]},
   transit:  {nome:"Ford Transit",      taxa:0.1975, configs:["L3H3","L4H3", "Furgão", "Vitrê"]},
@@ -323,6 +331,7 @@ const POLTRONAS = [
   {id:"fixa",         label:"Poltrona Fixa", unit:975.67, horas:3},
   {id:"leito",        label:"Poltrona Leito Total", unit:4553.11, horas:3},
   {id:"polt_cli",     label:"Poltronas do Cliente (Apenas Instalação)", unit:0, precoFixo: 1350, horas:5},
+  {id:"polt_orc",     label:"Kit Poltronas Reclináveis — Fazer Orçamento", unit:0, precoFixo: 441, horas:0},
 ];
 
 const ADICIONAIS_GRUPOS = {
@@ -366,6 +375,8 @@ let OPT = [
     {id:"adesiv_esc", label:"Adesivagem Escolar", preco:1285, horas:1, tagEscolar:true},
     {id:"delim_esc",  label:"Delimitadora de Teto", preco:470, horas:1, tagEscolar:true},
     {id:"tacog",      label:"Tacógrafo Aferido Bobina TACOVEL", preco:4150, horas:1, tagEscolar:true},
+    {id:"cam_esc",    label:"Câmera Frontal e Ré", preco:570, horas:1, tagEscolar:true},
+    {id:"mon_esc",    label:"Monitor", preco:280, horas:1, tagEscolar:true},
   ]},
   {cat:"Som e Multimídia", items:[
     {id:"multimidia", label:"Multimídia com Câmera de Ré, GPS e Bluetooth", preco:2200, horas:2},
@@ -474,6 +485,9 @@ function updatePrecosDinamicos(v) {
     }
   });
 
+  const poltOrc = POLTRONAS.find(p => p.id === 'polt_orc');
+  if(poltOrc) { poltOrc.precoFixo = (v === 'sprinter') ? 485 : 441; }
+
   for(let id in S.opts) {
     OPT.forEach(cat => {
       let it = cat.items.find(i => i.id === id);
@@ -495,7 +509,6 @@ function updateLugaresField() {
   } else if (transf === "Escolar" && veh === "sprinter") {
       html += `<select id="seat-qty" onchange="calcSeats()"><option value="20">20L</option><option value="24" selected>24L</option><option value="28">28L</option></select>`;
   } else if (transf === "Fretamento") { 
-      // Campo de digitação livre para Fretamento, padrão 16
       html += `<input type="number" id="seat-qty" value="16" oninput="calcSeats()" />`;
   } else if (transf === "Mista") {
       html += `<input type="text" id="seat-qty" placeholder="Ex: 9L ou menos" oninput="calcSeats()" />`;
@@ -576,6 +589,7 @@ function selectVeh(v, el){
   
   updatePrecosDinamicos(v);
   renderItens();
+  renderPoltronas();
   renderOpcionais();
   
   const absRow = document.getElementById("row_it_abs");
@@ -666,7 +680,7 @@ function calcSeats(){
   const adVal = Object.values(S.adicionais).reduce((a,b) => a + (b.preco * b.qty), 0);
   
   let total = 0;
-  if (p.id === 'polt_cli') {
+  if (p.unit === 0) {
       total = p.precoFixo + adVal;
       document.getElementById("seat-result").innerHTML = `<strong>${p.label}</strong> — Base: ${fmt(p.precoFixo)}` + (adVal > 0 ? ` + adicionais = <strong>${fmt(total)}</strong>` : ` = <strong>${fmt(total)}</strong>`);
   } else {
@@ -685,7 +699,7 @@ function checkTacografo() {
 
    const transf = document.getElementById("veh-transf").value;
 
-   if(S.qtyNum > 10 && transf === "Escolar") {
+   if(S.qtyNum > 10) {
        if(!tacogCb.checked) {
            tacogCb.checked = true;
            toggleOpt('tacog', 4150, 1, tacogCb, false); 
@@ -841,7 +855,7 @@ function calcAll(){
   let seatVal = 0; let adVal = 0;
   if(S.poltrona){
     const p = POLTRONAS.find(x => x.id === S.poltrona);
-    seatVal = p.id === 'polt_cli' ? p.precoFixo : p.unit * S.qtyNum; 
+    seatVal = p.unit === 0 ? p.precoFixo : p.unit * S.qtyNum; 
     horasTotais += p.horas;
     adVal = Object.values(S.adicionais).reduce((a,b) => a + (b.preco * b.qty), 0);
     horasTotais += Object.values(S.adicionais).reduce((a,b) => a + b.horas, 0);
@@ -881,7 +895,7 @@ function calcAll(){
 
 function fmt(v){return"R$ "+(Math.round(v*100)/100).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
 
-// --- GERAÇÃO DO PDF (FUSÃO DE CONTEXTO E 2ª PÁGINA) ---
+// --- GERAÇÃO DO PDF (SOMENTE PROPOSTA FORMAL CONFORME SOLICITADO PELA CLIENTE) ---
 function gerarProposta(){
   if(S.opts["cortina"] && S.cortinas["cortina"]?.cor === "Customizada" && !(S.cortinas["cortina"].modelo||"").trim()){
     alert("Preencha o modelo da cortina no salão antes de gerar a proposta."); return;
@@ -925,10 +939,10 @@ function gerarProposta(){
     
     itensP1HTML += `<li><span class="number">${num++}.</span><span class="text">${p.label}${lText}${adsAtivosTexto ? `<ul class="p-sublist">${adsAtivosTexto}</ul>`:''}</span></li>`;
     
-    if (p.id === 'polt_cli') {
+    if (p.unit === 0) {
       planilhaRowsHTML += `<tr><td style="text-align:center;">1</td><td>${p.label} (Apenas Instalação)</td><td style="text-align:right; font-weight:600;">${fmt(p.precoFixo)}</td></tr>`;
     } else {
-      let lCount = S.qtyNum > 0 ? S.qtyNum : 1; // Fallback for Carga Seca if accidentally selected
+      let lCount = S.qtyNum > 0 ? S.qtyNum : 1; 
       planilhaRowsHTML += `<tr><td style="text-align:center;">${lCount}</td><td>${p.label}</td><td style="text-align:right; font-weight:600;">${fmt(p.unit * lCount)}</td></tr>`;
     }
 
@@ -1016,15 +1030,16 @@ function gerarProposta(){
     </div>
   `;
 
-  // --- PÁGINA 2: MEMÓRIA DE CÁLCULO ESTILO PLANILHA EXCEL ---
-  const pagina2 = `
+  // --- PÁGINA 2: MEMÓRIA DE CÁLCULO ESTILO PLANILHA EXCEL (COMENTADA A PEDIDO DO CLIENTE) ---
+  /*
+  const pagina2 = \`
     <div class="proposta-page">
       <div class="p-header-title" style="font-size:18pt; margin-bottom:5px;">V12 CUSTOMIZAÇÃO</div>
       <div style="text-align:center; font-size:11pt; font-weight:bold; margin-bottom:20px; color:#666;">DETALHAMENTO DO ORÇAMENTO — ANEXO DA PROPOSTA</div>
       
       <div class="p-info-box" style="margin-bottom:15px; font-size:10pt; background:#f9f9f9; padding:10px;">
-        <div><b>Orçamento para:</b> ${cliente}<br><b>Veículo Base:</b> ${vNome}</div>
-        <div style="text-align:right;"><b>Data de Emissão:</b> ${dataHoje}<br><b>Vendedor:</b> ${rep}</div>
+        <div><b>Orçamento para:</b> \${cliente}<br><b>Veículo Base:</b> \${vNome}</div>
+        <div style="text-align:right;"><b>Data de Emissão:</b> \${dataHoje}<br><b>Vendedor:</b> \${rep}</div>
       </div>
       
       <table class="p-table">
@@ -1036,19 +1051,19 @@ function gerarProposta(){
           </tr>
         </thead>
         <tbody>
-          ${planilhaRowsHTML}
+          \${planilhaRowsHTML}
           <tr style="font-weight:bold; background:#f5f5f7;">
             <td colspan="2" style="text-align:right; padding-right:15px;">SUBTOTAL ACUMULADO:</td>
-            <td style="text-align:right;">${fmt(calcs.subtotal)}</td>
+            <td style="text-align:right;">\${fmt(calcs.subtotal)}</td>
           </tr>
-          ${calcs.descVal > 0 ? `
+          \${calcs.descVal > 0 ? \`
           <tr style="font-weight:bold; color:#1a6b3a; background:#f5f5f7;">
-            <td colspan="2" style="text-align:right; padding-right:15px;">DESCONTO COMERCIAL APLICADO (${(S.pag.desc*100).toFixed(1)}%):</td>
-            <td style="text-align:right;">- ${fmt(calcs.descVal)}</td>
-          </tr>` : ''}
+            <td colspan="2" style="text-align:right; padding-right:15px;">DESCONTO COMERCIAL APLICADO (\${(S.pag.desc*100).toFixed(1)}%):</td>
+            <td style="text-align:right;">- \${fmt(calcs.descVal)}</td>
+          </tr>\` : ''}
           <tr style="font-weight:bold; background:#e07b39; color:white;">
             <td colspan="2" style="text-align:right; padding-right:15px; font-size:11pt;">PREÇO FINAL REAJUSTADO:</td>
-            <td style="text-align:right; font-size:11pt;">${fmt(calcs.total)}</td>
+            <td style="text-align:right; font-size:11pt;">\${fmt(calcs.total)}</td>
           </tr>
         </tbody>
       </table>
@@ -1062,9 +1077,11 @@ function gerarProposta(){
         Rua Boaventura Lucena, 100 - Bairro Ana Rech | Fone: (54) 99999-5399
       </div>
     </div>
-  `;
+  \`;
+  */
 
-  document.getElementById("proposta-pages").innerHTML = pagina1 + pagina2;
+  // Renderiza APENAS a primeira página (Contrato Formal). A página 2 (Tabela Excel) está comentada acima.
+  document.getElementById("proposta-pages").innerHTML = pagina1; // + pagina2;
   document.getElementById("modal").classList.add("open");
 }
 
