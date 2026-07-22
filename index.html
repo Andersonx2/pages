@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>V12 — Sistema de Orçamentos v7</title>
+<title>V12 — Sistema de Orçamentos v8</title>
 <style>
 /* =========================================
    ESTILOS DO SISTEMA (INTERFACE)
@@ -166,7 +166,7 @@ header h1{font-size:17px;font-weight:600;flex:1}
 <body>
 
 <header>
-  <h1>V12 Customização — Gerador de Orçamentos v7</h1>
+  <h1>V12 Customização — Gerador de Orçamentos</h1>
   <div class="total-badge" id="header-total">R$ 0</div>
 </header>
 
@@ -182,14 +182,22 @@ header h1{font-size:17px;font-weight:600;flex:1}
       <div class="campo"><label>Cidade/UF</label><input type="text" id="cli-cidade" placeholder="Cidade do cliente..."/></div>
       <div class="campo"><label>Captação</label>
         <select id="cli-captacao">
-          <option value="Indicação">Indicação</option><option value="Concessionária">Concessionária</option>
-          <option value="Carteira">Carteira</option><option value="Leads">Leads</option><option value="Outdoor">Outdoor</option>
+          <option value="Indicação">Indicação</option>
+          <option value="Concessionária">Concessionária</option>
+          <option value="Carteira">Carteira</option>
+          <option value="Leads">Leads</option>
+          <option value="Outdoor">Outdoor</option>
+          <option value="Prospecção">Prospecção</option>
         </select>
       </div>
       <div class="campo"><label>Representante</label>
         <select id="cli-rep">
-          <option value="Felipe Funk">Felipe Funk</option><option value="Alcione Roth">Alcione Roth</option>
-          <option value="Cristian Nozari">Cristian Nozari</option><option value="Franco">Franco</option>
+          <option value="Felipe Funk">Felipe Funk</option>
+          <option value="Alcione Roth">Alcione Roth</option>
+          <option value="Christian Nozari">Christian Nozari</option>
+          <option value="Franco">Franco</option>
+          <option value="Tatiane de Matos">Tatiane de Matos</option>
+          <option value="Bruno Rovati">Bruno Rovati</option>
         </select>
       </div>
     </div>
@@ -346,6 +354,8 @@ const ADICIONAIS_GRUPOS = {
       {id:"s950_braco", label:"Braço Móvel", preco:147.70, hasQty:true, horas:0},
       {id:"s950_cinto3", label:"Kit Cinto Segurança 3 pontas retrátil", preco:250.69, hasQty:true, horas:0},
       {id:"s950_cinto2", label:"Kit Cinto Segurança 2 pontas retrátil", preco:182.94, hasQty:true, horas:0},
+      {id:"s950_cinto3e", label:"Kit Cinto Segurança 3 pontas estático", preco:268.31, hasQty:true, horas:0},
+      {id:"s950_cinto2e", label:"Kit Cinto Segurança 2 pontas estático", preco:101.63, hasQty:true, horas:0},
   ]},
   van_esc: { label:"Adicionais — Van Escolar", items:[
       {id:"ve_cinto2", label:"Kit Cinto 2 pontas estático - Escolar", preco:101.63, hasQty:true, horas:0},
@@ -374,9 +384,9 @@ let OPT = [
   {cat:"Obrigatórios Escolares", items:[
     {id:"adesiv_esc", label:"Adesivagem Escolar", preco:1285, horas:1, tagEscolar:true},
     {id:"delim_esc",  label:"Delimitadora de Teto", preco:470, horas:1, tagEscolar:true},
-    {id:"tacog",      label:"Tacógrafo Aferido Bobina TACOVEL", preco:4150, horas:1, tagEscolar:true},
     {id:"cam_esc",    label:"Câmera Frontal e Ré", preco:570, horas:1, tagEscolar:true},
     {id:"mon_esc",    label:"Monitor", preco:280, horas:1, tagEscolar:true},
+    {id:"tacog",      label:"Tacógrafo Aferido Bobina TACOVEL", preco:4150, horas:1, tagEscolar:true},
   ]},
   {cat:"Som e Multimídia", items:[
     {id:"multimidia", label:"Multimídia com Câmera de Ré, GPS e Bluetooth", preco:2200, horas:2},
@@ -399,7 +409,8 @@ let OPT = [
     {id:"led_deg",  label:"Iluminação em LED no Degrau da Porta de Acesso", preco:310, horas:1.2, cores:["Branco","Azul","Vermelho"]},
     {id:"led_plat", label:"Iluminação em LED na Plataforma de Acesso", preco:310, horas:1.2, cores:["Branco","Azul","Vermelho"]},
     {id:"led_azul", label:"Iluminação em LED sob Poltrona do Carona", preco:310, horas:1.2, cores:["Branco","Azul","Vermelho"]},
-    {id:"led_bag",  label:"Iluminação em LED no Porta Pacote", preco:310, horas:1.2, cores:["Branco","Azul","Vermelho"]},
+    {id:"led_portapacote",  label:"Iluminação em LED no Porta Pacote", preco:310, horas:1.2, cores:["Branco","Azul","Vermelho"]},
+    {id:"led_bagageiro",  label:"Iluminação em LED no Bagageiro", preco:310, horas:1.2, cores:["Branco","Azul","Vermelho"]},
     {id:"led_rgb",  label:"Kit iluminação RGB Bluetooth (Degrau, Plat, Sob polt)", preco:1815, horas:4},
   ]},
   {cat:"Vidros", items:[
@@ -410,6 +421,9 @@ let OPT = [
     {id:"usb1",     label:"Carregador USB (unitário)", preco:160, horas:0.4, hasQty:true},
     {id:"usb2",     label:"Carregador Duplo USB + USB-C (unitário)", preco:230, horas:0.4, hasQty:true},
     {id:"tomada",   label:"Tomada 220v", preco:145, horas:0.4, hasQty:true},
+    {id:"inv_300",  label:"Inversor 300W", preco:900, horas:1},
+    {id:"inv_1000", label:"Inversor 1.000W", preco:1350, horas:1},
+    {id:"inv_3000", label:"Inversor 3.000W", preco:1630, horas:1},
   ]},
   {cat:"Cortinas e Películas", items:[
     {id:"cortina",  label:"Cortinas Padrões no Salão", preco:1340, horas:2,
@@ -417,6 +431,9 @@ let OPT = [
      coresCortina:["317 Verde Luxo", "368 Vermelho Luxo", "172 Azul arara", "171 Cinza Grafite", "293383 Azul Marinho Casca G7", "10106079 Cinza Casca", "Customizada"]},
     {id:"cortdiv",  label:"Cortina na Divisória", preco:680, horas:1.5,
      coresCortina:["317 Verde Luxo", "368 Vermelho Luxo", "172 Azul arara", "171 Cinza Grafite", "Customizada"]},
+    {id:"cortplissada",  label:"Cortinas Plissadas no Salão", preco:2570, horas:2,
+     saidaEmerg:["COM saída de emergência","SEM saída de emergência"],
+     coresCortina:["Padrão", "Customizada"]},
     {id:"pelicula", label:"Películas Automotivas", preco:790, horas:0,
      variantesPel:[{label:"5% Salão e 50% Cabine", preco:790}, {label:"5% Salão e 70% Cabine", preco:790}]},
   ]},
@@ -426,6 +443,9 @@ let OPT = [
     {id:"pegamao",    label:"Pega Mão na Coluna da entrada (1ª fileira)", preco:120, horas:1, cores:["Grafite","Amarelo"]},
     {id:"saiacorr",   label:"Saia na porta de correr para não entrar sujeira", preco:180, horas:1},
     {id:"fechpolt",   label:"Fechamento embaixo Poltrona Motorista e Auxiliar", preco:1100, horas:2},
+    {id:"console_copo", label:"Console com Porta Copo (unitário)", preco:3030, horas:12, hasQty:true},
+    {id:"estribo_preto", label:"Estribo Lateral (Preto)", preco:1285, horas:1},
+    {id:"estribo_polido", label:"Estribo Lateral (Polido)", preco:2000, horas:1},
   ]}
 ];
 
@@ -448,11 +468,11 @@ function toggle(h){ h.classList.toggle("open"); h.nextElementSibling.classList.t
 // --- ATUALIZAÇÃO DINÂMICA DE PREÇOS POR VEÍCULO (TABELA 07) ---
 function updatePrecosDinamicos(v) {
   const p = {
-    master: { iso:1000, abs:11590, piso_com:10130, piso_sem:5000, ilum:650, ilum_nome: "Kit Iluminação Interna p/ Revestimento", vid_comp:8290, vid_comp_nome: "Kit Vidros Colados Completo", vid_1v:3210 },
-    sprinter: { iso:1000, abs:11590, piso_com:10130, piso_sem:5000, ilum:730, ilum_nome: "Kit Iluminação - Sanca do Teto", vid_comp:6290, vid_comp_nome: "Kit Vidros Colados Completo (Longa)", vid_1v:3430 },
-    scudo: { iso:950, abs:6400, piso_com:4990, piso_sem:4990, ilum:610, ilum_nome: "Kit Iluminação p/ Revestimento (2 Luminárias)", vid_comp:5710, vid_comp_nome: "Kit Vidros Colados + Vigias (4 vidros)", vid_1v:2800 },
-    ducato: { iso:1000, abs:11590, piso_com:10130, piso_sem:5000, ilum:650, ilum_nome: "Kit Iluminação Interna p/ Revestimento", vid_comp:8290, vid_comp_nome: "Kit Vidros Colados Completo", vid_1v:3210 },
-    transit: { iso:1000, abs:9030, piso_com:10230, piso_sem:5195, ilum:650, ilum_nome: "Kit Iluminação p/ Revestimento", vid_comp:8290, vid_comp_nome: "Kit Vidros Colados Completo", vid_1v:3210 }
+    master: { iso:1000, abs:11590, piso_com:10130, piso_sem:5000, ilum:650, ilum_nome: "Kit Iluminação Interna p/ Revestimento", vid_comp:8290, vid_comp_nome: "Kit Vidros Colados Completo", vid_1v:3210, estribo_preto: 1285 },
+    sprinter: { iso:1000, abs:11590, piso_com:10130, piso_sem:5000, ilum:730, ilum_nome: "Kit Iluminação - Sanca do Teto", vid_comp:6290, vid_comp_nome: "Kit Vidros Colados Completo (Longa)", vid_1v:3430, estribo_preto: 2000 },
+    scudo: { iso:950, abs:6400, piso_com:4990, piso_sem:4990, ilum:610, ilum_nome: "Kit Iluminação p/ Revestimento (2 Luminárias)", vid_comp:5710, vid_comp_nome: "Kit Vidros Colados + Vigias (4 vidros)", vid_1v:2800, estribo_preto: 2000 },
+    ducato: { iso:1000, abs:11590, piso_com:10130, piso_sem:5000, ilum:650, ilum_nome: "Kit Iluminação Interna p/ Revestimento", vid_comp:8290, vid_comp_nome: "Kit Vidros Colados Completo", vid_1v:3210, estribo_preto: 2000 },
+    transit: { iso:1000, abs:9030, piso_com:10230, piso_sem:5195, ilum:650, ilum_nome: "Kit Iluminação p/ Revestimento", vid_comp:8290, vid_comp_nome: "Kit Vidros Colados Completo", vid_1v:3210, estribo_preto: 2000 }
   };
   const cfg = p[v];
 
@@ -482,6 +502,10 @@ function updatePrecosDinamicos(v) {
       if(vc) { vc.preco = cfg.vid_comp; vc.label = cfg.vid_comp_nome; }
       let v1 = cat.items.find(i=>i.id==='vidro1v'); 
       if(v1) v1.preco = cfg.vid_1v;
+    }
+    if(cat.cat === "Acabamentos Extras") {
+      let ep = cat.items.find(i=>i.id==='estribo_preto');
+      if(ep) ep.preco = cfg.estribo_preto;
     }
   });
 
@@ -673,7 +697,6 @@ function calcSeats(){
   S.qtyNum = parseInt(val) || 0; 
   
   updateHom();
-  checkTacografo();
 
   if(!S.poltrona){ calcAll(); return; }
   const p = POLTRONAS.find(x => x.id === S.poltrona);
@@ -691,23 +714,6 @@ function calcSeats(){
   
   document.getElementById("badge-seat").textContent = isNaN(val) ? "L" : S.qtyNum + "L";
   calcAll(); 
-}
-
-function checkTacografo() {
-   const tacogCb = document.getElementById("op_tacog");
-   if(!tacogCb) return;
-
-   const transf = document.getElementById("veh-transf").value;
-
-   if(S.qtyNum > 10) {
-       if(!tacogCb.checked) {
-           tacogCb.checked = true;
-           toggleOpt('tacog', 4150, 1, tacogCb, false); 
-       }
-       tacogCb.disabled = true;
-   } else {
-       tacogCb.disabled = false;
-   }
 }
 
 // --- OPCIONAIS ---
@@ -895,7 +901,7 @@ function calcAll(){
 
 function fmt(v){return"R$ "+(Math.round(v*100)/100).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});}
 
-// --- GERAÇÃO DO PDF (SOMENTE PROPOSTA FORMAL CONFORME SOLICITADO PELA CLIENTE) ---
+// --- GERAÇÃO DO PDF (SOMENTE PROPOSTA FORMAL) ---
 function gerarProposta(){
   if(S.opts["cortina"] && S.cortinas["cortina"]?.cor === "Customizada" && !(S.cortinas["cortina"].modelo||"").trim()){
     alert("Preencha o modelo da cortina no salão antes de gerar a proposta."); return;
@@ -911,11 +917,9 @@ function gerarProposta(){
   const cidade = document.getElementById("cli-cidade").value.trim() || "___________________";
   const captacao = document.getElementById("cli-captacao").value || "";
   const rep = document.getElementById("cli-rep").value;
-  const dataHoje = new Date().toLocaleDateString('pt-BR', {day: 'numeric', month: 'long', year: 'numeric'});
   
   let num = 1;
   let itensP1HTML = ""; 
-  let planilhaRowsHTML = ""; 
 
   // 1. Processamento de Itens Base
   ITENS.forEach(it => {
@@ -925,7 +929,6 @@ function gerarProposta(){
       descFinal = `Kit de Piso — ${it.variantes.find(v => v.preco === it.preco)?.label || it.variantes[0].label}, revestido em vinílico cor: ${S.pisoCorVinilico}. (Tapete da cabine incluso).`;
     }
     itensP1HTML += `<li><span class="number">${num++}.</span><span class="text">${descFinal}</span></li>`;
-    planilhaRowsHTML += `<tr><td style="text-align:center;">1</td><td>${descFinal}</td><td style="text-align:right; font-weight:600;">${fmt(it.preco)}</td></tr>`;
   });
 
   // 2. Processamento de Poltronas
@@ -938,25 +941,12 @@ function gerarProposta(){
     const lText = isNaN(S.qtyStr) || S.qtyNum === 0 ? '' : ` — ${S.qtyStr} lugares`;
     
     itensP1HTML += `<li><span class="number">${num++}.</span><span class="text">${p.label}${lText}${adsAtivosTexto ? `<ul class="p-sublist">${adsAtivosTexto}</ul>`:''}</span></li>`;
-    
-    if (p.unit === 0) {
-      planilhaRowsHTML += `<tr><td style="text-align:center;">1</td><td>${p.label} (Apenas Instalação)</td><td style="text-align:right; font-weight:600;">${fmt(p.precoFixo)}</td></tr>`;
-    } else {
-      let lCount = S.qtyNum > 0 ? S.qtyNum : 1; 
-      planilhaRowsHTML += `<tr><td style="text-align:center;">${lCount}</td><td>${p.label}</td><td style="text-align:right; font-weight:600;">${fmt(p.unit * lCount)}</td></tr>`;
-    }
-
-    Object.entries(S.adicionais).forEach(([k, val]) => {
-       let opt = getAllAdicionais().find(a=>a.id===k);
-       planilhaRowsHTML += `<tr><td style="text-align:center;">${val.qty}</td><td>Adicional Poltrona: ${opt.label}</td><td style="text-align:right; font-weight:600;">${fmt(val.preco * val.qty)}</td></tr>`;
-    });
   }
 
   // 3. Processamento de Opcionais
   OPT.forEach(cat => cat.items.forEach(it => {
     if(S.opts[it.id]){
       let l = it.label;
-      let q = S.opts[it.id].qty || 1;
       if((it.id === "cortina" || it.id === "cortdiv") && S.cortinas[it.id]){
         const c = S.cortinas[it.id];
         l += ` — ${c.saida || ""} Cor ${c.cor || "Padrão"}${c.modelo ? ` (${c.modelo})` : ""}`;
@@ -972,14 +962,12 @@ function gerarProposta(){
       if(S.opts[it.id].qty > 1) pText += ` (${S.opts[it.id].qty} unidades)`;
       
       itensP1HTML += `<li><span class="number">${num++}.</span><span class="text">${pText}</span></li>`;
-      planilhaRowsHTML += `<tr><td style="text-align:center;">${q}</td><td>${l}</td><td style="text-align:right; font-weight:600;">${fmt(it.preco * q)}</td></tr>`;
     }
   }));
 
   // 4. Processamento de Extras Manuais
   S.extras.forEach(ex => {
     itensP1HTML += `<li><span class="number">${num++}.</span><span class="text">${ex.label}</span></li>`;
-    planilhaRowsHTML += `<tr><td style="text-align:center;">${ex.qty}</td><td>${ex.label} (Item Extra)</td><td style="text-align:right; font-weight:600;">${fmt(ex.preco)}</td></tr>`;
   });
 
   let subHeaderLugarText = isNaN(S.qtyStr) ? S.qtyStr.toUpperCase() : `${S.qtyStr} LUGARES`;
@@ -1030,58 +1018,8 @@ function gerarProposta(){
     </div>
   `;
 
-  // --- PÁGINA 2: MEMÓRIA DE CÁLCULO ESTILO PLANILHA EXCEL (COMENTADA A PEDIDO DO CLIENTE) ---
-  /*
-  const pagina2 = \`
-    <div class="proposta-page">
-      <div class="p-header-title" style="font-size:18pt; margin-bottom:5px;">V12 CUSTOMIZAÇÃO</div>
-      <div style="text-align:center; font-size:11pt; font-weight:bold; margin-bottom:20px; color:#666;">DETALHAMENTO DO ORÇAMENTO — ANEXO DA PROPOSTA</div>
-      
-      <div class="p-info-box" style="margin-bottom:15px; font-size:10pt; background:#f9f9f9; padding:10px;">
-        <div><b>Orçamento para:</b> \${cliente}<br><b>Veículo Base:</b> \${vNome}</div>
-        <div style="text-align:right;"><b>Data de Emissão:</b> \${dataHoje}<br><b>Vendedor:</b> \${rep}</div>
-      </div>
-      
-      <table class="p-table">
-        <thead>
-          <tr>
-            <th style="width:10%;">QTD</th>
-            <th style="width:65%;">DESCRIÇÃO DOS ITENS SELECIONADOS</th>
-            <th style="width:25%;">PREÇO DE VENDA (R$)</th>
-          </tr>
-        </thead>
-        <tbody>
-          \${planilhaRowsHTML}
-          <tr style="font-weight:bold; background:#f5f5f7;">
-            <td colspan="2" style="text-align:right; padding-right:15px;">SUBTOTAL ACUMULADO:</td>
-            <td style="text-align:right;">\${fmt(calcs.subtotal)}</td>
-          </tr>
-          \${calcs.descVal > 0 ? \`
-          <tr style="font-weight:bold; color:#1a6b3a; background:#f5f5f7;">
-            <td colspan="2" style="text-align:right; padding-right:15px;">DESCONTO COMERCIAL APLICADO (\${(S.pag.desc*100).toFixed(1)}%):</td>
-            <td style="text-align:right;">- \${fmt(calcs.descVal)}</td>
-          </tr>\` : ''}
-          <tr style="font-weight:bold; background:#e07b39; color:white;">
-            <td colspan="2" style="text-align:right; padding-right:15px; font-size:11pt;">PREÇO FINAL REAJUSTADO:</td>
-            <td style="text-align:right; font-size:11pt;">\${fmt(calcs.total)}</td>
-          </tr>
-        </tbody>
-      </table>
-      
-      <div style="margin-top:30px; font-size:9.5pt; color:#555; background:#fff8f3; border:1px solid #f0c89a; padding:12px; border-radius:6px;">
-        * Valores reajustados dinamicamente com base nas tabelas de custo vigentes. Este anexo é parte integrante da Proposta Comercial e serve para conferência detalhada dos materiais instalados.
-      </div>
-      
-      <div class="p-footer" style="margin-top:60px;">
-        V12 CUSTOMIZAÇÃO DE VEÍCULO LTDA | Caxias do Sul - RS <br>
-        Rua Boaventura Lucena, 100 - Bairro Ana Rech | Fone: (54) 99999-5399
-      </div>
-    </div>
-  \`;
-  */
-
-  // Renderiza APENAS a primeira página (Contrato Formal). A página 2 (Tabela Excel) está comentada acima.
-  document.getElementById("proposta-pages").innerHTML = pagina1; // + pagina2;
+  // Renderiza APENAS a primeira página (Contrato Formal). A página 2 (Tabela Excel) foi comentada e removida da exibição a pedido.
+  document.getElementById("proposta-pages").innerHTML = pagina1;
   document.getElementById("modal").classList.add("open");
 }
 
