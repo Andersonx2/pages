@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>V12 — Sistema de Orçamentos v8</title>
+<title>V12 — Sistema de Orçamentos</title>
 <style>
 /* =========================================
    ESTILOS DO SISTEMA (INTERFACE)
@@ -301,7 +301,7 @@ header h1{font-size:17px;font-weight:600;flex:1}
 </div>
 
 <script>
-// ── BASE DE DADOS E INTELIGÊNCIA DINÂMICA (TABELA VERSÃO 07) ─────────────────────────────────
+// ── BASE DE DADOS E INTELIGÊNCIA DINÂMICA (TABELA VERSÃO 08) ─────────────────────────────────
 const VEICULOS = {
   master:   {nome:"Renault Master",    taxa:0,      configs:["L3H2","L2H2","L1H1", "Furgão", "Vitrê"]},
   sprinter: {nome:"Mercedes Sprinter", taxa:0.1975, configs:["417 (10,5m)","417 (14m)","417 (15,5m)","517 (10,5m)","517 (14m)","517 (15,5m)", "Furgão", "Vitrê"]},
@@ -310,10 +310,13 @@ const VEICULOS = {
   transit:  {nome:"Ford Transit",      taxa:0.1975, configs:["L3H3","L4H3", "Furgão", "Vitrê"]},
 };
 
-// Arrays são inicializados com valores padrões (Master), depois alterados pela função dinâmica
 let ITENS = [
   {id:"iso",  label:"Kit de Isolamento Termoacústico", propLabel:"Kit de Isolamento Termoacústico completo.", preco:1000, horas:2, checked:false, fixed:false},
-  {id:"abs",  label:"Kit Revestimento Interno em ABS", propLabel:"Revestimento Teto e Laterais em ABS Termoformado.", preco:11590, horas:4, checked:false, fixed:false}, 
+  {id:"abs",  label:"Kit Revestimento Interno em ABS", propLabel:"Revestimento Teto e Laterais em ABS Termoformado.", preco:10970, horas:4, checked:false, fixed:false,
+   variantes:[
+     {label:"COM APLIQUE em LED", preco:10970},
+     {label:"SEM APLIQUE", preco:9850}
+   ]}, 
   {id:"piso", label:"Kit de Piso (Vinílico)", propLabel:"Kit de Piso com Bagageiro e Levante, revestido em vinílico cor: 0023. (Tapete cabine incluso).", preco:10130, horas:23.48, checked:false, fixed:false,
    variantes:[
      {label:"COM Bagageiro e COM Levante", preco:10130},
@@ -386,23 +389,23 @@ let OPT = [
     {id:"delim_esc",  label:"Delimitadora de Teto", preco:470, horas:1, tagEscolar:true},
     {id:"cam_esc",    label:"Câmera Frontal e Ré", preco:570, horas:1, tagEscolar:true},
     {id:"mon_esc",    label:"Monitor", preco:280, horas:1, tagEscolar:true},
-    {id:"tacog",      label:"Tacógrafo Aferido Bobina TACOVEL", preco:4150, horas:1, tagEscolar:true},
+    {id:"tacog",      label:"Tacógrafo Aferido Bobina TACOVEL", preco:3760, horas:1, tagEscolar:true},
   ]},
   {cat:"Som e Multimídia", items:[
-    {id:"multimidia", label:"Multimídia com Câmera de Ré, GPS e Bluetooth", preco:2200, horas:2},
+    {id:"multimidia", label:"Multimídia com Câmera de Ré, GPS e Bluetooth", preco:2400, horas:2},
     {id:"molduramul", label:"Moldura (Inclusa na Multimídia)", preco:0, horas:1},
     {id:"radio",      label:"Rádio Bluetooth JBL", preco:650, horas:1},
-    {id:"jbl69",      label:"Alto Falantes JBL 6x9 (Par)", preco:750, horas:1.5, locais:["Plataforma", "Revestimento"]},
+    {id:"jbl69",      label:"Alto Falantes JBL 6x9 (Par)", preco:830, horas:1.5, locais:["Plataforma", "Revestimento"]},
     {id:"jbl6",       label:"Alto Falantes JBL 6\" (Par) - Portas", preco:540, horas:1.5},
-    {id:"tvabs",      label:"Smart TV 24' c/ Moldura OMZ e Inversor 300w", preco:4185, horas:2},
-    {id:"tvmad",      label:"Smart TV 24' c/ Moldura Madeira, Rev. Courvin e Inv. 300w", preco:4330, horas:3},
+    {id:"tvabs",      label:"Smart TV 24' c/ Moldura OMZ e Inversor 300w", preco:4740, horas:2},
+    {id:"tvmad",      label:"Smart TV 24' c/ Moldura Madeira, Rev. Courvin e Inv. 300w", preco:4620, horas:3},
   ]},
   {cat:"Conforto, Ar e Frigobar", items:[
-    {id:"ar",       label:"Kit Ar Condicionado com instalação completa", preco:7405, horas:0.4},
-    {id:"frig41",   label:"Frigobar 41 Litros com Fonte Quadrivolt e Console", preco:3830, horas:1, hasQty:true},
+    {id:"ar",       label:"Kit Ar Condicionado com instalação completa", preco:6300, horas:0.4},
+    {id:"frig41",   label:"Frigobar 47 Litros com Fonte Quadrivolt e Console", preco:3850, horas:1, hasQty:true},
     {id:"frig31",   label:"Frigobar 31 Litros com Console Revestido", preco:3400, horas:1, hasQty:true},
-    {id:"frig29",   label:"Frigobar 29 Litros com Console Revestido", preco:3250, horas:1, hasQty:true},
-    {id:"frig18",   label:"Frigobar 18 Litros com Console Revestido", preco:3190, horas:1, hasQty:true},
+    {id:"frig29",   label:"Frigobar 29 Litros com Console Revestido", preco:3400, horas:1, hasQty:true},
+    {id:"frig18",   label:"Frigobar 18 Litros com Console Revestido", preco:3300, horas:1, hasQty:true},
     {id:"sofacama", label:"Sofá Cama (4 Lugares) Com Cabeceira, Cinto de Segurança, revestido.", preco:4800, horas:4},
   ]},
   {cat:"Iluminação LED", items:[
@@ -419,9 +422,9 @@ let OPT = [
   ]},
   {cat:"Elétrica", items:[
     {id:"usb1",     label:"Carregador USB (unitário)", preco:160, horas:0.4, hasQty:true},
-    {id:"usb2",     label:"Carregador Duplo USB + USB-C (unitário)", preco:230, horas:0.4, hasQty:true},
+    {id:"usb2",     label:"Carregador Duplo USB + USB-C (unitário)", preco:210, horas:0.4, hasQty:true},
     {id:"tomada",   label:"Tomada 220v", preco:145, horas:0.4, hasQty:true},
-    {id:"inv_300",  label:"Inversor 300W", preco:900, horas:1},
+    {id:"inv_300",  label:"Inversor 300W", preco:785, horas:1},
     {id:"inv_1000", label:"Inversor 1.000W", preco:1350, horas:1},
     {id:"inv_3000", label:"Inversor 3.000W", preco:1630, horas:1},
   ]},
@@ -440,12 +443,12 @@ let OPT = [
   {cat:"Acabamentos Extras", items:[
     {id:"maleiro_le", label:"Porta Pacote (Maleiro) — Lado Esquerdo", preco:2730, horas:2.8},
     {id:"maleiro_ld", label:"Porta Pacote (Maleiro) — Lado Direito", preco:1520, horas:2.3},
-    {id:"pegamao",    label:"Pega Mão na Coluna da entrada (1ª fileira)", preco:120, horas:1, cores:["Grafite","Amarelo"]},
+    {id:"pegamao",    label:"Pega Mão na Coluna da entrada (1ª fileira)", preco:130, horas:1, cores:["Grafite","Amarelo"]},
     {id:"saiacorr",   label:"Saia na porta de correr para não entrar sujeira", preco:180, horas:1},
     {id:"fechpolt",   label:"Fechamento embaixo Poltrona Motorista e Auxiliar", preco:1100, horas:2},
     {id:"console_copo", label:"Console com Porta Copo (unitário)", preco:3030, horas:12, hasQty:true},
     {id:"estribo_preto", label:"Estribo Lateral (Preto)", preco:1285, horas:1},
-    {id:"estribo_polido", label:"Estribo Lateral (Polido)", preco:2000, horas:1},
+    {id:"estribo_polido", label:"Estribo Lateral (Polido)", preco:1800, horas:1},
   ]}
 ];
 
@@ -465,20 +468,23 @@ let S = {
 
 function toggle(h){ h.classList.toggle("open"); h.nextElementSibling.classList.toggle("open"); }
 
-// --- ATUALIZAÇÃO DINÂMICA DE PREÇOS POR VEÍCULO (TABELA 07) ---
+// --- ATUALIZAÇÃO DINÂMICA DE PREÇOS POR VEÍCULO (TABELA 08) ---
 function updatePrecosDinamicos(v) {
   const p = {
-    master: { iso:1000, abs:11590, piso_com:10130, piso_sem:5000, ilum:650, ilum_nome: "Kit Iluminação Interna p/ Revestimento", vid_comp:8290, vid_comp_nome: "Kit Vidros Colados Completo", vid_1v:3210, estribo_preto: 1285 },
-    sprinter: { iso:1000, abs:11590, piso_com:10130, piso_sem:5000, ilum:730, ilum_nome: "Kit Iluminação - Sanca do Teto", vid_comp:6290, vid_comp_nome: "Kit Vidros Colados Completo (Longa)", vid_1v:3430, estribo_preto: 2000 },
-    scudo: { iso:950, abs:6400, piso_com:4990, piso_sem:4990, ilum:610, ilum_nome: "Kit Iluminação p/ Revestimento (2 Luminárias)", vid_comp:5710, vid_comp_nome: "Kit Vidros Colados + Vigias (4 vidros)", vid_1v:2800, estribo_preto: 2000 },
-    ducato: { iso:1000, abs:11590, piso_com:10130, piso_sem:5000, ilum:650, ilum_nome: "Kit Iluminação Interna p/ Revestimento", vid_comp:8290, vid_comp_nome: "Kit Vidros Colados Completo", vid_1v:3210, estribo_preto: 2000 },
-    transit: { iso:1000, abs:9030, piso_com:10230, piso_sem:5195, ilum:650, ilum_nome: "Kit Iluminação p/ Revestimento", vid_comp:8290, vid_comp_nome: "Kit Vidros Colados Completo", vid_1v:3210, estribo_preto: 2000 }
+    master: { iso:1000, abs:10970, abs_var: [{label:"COM APLIQUE em LED", preco:10970}, {label:"SEM APLIQUE", preco:9850}], piso_com:10130, piso_sem:5000, ilum:650, ilum_nome: "Kit Iluminação Interna p/ Revestimento", vid_comp:8290, vid_comp_nome: "Kit Vidros Colados Completo", vid_1v:3210, estribo_preto: 1285, tvabs: 4740, tvmad: 4620, ar: 6300, mult_nome: "Multimídia com Câmera de Ré, GPS e Bluetooth", mult_preco: 2400 },
+    sprinter: { iso:1000, abs:11590, abs_var: null, piso_com:10130, piso_sem:5000, ilum:730, ilum_nome: "Kit Iluminação - Sanca do Teto", vid_comp:6290, vid_comp_nome: "Kit Vidros Colados Completo (Longa)", vid_1v:3430, estribo_preto: 1800, tvabs: 4600, tvmad: 4615, ar: 6300, mult_nome: "Multimídia com Câmera de Ré, GPS e Bluetooth", mult_preco: 2400 },
+    scudo: { iso:950, abs:7400, abs_var: null, piso_com:4990, piso_sem:4990, ilum:610, ilum_nome: "Kit Iluminação p/ Revestimento (2 Luminárias)", vid_comp:5710, vid_comp_nome: "Kit Vidros Colados + Vigias (4 vidros)", vid_1v:2800, estribo_preto: 1800, tvabs: 4330, tvmad: 4330, ar: 6300, mult_nome: "Multimídia 9' Android Carplay + Moldura", mult_preco: 2870 },
+    ducato: { iso:1000, abs:11590, abs_var: null, piso_com:10130, piso_sem:5000, ilum:650, ilum_nome: "Kit Iluminação Interna p/ Revestimento", vid_comp:8290, vid_comp_nome: "Kit Vidros Colados Completo", vid_1v:3210, estribo_preto: 1800, tvabs: 4740, tvmad: 4620, ar: 6300, mult_nome: "Multimídia com Câmera de Ré, GPS e Bluetooth", mult_preco: 2400 },
+    transit: { iso:1000, abs:9030, abs_var: null, piso_com:10230, piso_sem:5195, ilum:650, ilum_nome: "Kit Iluminação p/ Revestimento", vid_comp:8290, vid_comp_nome: "Kit Vidros Colados Completo", vid_1v:3210, estribo_preto: 1800, tvabs: 4740, tvmad: 4620, ar: 7405, mult_nome: "Multimídia com Câmera de Ré, GPS e Bluetooth", mult_preco: 2400 }
   };
   const cfg = p[v];
 
   ITENS.forEach(it => {
     if(it.id === 'iso') it.preco = cfg.iso;
-    if(it.id === 'abs') it.preco = cfg.abs;
+    if(it.id === 'abs') {
+        it.preco = cfg.abs;
+        it.variantes = cfg.abs_var;
+    }
     if(it.id === 'ilum') { it.preco = cfg.ilum; it.label = cfg.ilum_nome; }
     if(it.id === 'piso') {
       it.preco = cfg.piso_com;
@@ -506,6 +512,22 @@ function updatePrecosDinamicos(v) {
     if(cat.cat === "Acabamentos Extras") {
       let ep = cat.items.find(i=>i.id==='estribo_preto');
       if(ep) ep.preco = cfg.estribo_preto;
+    }
+    if(cat.cat === "Som e Multimídia") {
+      let tv1 = cat.items.find(i=>i.id==='tvabs');
+      if(tv1) tv1.preco = cfg.tvabs;
+      let tv2 = cat.items.find(i=>i.id==='tvmad');
+      if(tv2) tv2.preco = cfg.tvmad;
+      
+      let mul = cat.items.find(i=>i.id==='multimidia');
+      if(mul) {
+          mul.label = cfg.mult_nome;
+          mul.preco = cfg.mult_preco;
+      }
+    }
+    if(cat.cat === "Conforto, Ar e Frigobar") {
+      let a = cat.items.find(i=>i.id==='ar');
+      if(a) a.preco = cfg.ar;
     }
   });
 
@@ -553,7 +575,7 @@ function renderItens(){
   c.innerHTML = "";
   ITENS.forEach(it => {
     let subPanel = "";
-    if(it.variantes){
+    if(it.id === "piso" && it.variantes){
       subPanel = `
         <div class="opt-sub piso ${it.checked ? 'visible' : ''}" id="sub_${it.id}">
           <div class="sub-label">CONFIGURAÇÃO DO PISO</div>
@@ -563,6 +585,14 @@ function renderItens(){
           <div class="sub-label" style="margin-top:10px">COR DO TAPETE VINÍLICO</div>
           <select onchange="selectPisoCor(this.value)">
             ${it.coresVinilico.map(cv=>`<option value="${cv}"${cv===S.pisoCorVinilico?" selected":""}>${cv}</option>`).join("")}
+          </select>
+        </div>`;
+    } else if (it.id === "abs" && it.variantes) {
+      subPanel = `
+        <div class="opt-sub piso ${it.checked ? 'visible' : ''}" id="sub_${it.id}">
+          <div class="sub-label">ACABAMENTO DO REVESTIMENTO</div>
+          <select onchange="selectAbsVariante(this.selectedIndex)">
+            ${it.variantes.map((v,i)=>`<option value="${i}">${v.label} — ${fmt(v.preco)}</option>`).join("")}
           </select>
         </div>`;
     }
@@ -635,6 +665,14 @@ function selectPisoVariante(idx){
   document.getElementById("price_piso").textContent = fmt(it.preco);
   calcAll();
 }
+
+function selectAbsVariante(idx){
+  const it = ITENS.find(x => x.id === "abs");
+  it.preco = it.variantes[idx].preco;
+  document.getElementById("price_abs").textContent = fmt(it.preco);
+  calcAll();
+}
+
 function selectPisoCor(cor){ S.pisoCorVinilico = cor; }
 
 // --- POLTRONAS ---
@@ -927,6 +965,8 @@ function gerarProposta(){
     let descFinal = it.propLabel;
     if(it.id === "piso" && it.variantes) {
       descFinal = `Kit de Piso — ${it.variantes.find(v => v.preco === it.preco)?.label || it.variantes[0].label}, revestido em vinílico cor: ${S.pisoCorVinilico}. (Tapete da cabine incluso).`;
+    } else if(it.id === "abs" && it.variantes) {
+      descFinal = `Kit Revestimento Interno em ABS — ${it.variantes.find(v => v.preco === it.preco)?.label || it.variantes[0].label}.`;
     }
     itensP1HTML += `<li><span class="number">${num++}.</span><span class="text">${descFinal}</span></li>`;
   });
@@ -947,7 +987,7 @@ function gerarProposta(){
   OPT.forEach(cat => cat.items.forEach(it => {
     if(S.opts[it.id]){
       let l = it.label;
-      if((it.id === "cortina" || it.id === "cortdiv") && S.cortinas[it.id]){
+      if((it.id === "cortina" || it.id === "cortdiv" || it.id === "cortplissada") && S.cortinas[it.id]){
         const c = S.cortinas[it.id];
         l += ` — ${c.saida || ""} Cor ${c.cor || "Padrão"}${c.modelo ? ` (${c.modelo})` : ""}`;
       } else if(it.variantesPel) {
@@ -1018,7 +1058,6 @@ function gerarProposta(){
     </div>
   `;
 
-  // Renderiza APENAS a primeira página (Contrato Formal). A página 2 (Tabela Excel) foi comentada e removida da exibição a pedido.
   document.getElementById("proposta-pages").innerHTML = pagina1;
   document.getElementById("modal").classList.add("open");
 }
@@ -1028,4 +1067,4 @@ function getAllAdicionais(){
 }
 </script>
 </body>
-</html>
+</html>S
