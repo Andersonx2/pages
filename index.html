@@ -500,7 +500,6 @@ let OPT = [
     {id:"cam_front",  label:"Câmera Frontal", preco:340, horas:1, tagEscolar:true},
     {id:"cam_re",     label:"Câmera de Ré", preco:340, horas:1, tagEscolar:true},
     {id:"mon_esc",    label:"Monitor", preco:290, horas:0.3, tagEscolar:true},
-    {id:"tacog",      label:"Tacógrafo Aferido Bobina TACOVEL", preco:3810, horas:0.3, tagEscolar:true},
   ]},
   {cat:"Som e Multimídia", items:[
     {id:"multimidia", label:"Multimídia Mp10 Carplay Android Auto", preco:1360, horas:1},
@@ -541,6 +540,7 @@ let OPT = [
     {id:"inv_300",  label:"Inversor 300W", preco:800, horas:1},
     {id:"inv_1000", label:"Inversor 1.000W", preco:1380, horas:1},
     {id:"inv_3000", label:"Inversor 3.000W", preco:1680, horas:1},
+    {id:"tacog", label:"Tacógrafo Aferido Bobina TACOVEL (obrigatório acima de 10L)", preco:3810, horas:0.3},
   ]},
   {cat:"Cortinas e Películas", items:[
     {id:"cortina", label:"Cortinas Comum (Com ou sem Saída de Emergência)", preco:1350, horas:2, coresCortina:["Padrão","Customizada"], saidaEmerg:["Com Saída de Emergência","Sem Saída de Emergência"]},
@@ -585,6 +585,12 @@ const OPT_VEH = {
   transit:  {hide:["vidros_longa","vidros_xlonga","vidro2v","vidro3v","vidro_vigia","tvmad"]},
   ducato:   {hide:["vidros_longa","vidros_xlonga","vidro2v","vidro3v","vidro_vigia"]}
 };
+
+const FRETE_INST_STOFF = 1270; // frete R$ 1.000 + instalação R$ 270 (não exibir ao cliente)
+
+function stoffFrete(p){
+  return (p && p.forn === "STOFF") ? FRETE_INST_STOFF : 0;
+}
 
 let S = {
   veiculo:"master", poltrona:null, qtyStr:"24", qtyNum:24,
@@ -865,7 +871,8 @@ const TRANSF_OPT_CATS = {
 const OPT_ONLY_FOR = {
   adesiv_esc: ["Escolar","Mista"], delim_esc: ["Escolar","Mista"],
   cam_front: ["Escolar","Mista"], cam_re: ["Escolar","Mista"],
-  mon_esc: ["Escolar","Mista"], tacog: ["Escolar","Mista","Fretamento"],
+  mon_esc: ["Escolar","Mista"],
+  tacog: ["Executiva","Fretamento","Mista","Especial"],
   cs_l3h2_teto: ["Carga Seca"], cs_l3h2_sem: ["Carga Seca"],
   cs_l2h2_teto: ["Carga Seca"], cs_l2h2_sem: ["Carga Seca"],
   cs_l1h1_teto: ["Carga Seca"], cs_l1h1_sem: ["Carga Seca"],
@@ -1142,21 +1149,29 @@ function calcSeats(){
   
   updateHom();
 
-  if(!S.poltrona){ calcAll(); return; }
-  const p = POLTRONAS.find(x => x.id === S.poltrona);
-  const adVal = Object.values(S.adicionais).reduce((a,b) => a + (b.preco * b.qty), 0);
-  
-  let total = 0;
-  if (p.unit === 0) {
-      total = p.precoFixo + adVal;
-      document.getElementById("seat-result").innerHTML = `<strong>${p.label}</strong> — Base: ${fmt(p.precoFixo)}` + (adVal > 0 ? ` + adicionais = <strong>${fmt(total)}</strong>` : ` = <strong>${fmt(total)}</strong>`);
-  } else {
-      total = (p.unit * S.qtyNum) + adVal;
+  if(S.poltrona){
+    const p = POLTRONAS.find(x => x.id === S.poltrona);
+    const adVal = Object.values(S.adicionais).reduce((a,b) => a + (b.preco * b.qty), 0);
+    const frete = stoffFrete(p);
+    let total = 0;
+    if (p.unit === 0) {
+      total = p.precoFixo + adVal + frete;
+      document.getElementById("seat-result").innerHTML = `<strong>${p.label}</strong> — Base: ${fmt(p.precoFixo)}` + (adVal > 0 ? ` + adicionais ${fmt(adVal)}` : ``) + ` = <strong>${fmt(total)}</strong>`;
+    } else {
+      total = (p.unit * S.qtyNum) + adVal + frete;
       const strL = isNaN(val) ? '' : `${S.qtyNum} lugares × `;
-      document.getElementById("seat-result").innerHTML = `<strong>${p.label}</strong> — ${strL}${fmt(p.unit)} = ${fmt(p.unit * S.qtyNum)}` + (adVal > 0 ? ` + adicionais = <strong>${fmt(total)}</strong>` : ` = <strong>${fmt(p.unit * S.qtyNum)}</strong>`);
+      document.getElementById("seat-result").innerHTML = `<strong>${p.label}</strong> — ${strL}${fmt(p.unit)} = ${fmt(p.unit * S.qtyNum)}` + (adVal > 0 ? ` + adicionais ${fmt(adVal)}` : ``) + ` = <strong>${fmt(total)}</strong>`;
+    }
+  } else {
+    const sr = document.getElementById("seat-result");
+    if(sr) sr.innerHTML = "Selecione o tipo de poltrona acima.";
   }
+
+  const transfNow = (typeof getTransf === "function" ? getTransf() : "");
+  if(S.qtyNum <= 10 || transfNow === "Escolar" || transfNow === "Carga Seca") delete S.opts.tacog;
   
   document.getElementById("badge-seat").textContent = isNaN(val) ? "L" : S.qtyNum + "L";
+  if(typeof renderOpcionais === "function") renderOpcionais();
   calcAll(); 
 }
 
@@ -1178,6 +1193,7 @@ function renderOpcionais(){
       if(it.preco == null) return false;
       if(OPT_ONLY_FOR[it.id]) return OPT_ONLY_FOR[it.id].includes(transf);
       if(it.id.startsWith("cs_") && transf !== "Carga Seca") return false;
+      if(it.id === "tacog" && S.qtyNum <= 10) return false;
       return true;
     });
     if(items.length === 0) return;
@@ -1312,7 +1328,7 @@ function setDesconto(val){
   
   if(pct > 10) {
     const senha = prompt("Descontos acima de 10% exigem autorização. Digite a senha do Franco:");
-    if(senha !== "1234") { 
+    if(senha !== "190619") { 
        alert("Senha incorreta! Desconto ajustado para o teto de 10%.");
        pct = 10;
        document.getElementById("desc-pct").value = 10;
@@ -1335,7 +1351,8 @@ function calcAll(){
   let seatVal = 0; let adVal = 0;
   if(S.poltrona){
     const p = POLTRONAS.find(x => x.id === S.poltrona);
-    seatVal = p.unit === 0 ? p.precoFixo : p.unit * S.qtyNum; 
+    seatVal = p.unit === 0 ? p.precoFixo : p.unit * S.qtyNum;
+    seatVal += stoffFrete(p);
     horasTotais += p.horas;
     adVal = Object.values(S.adicionais).reduce((a,b) => a + (b.preco * b.qty), 0);
     horasTotais += Object.values(S.adicionais).reduce((a,b) => a + b.horas, 0);
@@ -1608,17 +1625,17 @@ function gerarProposta(){
 
       <div class="p-payment-card">
         <div class="p-section" style="margin-top:0;color:#e07b39;border-color:#e07b39">2. Condições de Pagamento</div>
-        <p style="font-size:11pt;margin-bottom:8px"><b>Valor total (tabela):</b> ${fmt(baseTotal)}</p>
         <div class="p-total" style="font-size:20pt;margin-bottom:4px">ANTECIPADO (10% desc.): ${fmt(baseTotal * 0.90)}</div>
         <p style="font-size:10pt;color:#666;margin-bottom:12px">Forma selecionada: <b>${S.pag.cond}</b> — Valor contratado: <b>${fmt(calcs.total)}</b></p>
         <hr style="border:0;border-top:1px solid #f0c89a;margin:12px 0"/>
         <p><b>Antecipado (10% de desconto):</b> ${fmt(baseTotal * 0.90)}</p>
-        <p><b>Parcelado em 12x no Cartão de Crédito:</b> ${fmt(baseTotal / 12)} por parcela (total ${fmt(baseTotal)})</p>
+        <p><b>Parcelado em 12x no Cartão de Crédito:</b> ${fmt(baseTotal / 12)} por parcela</p>
         <p><b>Parcelado em 21x:</b> consultar taxas</p>
         <p><b>Entrada 50% + Cheque ou Boleto:</b> consultar</p>
         <p style="margin-top:10px"><b>Entrada (sinal) informada:</b> ${entradaPct.toFixed(0)}% — ${fmt(baseTotal * (entradaPct/100))}</p>
         <p><b>Estimativa de Produção:</b> ${Math.ceil(calcs.totalHoras)} horas técnicas</p>
         <p><b>Prazo de Entrega:</b> ${prazo}</p>
+        <div class="p-total" style="margin-top:16px;font-size:18pt">VALOR TOTAL DO CLIENTE: ${fmt(calcs.total)}</div>
       </div>
     </div>
   `;
